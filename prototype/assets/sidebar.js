@@ -21,6 +21,7 @@
       subs: [
         { id: "province", name: "รายจังหวัด", href: "energy-dashboard.html" },
         { id: "history", name: "ข้อมูลย้อนหลัง", href: "energy-history.html" },
+        { id: "transition", name: "เปลี่ยนผ่านพลังงาน", href: "energy-transition.html" },
         { id: "crisis", name: "AI วิเคราะห์วิกฤต", href: "energy-crisis.html", dot: true },
         { id: "reports", name: "รายงาน", href: "energy-reports.html" }
       ] },

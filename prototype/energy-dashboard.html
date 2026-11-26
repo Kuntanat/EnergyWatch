@@ -2,7 +2,7 @@
 <html lang="th"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EnergyWatch - แดชบอร์ดพลังงาน ปทุมธานี</title>
-<link rel="stylesheet" href="assets/base.css?v=3">
+<link rel="stylesheet" href="assets/base.css?v=5">
 <style>
 /* Main */
   .main { width: 1200px; padding: 28px 32px 48px; }
@@ -239,10 +239,11 @@
   .chip:not(.on):hover { background: rgba(255,255,255,0.22); }
   .msgs { max-height: 300px; overflow-y: auto; }
   .chat-hidden { display: none; }
+  #renewables { scroll-margin-top: 16px; }
   .hist-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .hist-scroll.is-scrolling .plot, .hist-scroll.is-scrolling .xaxis { width: max-content; }
 </style>
-<link rel="stylesheet" href="assets/responsive.css?v=3">
+<link rel="stylesheet" href="assets/responsive.css?v=5">
 </head>
 <body>
 <div class="app">
@@ -327,7 +328,7 @@
         <div class="share-row"><div class="share-top"><span>2565</span><b>93% : 7%</b></div><div class="share-bar"><div class="fossil" style="width:93%"></div><div class="clean" style="width:7%"></div></div></div>
         <div class="share-row"><div class="share-top"><span>2569 (ปัจจุบัน)</span><b>89% : 11%</b></div><div class="share-bar"><div class="fossil" style="width:89%"></div><div class="clean" style="width:11%"></div></div></div>
         <div class="share-row"><div class="share-top"><span style="color:#2F5D8A">2572 (พยากรณ์)</span><b>82% : 18%</b></div><div class="share-bar" style="opacity:.6"><div class="fossil" style="width:82%"></div><div class="clean" style="width:18%"></div></div></div>
-        <div class="target" style="background:#FFFBEB;border-color:#FDE68A;color:#92400E">เป้าหมายจังหวัด: พลังงานสะอาด 20% ภายในปี 2572 — <b>คาดว่าทำได้ 18% ต่ำกว่าเป้า 2 จุด</b></div>
+        <div class="target" style="background:#FFFBEB;border-color:#FDE68A;color:#92400E">เป้าหมายจังหวัด: พลังงานสะอาด 20% ภายในปี 2572 — <b>คาดว่าทำได้ 18% ต่ำกว่าเป้า 2 จุด</b><br><a href="energy-transition.html#netzero" style="font-weight:700;text-decoration:underline">ดูเส้นทางสู่เป้าประเทศ 70% และ Net Zero 2050 →</a></div>
       </div>
 
       <div class="card ai-card">
@@ -369,7 +370,7 @@
 
 
     <!-- Renewable potential -->
-    <div class="card" style="margin-bottom:20px">
+    <div class="card" id="renewables" style="margin-bottom:20px">
       <div class="ai-h">
         <div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">AI แนะนำพลังงานหมุนเวียนตามศักยภาพพื้นที่</div><div class="card-s">ประเมินจากพื้นที่เกษตร หลังคาอาคาร ความเข้มแสง และความเร็วลมของจังหวัด</div></div></div>
         <div class="ai-meta">อัปเดต 30 ต.ค. 2569</div>
@@ -523,8 +524,8 @@
     <div class="foot">ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ · อัปเดตล่าสุด 30 ต.ค. 2569 10:30</div>
   </div>
 </div>
-<script src="assets/app.js?v=3"></script>
-<script src="assets/sidebar.js?v=3"></script>
-<script src="assets/pages/dashboard.js?v=3"></script>
+<script src="assets/app.js?v=5"></script>
+<script src="assets/sidebar.js?v=5"></script>
+<script src="assets/pages/dashboard.js?v=5"></script>
 </body>
 </html>

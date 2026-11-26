@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EnergyWatch - เปลี่ยนผ่านพลังงาน ปทุมธานี</title>
+<link rel="stylesheet" href="assets/base.css?v=5">
+<link rel="stylesheet" href="assets/components.css?v=5">
+<style>
+/* 5-step platform strip */
+.steps5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+.s5 { display: flex; flex-direction: column; gap: 6px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 14px; transition: border-color .15s, box-shadow .15s; }
+.s5:hover { border-color: #4F8BC9; box-shadow: 0 8px 20px rgba(15, 23, 42, .06); }
+.s5-n { width: 26px; height: 26px; border-radius: 13px; background: #E2EAF3; color: #24496E; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.s5-t { font-size: 14px; font-weight: 700; }
+.s5-e { font-size: 11px; color: #6B7280; }
+.s5-l { font-size: 12px; font-weight: 700; color: #4F8BC9; margin-top: auto; }
+.s5.here { border: 2px solid #4F8BC9; background: #F5F9FD; }
+
+/* 3D tiles */
+.d3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+.d3-t { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.d3-ic { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.d3-n { font-size: 15px; font-weight: 800; }
+.d3-s { font-size: 12px; color: #6B7280; }
+.d3-v { font-size: 24px; font-weight: 800; }
+.d3-u { font-size: 12px; color: #6B7280; font-weight: 500; }
+.d3-d { font-size: 12px; margin-top: 6px; color: #4B5563; line-height: 1.5; }
+
+/* generic bar charts drawn by JS */
+.vchart { display: flex; align-items: flex-end; gap: 6px; height: 190px; border-bottom: 1px solid #E5E7EB; position: relative; }
+.vc { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+.vc-v { font-size: 10px; font-weight: 700; color: #374151; margin-bottom: 3px; white-space: nowrap; }
+.vc-b { width: min(30px, 80%); border-radius: 5px 5px 0 0; display: flex; flex-direction: column; overflow: hidden; }
+.vc-x { display: flex; gap: 6px; margin-top: 6px; }
+.vc-x div { flex: 1 1 0; min-width: 0; text-align: center; font-size: 10px; color: #6B7280; white-space: nowrap; overflow: hidden; }
+.vc-x .now { color: #2563EB; font-weight: 700; }
+.vc.fc .vc-b { opacity: .55; }
+.mark { position: absolute; left: 4%; right: 4%; border-top: 3px dashed #15803D; z-index: 1; }
+.limit { position: absolute; left: 0; right: 0; border-top: 2px dashed #E5484D; z-index: 1; }
+.limit span { position: absolute; right: 0; top: -18px; font-size: 11px; font-weight: 700; color: #B91C1C; background: #FFFFFF; padding: 0 4px; }
+.hl { position: absolute; top: 0; bottom: 0; background: rgba(229, 72, 77, .07); border-radius: 6px; }
+
+.tgt { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+.tg { background: #F9FAFB; border-radius: 12px; padding: 10px 12px; }
+.tg-l { font-size: 11px; color: #6B7280; }
+.tg-v { font-size: 18px; font-weight: 800; margin-top: 2px; }
+.tg-d { font-size: 11px; color: #6B7280; margin-top: 2px; }
+.prog { margin-top: 14px; }
+.prog-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+.prog-bar { position: relative; height: 12px; border-radius: 6px; background: #E5E7EB; overflow: visible; }
+.prog-fill { height: 12px; border-radius: 6px; background: #22A06B; }
+.prog-pin { position: absolute; top: -4px; width: 2px; height: 20px; background: #111827; }
+.prog-lbl { display: flex; justify-content: space-between; font-size: 11px; color: #6B7280; margin-top: 6px; }
+
+.rec-box { background: #F5F9FD; border: 1px solid #CBD8E6; border-radius: 12px; padding: 12px 14px; font-size: 13px; line-height: 1.6; color: #1F2937; margin-top: 14px; }
+.rec-box b { color: #24496E; }
+
+/* demand response */
+.dr-src { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #F3F4F6; font-size: 13px; }
+.dr-src b { font-size: 14px; }
+.dr-ev { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 12px; padding: 12px; font-size: 13px; color: #991B1B; line-height: 1.5; margin-bottom: 10px; }
+.dr-ev b { color: #7F1D1D; }
+.opt-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 13px; font-weight: 600; }
+
+/* data center */
+.dc { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #F3F4F6; }
+.dc-ic { width: 34px; height: 34px; border-radius: 10px; background: #EDE9FE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.dc-t { font-size: 13px; font-weight: 700; }
+.dc-d { font-size: 12px; color: #6B7280; margin-top: 2px; }
+.dc-v { margin-left: auto; text-align: right; font-size: 14px; font-weight: 800; white-space: nowrap; }
+.dc-v span { display: block; font-size: 11px; color: #6B7280; font-weight: 500; }
+.dc-on { background: #7C3AED; }
+
+/* adaptive optimisation */
+.loop { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12px; font-weight: 700; color: #24496E; margin-bottom: 12px; }
+.loop span { background: #E2EAF3; padding: 5px 10px; border-radius: 999px; }
+.loop i { font-style: normal; color: #9CA3AF; }
+.ad { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F3F4F6; align-items: flex-start; }
+.ad:last-child { border-bottom: none; }
+.ad-b { flex: 1 1 0; min-width: 0; }
+.ad-t { font-size: 13px; font-weight: 700; }
+.ad-d { font-size: 12px; color: #4B5563; margin-top: 3px; line-height: 1.5; }
+.ad-a { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+
+/* energy for all */
+.ef-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #166534; background: #DCFCE7; padding: 5px 10px; border-radius: 999px; }
+.burden { display: flex; align-items: center; gap: 8px; }
+.burden .bar { width: 90px; height: 8px; }
+.section-t { font-size: 17px; font-weight: 800; margin: 6px 0 12px; display: flex; align-items: center; gap: 10px; }
+.section-t span { font-size: 12px; font-weight: 600; color: #6B7280; }
+[id] { scroll-margin-top: 16px; }
+@media (max-width: 1024px) { .steps5 { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } .d3, .tgt { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); } }
+@media (max-width: 640px) { .vc-v { display: none; } .ad { flex-wrap: wrap; } .ad-a { width: 100%; justify-content: flex-end; } }
+</style>
+<link rel="stylesheet" href="assets/responsive.css?v=5">
+</head>
+<body><div class="app">
+<aside class="side" data-section="dash" data-sub="transition"></aside>
+<div class="main">
+  <div class="topbar">
+    <div><div class="crumb"><b>หน้าแรก</b> / <a href="energy-dashboard.html">แดชบอร์ดพลังงาน</a> / เปลี่ยนผ่านพลังงาน</div><div class="title">การเปลี่ยนผ่านพลังงาน จังหวัดปทุมธานี</div></div>
+    <div class="controls">
+      <div class="select" data-toast="ต้นแบบนี้มีข้อมูลตัวอย่างของจังหวัดปทุมธานีเท่านั้น"><span class="lbl">จังหวัด</span><span class="val">ปทุมธานี</span><span class="caret">▼</span></div>
+      <span class="ef-tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-9-9a4.8 4.8 0 019-3 4.8 4.8 0 019 3c-2 4.6-9 9-9 9z"/></svg>Energy for All</span>
+      <div class="btn pri" data-toast="รายงานการเปลี่ยนผ่านพลังงานยังไม่ถูกสร้างเป็นไฟล์จริงในต้นแบบนี้"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg> ส่งออกรายงาน</div>
+    </div>
+  </div>
+
+  <!-- 1. Big Data Analytics platform: 5 steps -->
+  <div class="section-t">กระบวนการของแพลตฟอร์ม Big Data Analytics <span>5 ขั้นตอน · กดเพื่อไปยังส่วนที่เกี่ยวข้อง</span></div>
+  <div class="steps5">
+    <a class="s5" href="energy-history.html"><div class="s5-n">1</div><div class="s5-t">ประเมินฐานข้อมูลพลังงาน</div><div class="s5-e">Energy Baseline Assessment</div><div class="s5-l">ข้อมูลย้อนหลัง →</div></a>
+    <a class="s5" href="energy-dashboard.html"><div class="s5-n">2</div><div class="s5-t">พยากรณ์ความต้องการพลังงาน</div><div class="s5-e">Demand &amp; Need Forecasting</div><div class="s5-l">พยากรณ์โดย AI →</div></a>
+    <a class="s5" href="energy-dashboard.html#renewables"><div class="s5-n">3</div><div class="s5-t">คัดเลือกพลังงานทดแทน</div><div class="s5-e">Renewable Selection &amp; Trade-off</div><div class="s5-l">ศักยภาพพื้นที่ →</div></a>
+    <a class="s5" href="energy-p2p.html"><div class="s5-n">4</div><div class="s5-t">จัดสรรและซื้อขายพลังงาน</div><div class="s5-e">Energy Allocation &amp; Trading</div><div class="s5-l">ตลาดไฟฟ้า P2P →</div></a>
+    <a class="s5 here" href="#adaptive"><div class="s5-n">5</div><div class="s5-t">ติดตามและปรับปรุงต่อเนื่อง</div><div class="s5-e">Monitoring &amp; Adaptive Optimization</div><div class="s5-l">อยู่ในหน้านี้ ↓</div></a>
+  </div>
+
+  <!-- 2. 3D principles -->
+  <div class="d3">
+    <div class="card">
+      <div class="d3-t"><div class="d3-ic" style="background:#DCFCE7"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21c0-9 6-15 15-16-1 9-7 15-15 16z"/><path d="M5 21l8-8"/></svg></div><div><div class="d3-n">Decarbonization</div><div class="d3-s">ลดการปล่อยคาร์บอน</div></div></div>
+      <div class="d3-v">10.0 <span class="d3-u">MtCO₂e/ปี</span></div>
+      <div class="d3-d"><span class="down">▼ 2.5%</span> จากปีสูงสุด (2562) · พลังงานสะอาด 11% ของทั้งหมด</div>
+    </div>
+    <div class="card">
+      <div class="d3-t"><div class="d3-ic" style="background:#E2EAF3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4F8BC9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.5"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><path d="M6 7l4 3.5M18 7l-4 3.5M6 17l4-3.5M18 17l-4-3.5"/></svg></div><div><div class="d3-n">Decentralization</div><div class="d3-s">กระจายการผลิตสู่ท้องถิ่น</div></div></div>
+      <div class="d3-v">18.6 <span class="d3-u">MW จากประชาชน</span></div>
+      <div class="d3-d">3,420 ครัวเรือนเป็นผู้ผลิตไฟ (Prosumer) · ไมโครกริดชุมชน 3 แห่ง</div>
+    </div>
+    <div class="card">
+      <div class="d3-t"><div class="d3-ic" style="background:#EDE9FE"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6D28D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg></div><div><div class="d3-n">Digitalization</div><div class="d3-s">ข้อมูลและ IoT แบบเรียลไทม์</div></div></div>
+      <div class="d3-v">38% <span class="d3-u">ครอบคลุม Smart Meter</span></div>
+      <div class="d3-d">เซนเซอร์ IoT 1,240 จุด · ข้อมูลเข้าระบบทุก 15 นาที</div>
+    </div>
+  </div>
+
+  <!-- 3. Decarbonization / national targets -->
+  <div class="row">
+    <div class="card" id="netzero" style="flex-grow:2;min-width:min(460px,100%)">
+      <div class="card-h">
+        <div><div class="card-t">การปล่อยก๊าซเรือนกระจกจากพลังงาน และเส้นทางสู่ Net Zero</div><div class="card-s">MtCO₂e/ปี · คำนวณจากการใช้เชื้อเพลิงฟอสซิลของจังหวัด</div></div>
+        <div class="tabs" id="nzTabs"><div class="tab on">ตามแนวโน้ม</div><div class="tab">ตามแผนของ AI</div></div>
+      </div>
+      <div class="legend" style="margin-bottom:10px"><div class="lg"><div class="sw" style="background:#F08C3A"></div>การปล่อยจริง</div><div class="lg"><div class="sw" style="background:#F08C3A;opacity:.55"></div>พยากรณ์</div><div class="lg"><div class="sw" style="background:#FFFFFF;border:2px dashed #15803D"></div>เส้นทาง Net Zero 2050</div><div class="lg"><div class="sw" style="background:#22A06B"></div>เป้าหมาย</div></div>
+      <div class="vchart" id="nzChart"></div>
+      <div class="vc-x" id="nzX"></div>
+      <div class="rec-box" id="nzNote"></div>
+    </div>
+    <div class="card" id="targets">
+      <div class="card-h"><div><div class="card-t">เป้าหมายจังหวัดเทียบเป้าประเทศ</div><div class="card-s">ร่างแผน PDP2026 · Net Zero ภายในปี 2050 (พ.ศ. 2593)</div></div></div>
+      <div class="prog">
+        <div class="prog-top"><span>สัดส่วนพลังงานสะอาดของปทุมธานี</span><b>11%</b></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:11%"></div><div class="prog-pin" style="left:20%"></div><div class="prog-pin" style="left:70%;background:#15803D"></div></div>
+        <div class="prog-lbl"><span>0%</span><span style="margin-left:12%">เป้าจังหวัด 20% (2572)</span><span style="color:#15803D;font-weight:700">เป้าประเทศ 70% (2593)</span></div>
+      </div>
+      <div class="tgt" style="grid-template-columns:1fr 1fr">
+        <div class="tg"><div class="tg-l">ต้องเพิ่มพลังงานสะอาด</div><div class="tg-v">+2.5 <span class="d3-u">จุด/ปี</span></div><div class="tg-d">จึงจะถึง 70% ในปี 2593</div></div>
+        <div class="tg"><div class="tg-l">แนวโน้มปัจจุบัน</div><div class="tg-v" style="color:#B45309">+2.3 <span class="d3-u">จุด/ปี</span></div><div class="tg-d">ใกล้เคียงแต่ยังไม่พอ</div></div>
+        <div class="tg"><div class="tg-l">ต้องลดการปล่อย</div><div class="tg-v">−0.42 <span class="d3-u">Mt/ปี</span></div><div class="tg-d">เพื่อ Net Zero ปี 2593</div></div>
+        <div class="tg"><div class="tg-l">โซลาร์ภาคประชาชน</div><div class="tg-v">31%</div><div class="tg-d">ของเป้า 60 MW ปี 2572</div></div>
+      </div>
+      <div class="rec-box"><b>AI สรุป:</b> ถ้าทำตามคำแนะนำพลังงานหมุนเวียน (ฟางข้าว + โซลาร์รูฟท็อป) จังหวัดจะถึงเป้า 20% ในปี 2572 แต่ยังต้องเร่งโซลาร์ภาคประชาชนและไมโครกริดอีก <b>2 เท่า</b> เพื่อไปสู่ 70%</div>
+    </div>
+  </div>
+
+  <!-- 4. Demand Response -->
+  <div class="row" id="demand-response">
+    <div class="card" style="flex-grow:2;min-width:min(460px,100%)">
+      <div class="card-h">
+        <div><div class="card-t">ความต้องการไฟฟ้ารายชั่วโมงและการจัดการโหลด</div><div class="card-s">Demand Response · MW · ข้อมูลจาก Smart Meter ทั้งจังหวัด</div></div>
+        <div class="tabs" id="drTabs"><div class="tab on">วันนี้</div><div class="tab">พรุ่งนี้ (พยากรณ์)</div></div>
+      </div>
+      <div class="legend" style="margin-bottom:10px"><div class="lg"><div class="sw" style="background:#4F8BC9"></div>ความต้องการไฟฟ้า</div><div class="lg"><div class="sw" style="background:#22A06B"></div>ลดได้จาก Demand Response</div><div class="lg"><div class="sw" style="background:#FFFFFF;border:2px dashed #E5484D"></div>กำลังจ่ายสูงสุดของสถานีไฟฟ้า</div></div>
+      <div class="vchart" id="drChart"></div>
+      <div class="vc-x" id="drX"></div>
+      <div class="rec-box" id="drNote"></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><div class="card-t">แผนลดโหลดช่วงพีค</div><div class="card-s">Demand Response Event</div></div><span class="st watch" id="drSt">กำหนดการวันนี้</span></div>
+      <div class="dr-ev" id="drEv"></div>
+      <div id="drSrc"></div>
+      <div class="opt-row">ให้ AI สั่งลดโหลดอัตโนมัติเมื่อใกล้พีค<div class="switch on" id="drAuto"><div class="knob"></div></div></div>
+      <div class="btn pri" id="drAnnounce" style="margin-top:4px">ประกาศ Demand Response ให้ผู้เข้าร่วม</div>
+    </div>
+  </div>
+
+  <!-- 5. Data Center & AI demand -->
+  <div class="row" id="data-center">
+    <div class="card" style="flex-grow:2;min-width:min(460px,100%)">
+      <div class="card-h">
+        <div><div class="card-t">ความต้องการไฟฟ้าที่เพิ่มขึ้นจาก Data Center และ AI</div><div class="card-s">ความต้องการสูงสุด (Peak) · MW · พยากรณ์ 2569 – 2575</div></div>
+        <div class="seg" id="dcSeg" style="width:250px"><div>ไม่รวม Data Center</div><div class="on">รวม Data Center</div></div>
+      </div>
+      <div class="legend" style="margin-bottom:10px"><div class="lg"><div class="sw" style="background:#4F8BC9"></div>ความต้องการปกติ</div><div class="lg"><div class="sw" style="background:#7C3AED"></div>Data Center และ AI</div></div>
+      <div class="vchart" id="dcChart"></div>
+      <div class="vc-x" id="dcX"></div>
+      <div class="rec-box" id="dcNote"></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><div class="card-t">โครงการในพื้นที่</div><div class="card-s">ที่ยื่นขอใช้ไฟฟ้าแล้ว (ข้อมูลตัวอย่าง)</div></div></div>
+      <div class="dc"><div class="dc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6D28D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div><div><div class="dc-t">Data Center นิคมอุตสาหกรรมนวนคร</div><div class="dc-d">เริ่มใช้ไฟ 2571 · อนุมัติแล้ว</div></div><div class="dc-v">60 MW<span>Direct PPA 30%</span></div></div>
+      <div class="dc"><div class="dc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6D28D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg></div><div><div class="dc-t">ศูนย์ประมวลผล AI มหาวิทยาลัย อ.คลองหลวง</div><div class="dc-d">เริ่มใช้ไฟ 2572 · กำลังก่อสร้าง</div></div><div class="dc-v">40 MW<span>โซลาร์ + BESS</span></div></div>
+      <div class="dc"><div class="dc-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6D28D9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div><div><div class="dc-t">Data Center ภาคเอกชน อ.ลาดหลุมแก้ว</div><div class="dc-d">เริ่มใช้ไฟ 2573–2574 · รออนุญาต</div></div><div class="dc-v">80 MW<span>ยังไม่มีแผนพลังงานสะอาด</span></div></div>
+      <div class="rec-box"><b>AI แนะนำ:</b> กำหนดให้ Data Center ใหม่ซื้อไฟสะอาดผ่าน Direct PPA อย่างน้อย 30% ติดตั้งแบตเตอรี่สำรองเอง และตั้งใกล้สถานีไฟฟ้าย่อยที่ยังมีกำลังเหลือ</div>
+    </div>
+  </div>
+
+  <!-- 6. Adaptive Optimization -->
+  <div class="row" id="adaptive">
+    <div class="card" style="flex-grow:2;min-width:min(460px,100%)">
+      <div class="card-h">
+        <div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">AI ติดตามและปรับแผนอัตโนมัติ</div><div class="card-s">Monitoring &amp; Adaptive Optimization · ขั้นที่ 5 ของแพลตฟอร์ม</div></div></div>
+        <span class="pill" id="adCount">รอยืนยัน 2 รายการ</span>
+      </div>
+      <div class="loop"><span>ติดตามข้อมูลจริง</span><i>→</i><span>เทียบกับพยากรณ์</span><i>→</i><span>ปรับโมเดลและแผน</span><i>→</i><span>ผู้ดูแลยืนยัน</span><i>↺</i></div>
+      <div id="adList">
+        <div class="ad"><div class="ad-b"><div class="ad-t">พยากรณ์การใช้ไฟเมื่อวานสูงกว่าจริง 3.8%</div><div class="ad-d">AI เพิ่มข้อมูลอุณหภูมิรายชั่วโมงเข้าโมเดลแล้ว ความคลาดเคลื่อน 7 วันล่าสุดลดลงเหลือ 2.1%</div></div><div class="ad-a"><span class="st ok">ปรับอัตโนมัติแล้ว</span></div></div>
+        <div class="ad" data-ad="battery"><div class="ad-b"><div class="ad-t">พรุ่งนี้บ่ายฝนตก โซลาร์จะผลิตได้ลดลง 22%</div><div class="ad-d">แนะนำให้ชาร์จแบตเตอรี่ชุมชน ต.คลองหกให้เต็มก่อน 11:00 เพื่อสำรองไฟช่วงเย็น</div></div><div class="ad-a"><div class="btn sec sm" data-act="no">ไม่ใช้</div><div class="btn pri sm" data-act="yes">นำไปใช้</div></div></div>
+        <div class="ad" data-ad="dr"><div class="ad-b"><div class="ad-t">ช่วงพีคสูงกว่าแผน 40 MW ติดต่อกัน 3 วัน</div><div class="ad-d">แนะนำให้เริ่ม Demand Response เร็วขึ้นจาก 18:00 เป็น 17:30 และชวนโรงงานเข้าร่วมเพิ่ม 3 แห่ง</div></div><div class="ad-a"><div class="btn sec sm" data-act="no">ไม่ใช้</div><div class="btn pri sm" data-act="yes">นำไปใช้</div></div></div>
+        <div class="ad"><div class="ad-b"><div class="ad-t">ราคาตลาด P2P ช่วงกลางวันต่ำกว่าเกณฑ์ 5 วัน</div><div class="ad-d">มีไฟโซลาร์เหลือมากกว่าผู้ซื้อ ระบบเชิญหน่วยงานรัฐเปิดรับซื้อเพิ่มแล้ว 2 แห่ง</div></div><div class="ad-a"><span class="st ok">ปรับอัตโนมัติแล้ว</span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><div class="card-t">ผลการปรับปรุงต่อเนื่อง</div><div class="card-s">30 วันล่าสุด</div></div></div>
+      <div class="tgt" style="grid-template-columns:1fr 1fr;margin-top:0">
+        <div class="tg"><div class="tg-l">ความแม่นยำพยากรณ์</div><div class="tg-v" style="color:#15803D">97.9%</div><div class="tg-d">จาก 94.2% เดือนก่อน</div></div>
+        <div class="tg"><div class="tg-l">ปรับแผนอัตโนมัติ</div><div class="tg-v">18 <span class="d3-u">ครั้ง</span></div><div class="tg-d">ผู้ดูแลยืนยัน 11 ครั้ง</div></div>
+        <div class="tg"><div class="tg-l">ลดพีคได้</div><div class="tg-v">2.4%</div><div class="tg-d">≈ 46 MW</div></div>
+        <div class="tg"><div class="tg-l">ไฟโซลาร์ที่ไม่ถูกทิ้ง</div><div class="tg-v">+8%</div><div class="tg-d">จากการจัดสรรใหม่</div></div>
+      </div>
+      <div class="rec-box">ทุกการปรับที่กระทบประชาชนหรือหน่วยงาน ต้องให้ผู้ดูแลยืนยันก่อนเสมอ AI ปรับเองได้เฉพาะโมเดลพยากรณ์</div>
+    </div>
+  </div>
+
+  <!-- 7. Energy Justice / Energy for All -->
+  <div class="card" id="energy-for-all" style="margin-bottom:14px">
+    <div class="card-h">
+      <div><div class="card-t">ความเป็นธรรมทางพลังงาน (Energy Justice) ตามแนวคิด Energy for All</div><div class="card-s">ภาระค่าพลังงานของครัวเรือนรายอำเภอ · ครัวเรือนที่จ่ายค่าพลังงานเกิน 10% ของรายได้</div></div>
+      <div class="tabs" id="efTabs"><div class="tab on">ทั้งหมด</div><div class="tab">ต้องช่วยเหลือก่อน</div></div>
+    </div>
+    <div class="tgt" style="grid-template-columns:repeat(4,minmax(0,1fr));margin:0 0 14px">
+      <div class="tg"><div class="tg-l">ครัวเรือนภาระค่าพลังงานสูง</div><div class="tg-v">9.6%</div><div class="tg-d">ราว 38,000 ครัวเรือน</div></div>
+      <div class="tg"><div class="tg-l">กลุ่มเปราะบางที่เข้าถึงโซลาร์/ไมโครกริด</div><div class="tg-v">420 <span class="d3-u">ครัวเรือน</span></div><div class="tg-d">เป้าหมาย 2,000 ภายในปี 2572</div></div>
+      <div class="tg"><div class="tg-l">อุปกรณ์มือสองส่งต่อกลุ่มเปราะบาง</div><div class="tg-v">26 <span class="d3-u">ชุด</span></div><div class="tg-d">ผ่านตลาดมือสอง + NGOs</div></div>
+      <div class="tg"><div class="tg-l">ส่วนลดค่าไฟจากตลาด P2P</div><div class="tg-v">0.68 <span class="d3-u">บาท/หน่วย</span></div><div class="tg-d">ให้หน่วยงานรัฐที่ซื้อไฟชุมชน</div></div>
+    </div>
+    <table id="efTable">
+      <tr><th>อำเภอ</th><th>ภาระค่าพลังงาน</th><th class="r">ครัวเรือนภาระสูง</th><th class="r">โซลาร์ภาคประชาชน</th><th>ระดับความเร่งด่วน</th><th></th></tr>
+    </table>
+    <div class="rec-box"><b>AI แนะนำ:</b> เริ่มช่วยเหลือที่ อ.หนองเสือ และ อ.ลาดหลุมแก้ว ก่อน เพราะภาระค่าพลังงานสูงสุดและยังมีโซลาร์น้อย ใช้งบส่วนลดค่าไฟร่วมกับโครงการโซลาร์ชุมชนและแบตเตอรี่มือสองที่ตรวจรับรองแล้ว</div>
+  </div>
+
+  <div class="foot">ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ · อัปเดตล่าสุด 30 ต.ค. 2569 10:30</div>
+</div>
+</div>
+<script src="assets/app.js?v=5"></script>
+<script src="assets/sidebar.js?v=5"></script>
+<script src="assets/pages/transition.js?v=5"></script>
+</body></html>
