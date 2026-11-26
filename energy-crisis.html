@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><title>EnergyWatch - AI วิเคราะห์วิกฤต</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 1440px; font-family: "Inter", "Noto Sans Thai", sans-serif; background: #F4F6F9; color: #111827; }
+.app { display: flex; width: 1440px; }
+.side { width: 240px; background: #0F172A; color: #CBD5E1; padding: 28px 20px; }
+.brand { display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-size: 20px; font-weight: 800; margin-bottom: 40px; }
+.brand-mark { width: 36px; height: 36px; border-radius: 10px; background: #22A06B; display: flex; align-items: center; justify-content: center; }
+.nav-label { font-size: 12px; color: #64748B; font-weight: 600; letter-spacing: 1px; margin: 0 12px 12px; }
+.nav-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; font-size: 15px; margin-bottom: 4px; }
+.nav-item.active { background: #1E293B; color: #FFFFFF; font-weight: 600; }
+.nav-dot { width: 8px; height: 8px; border-radius: 4px; background: #E5484D; margin-left: auto; }
+.main { width: 1200px; padding: 28px 32px 48px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+.crumb { font-size: 14px; color: #6B7280; margin-bottom: 6px; }
+.crumb b { color: #2563EB; font-weight: 500; }
+.title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+.controls { display: flex; gap: 12px; align-items: center; }
+.select { display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 10px; padding: 10px 14px; font-size: 14px; }
+.select .lbl { color: #6B7280; } .select .val { font-weight: 600; } .select .caret { color: #9CA3AF; font-size: 11px; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 16px; border-radius: 10px; font-size: 14px; font-weight: 700; }
+.btn.pri { background: #2F5D8A; color: #FFFFFF; }
+.btn.sec { background: #FFFFFF; border: 1px solid #D1D5DB; color: #111827; }
+.btn.red { background: #E5484D; color: #FFFFFF; }
+.card { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 24px; }
+.card-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.card-t { font-size: 17px; font-weight: 700; }
+.card-s { font-size: 13px; color: #6B7280; margin-top: 4px; }
+.pill { font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #F3F4F6; color: #4B5563; }
+.row { display: flex; gap: 16px; margin-bottom: 20px; }
+.kpis { display: flex; gap: 16px; margin-bottom: 20px; }
+.kpi { width: 272px; }
+.kpi-l { font-size: 13px; color: #6B7280; margin-bottom: 10px; }
+.kpi-v { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+.kpi-u { font-size: 14px; color: #6B7280; font-weight: 500; }
+.kpi-d { font-size: 13px; margin-top: 10px; font-weight: 600; }
+.up { color: #16A34A; } .down { color: #DC2626; } .warn { color: #D97706; } .muted { color: #6B7280; }
+.fossil { background: #F08C3A; } .clean { background: #22A06B; }
+.sw { width: 12px; height: 12px; border-radius: 3px; }
+.legend { display: flex; gap: 16px; font-size: 13px; color: #4B5563; }
+.lg { display: flex; align-items: center; gap: 6px; }
+.bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: #F3F4F6; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 12px; color: #6B7280; font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #E5E7EB; background: #F9FAFB; }
+td { padding: 12px; border-bottom: 1px solid #F3F4F6; }
+.r { text-align: right; }
+.st { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.st.ok { background: #DCFCE7; color: #166534; }
+.st.watch { background: #FEF3C7; color: #92400E; }
+.st.crit { background: #FEE2E2; color: #B91C1C; }
+.st.info { background: #E2EAF3; color: #24496E; }
+.st.grey { background: #F3F4F6; color: #4B5563; }
+.tabs { display: flex; gap: 4px; background: #E9EDF2; border-radius: 10px; padding: 4px; }
+.tab { padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: #6B7280; }
+.tab.on { background: #FFFFFF; color: #111827; }
+.ai-ic { width: 40px; height: 40px; border-radius: 12px; background: #2F5D8A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
+.ai-title { display: flex; align-items: center; gap: 12px; }
+.field { margin-bottom: 16px; }
+.field-l { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+.input { display: flex; align-items: center; justify-content: space-between; border: 1px solid #D1D5DB; border-radius: 10px; padding: 11px 14px; font-size: 14px; background: #FFFFFF; }
+.input .ph { color: #9CA3AF; }
+.seg { display: flex; border: 1px solid #D1D5DB; border-radius: 10px; overflow: hidden; }
+.seg div { flex: 1; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; color: #4B5563; border-right: 1px solid #D1D5DB; }
+.seg div:last-child { border-right: none; }
+.seg .on { background: #2F5D8A; color: #FFFFFF; }
+.switch { width: 40px; height: 22px; border-radius: 11px; background: #D1D5DB; display: flex; align-items: center; padding: 2px; }
+.switch.on { background: #2F5D8A; justify-content: flex-end; }
+.knob { width: 18px; height: 18px; border-radius: 9px; background: #FFFFFF; }
+.foot { font-size: 12px; color: #9CA3AF; margin-top: 8px; }
+
+.nav-item.sec { font-weight: 600; color: #CBD5E1; border-left: 3px solid transparent; }
+.nav-item.sec.on { background: #1E293B; color: #FFFFFF; }
+.nav-item.sub { padding: 9px 12px 9px 20px; font-size: 14px; color: #94A3B8; gap: 10px; }
+.nav-item.sub.on { color: #FFFFFF; font-weight: 600; }
+.sub-dot { width: 6px; height: 6px; border-radius: 3px; background: #334155; display: inline-block; }
+
+.active { display: flex; gap: 16px; margin-bottom: 20px; }
+.ac { width: 368px; border-radius: 16px; padding: 20px; background: #FFFFFF; border: 1px solid #E5E7EB; }
+.ac.crit { border: 2px solid #E5484D; }
+.ac-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.ac-n { font-size: 18px; font-weight: 800; }
+.ac-s { font-size: 13px; color: #6B7280; margin-top: 2px; }
+.ac-stats { display: flex; gap: 10px; margin-bottom: 14px; }
+.ac-stat { flex: 1; background: #F9FAFB; border-radius: 10px; padding: 10px; }
+.ac-l { font-size: 11px; color: #6B7280; }
+.ac-v { font-size: 18px; font-weight: 800; margin-top: 2px; }
+.ac-foot { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #6B7280; }
+.ac-link { font-weight: 700; color: #2F5D8A; font-size: 13px; }
+.sim { width: 440px; }
+.result { width: 680px; }
+.res-text { font-size: 15px; line-height: 1.7; color: #1F2937; margin-bottom: 18px; }
+.res-text b { color: #24496E; }
+.res-kpis { display: flex; gap: 12px; margin-bottom: 18px; }
+.rk { flex: 1; border-radius: 12px; padding: 14px; background: #F9FAFB; }
+.rk-l { font-size: 12px; color: #6B7280; }
+.rk-v { font-size: 22px; font-weight: 800; margin-top: 4px; }
+.rec { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #F3F4F6; }
+.rec-n { width: 24px; height: 24px; border-radius: 12px; background: #E2EAF3; color: #24496E; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.rec-t { font-size: 14px; font-weight: 600; }
+.rec-d { font-size: 12px; color: #6B7280; margin-top: 2px; }
+.res-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+.disc { font-size: 12px; color: #6B7280; width: 360px; }
+.slider { position: relative; height: 6px; border-radius: 3px; background: #E5E7EB; margin: 14px 0 8px; }
+.slider-fill { width: 33%; height: 6px; border-radius: 3px; background: #2F5D8A; }
+.slider-knob { position: absolute; left: 31%; top: -6px; width: 18px; height: 18px; border-radius: 9px; background: #FFFFFF; border: 3px solid #2F5D8A; }
+.slider-marks { display: flex; justify-content: space-between; font-size: 12px; color: #6B7280; }
+</style></head>
+<body><div class="app">
+<div class="side">
+  <div class="brand"><div class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>EnergyWatch</div>
+  <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg> หน้าแรก</div>
+  <div class="nav-label" style="margin-top:20px">ส่วนหลัก</div>
+  <div class="nav-item sec on" style="border-left-color:#4F8BC9"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4F8BC9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><path d="M8 17v-6M13 17V7M18 17v-4"/></svg> แดชบอร์ดพลังงาน</div><div class="nav-item sec"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h14l-4-4M20 17H6l4 4"/></svg> ตลาดไฟฟ้า P2P</div><div class="nav-item sec"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg> ตลาดอุปกรณ์มือสอง</div>
+  <div class="nav-label" style="margin-top:24px">เมนูแดชบอร์ด</div>
+  <div class="nav-item sub"><span class="sub-dot" style="background:#334155"></span>รายจังหวัด</div><div class="nav-item sub"><span class="sub-dot" style="background:#334155"></span>ข้อมูลย้อนหลัง</div><div class="nav-item sub on"><span class="sub-dot" style="background:#4F8BC9"></span>AI วิเคราะห์วิกฤต<div class="nav-dot"></div></div><div class="nav-item sub"><span class="sub-dot" style="background:#334155"></span>รายงาน</div>
+  <div class="nav-label" style="margin-top:24px">ระบบ</div>
+  <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg> ตั้งค่า</div>
+</div>
+<div class="main">
+  <div class="topbar">
+    <div><div class="crumb"><b>หน้าแรก</b> / AI วิเคราะห์วิกฤต</div><div class="title">ศูนย์วิเคราะห์วิกฤตพลังงาน</div></div>
+    <div class="controls"><div class="btn pri"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M5 12h14"/></svg> วิเคราะห์ใหม่</div></div>
+  </div>
+  
+<div class="card-t" style="margin-bottom:12px">สถานการณ์ที่กำลังเกิดขึ้น</div>
+<div class="active">
+  <div class="ac crit">
+    <div class="ac-top"><div><div class="ac-n">สงขลา</div><div class="ac-s">น้ำท่วม 6 อำเภอ · วันที่ 3</div></div><span class="st crit">วิกฤต</span></div>
+    <div class="ac-stats"><div class="ac-stat"><div class="ac-l">สต็อกพอใช้</div><div class="ac-v" style="color:#B91C1C">2.1 วัน</div></div><div class="ac-stat"><div class="ac-l">ความต้องการ</div><div class="ac-v">+42%</div></div></div>
+    <div class="ac-foot"><span>แผนดำเนินการแล้ว 3/6 ขั้น</span><span class="ac-link">ดูแผน →</span></div>
+  </div>
+  <div class="ac">
+    <div class="ac-top"><div><div class="ac-n">เชียงใหม่</div><div class="ac-s">เสี่ยงน้ำท่วม · ฝนตกหนัก 3 วัน</div></div><span class="st watch">เฝ้าระวัง</span></div>
+    <div class="ac-stats"><div class="ac-stat"><div class="ac-l">สต็อกพอใช้</div><div class="ac-v">4.5 วัน</div></div><div class="ac-stat"><div class="ac-l">ถ้าเกิดวิกฤต</div><div class="ac-v">+35%</div></div></div>
+    <div class="ac-foot"><span>แผนรออนุมัติ</span><span class="ac-link">ดูแผน →</span></div>
+  </div>
+  <div class="ac">
+    <div class="ac-top"><div><div class="ac-n">ภูเก็ต</div><div class="ac-s">เรือขนส่งน้ำมันล่าช้า 2 วัน</div></div><span class="st watch">เฝ้าระวัง</span></div>
+    <div class="ac-stats"><div class="ac-stat"><div class="ac-l">สต็อกพอใช้</div><div class="ac-v">5.2 วัน</div></div><div class="ac-stat"><div class="ac-l">ถ้าล่าช้าต่อ</div><div class="ac-v">+12%</div></div></div>
+    <div class="ac-foot"><span>แผนรออนุมัติ</span><span class="ac-link">ดูแผน →</span></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="card sim">
+    <div class="card-h"><div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">จำลองสถานการณ์ใหม่</div><div class="card-s">กรอกข้อมูลแล้วให้ AI วิเคราะห์</div></div></div></div>
+    <div class="field"><div class="field-l">จังหวัด</div><div class="input">สงขลา<span class="caret">▼</span></div></div>
+    <div class="field"><div class="field-l">ประเภทวิกฤต</div><div class="input">น้ำท่วม<span class="caret">▼</span></div></div>
+    <div class="field"><div class="field-l">ความรุนแรง</div><div class="seg"><div>ต่ำ</div><div>กลาง</div><div class="on">สูง</div></div></div>
+    <div class="field"><div class="field-l">ระยะเวลาที่คาดว่าจะเกิด: 7 วัน</div>
+      <div class="slider"><div class="slider-fill"></div><div class="slider-knob"></div></div>
+      <div class="slider-marks"><span>1 วัน</span><span>7 วัน</span><span>14 วัน</span><span>21 วัน</span></div></div>
+    <div class="field"><div class="field-l">ข้อมูลเพิ่มเติม (ไม่บังคับ)</div><div class="input" style="height:72px;align-items:flex-start"><span class="ph">เช่น ถนนสาย 43 ถูกตัดขาด</span></div></div>
+    <div class="btn pri">ให้ AI วิเคราะห์</div>
+  </div>
+
+  <div class="card result">
+    <div class="card-h"><div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">ผลการวิเคราะห์ล่าสุด: สงขลา</div><div class="card-s">น้ำท่วม · ความรุนแรงสูง · 7 วัน · วิเคราะห์เมื่อ 09:15</div></div></div><span class="pill">ความมั่นใจ 82%</span></div>
+    <div class="res-text">AI ประเมินว่าความต้องการน้ำมันจะ<b>เพิ่มขึ้น 42%</b> จากเครื่องสูบน้ำ เครื่องปั่นไฟ และเรือกู้ภัย ขณะที่ถนนเพชรเกษมบางช่วงถูกน้ำท่วม สต็อกปัจจุบัน<b>พอใช้ 2.1 วัน</b> จึงควรขนส่งทางรถไฟจากสุราษฎร์ธานีและใช้คลังน้ำมันริมทะเลเป็นหลัก</div>
+    <div class="res-kpis">
+      <div class="rk"><div class="rk-l">ความต้องการช่วงวิกฤต</div><div class="rk-v">3.7 <span class="kpi-u">ล้านลิตร/วัน</span></div></div>
+      <div class="rk"><div class="rk-l">ต้องจัดหาเพิ่ม</div><div class="rk-v" style="color:#C2410C">+1.1 <span class="kpi-u">ล้านลิตร/วัน</span></div></div>
+      <div class="rk"><div class="rk-l">หาได้ตามแผน</div><div class="rk-v" style="color:#15803D">1.3 <span class="kpi-u">ล้านลิตร/วัน</span></div></div>
+    </div>
+    <div class="rec"><div class="rec-n">1</div><div><div class="rec-t">ปล่อยน้ำมันสำรองคลังจังหวัดทันที</div><div class="rec-d">0.5 ล้านลิตร/วัน · ภายใน 6 ชม.</div></div></div>
+    <div class="rec"><div class="rec-n">2</div><div><div class="rec-t">ขนส่งทางรถไฟจากคลังสุราษฎร์ธานี</div><div class="rec-d">0.5 ล้านลิตร/วัน · ภายใน 18 ชม.</div></div></div>
+    <div class="rec"><div class="rec-n">3</div><div><div class="rec-t">ส่งทางเรือเข้าท่าเรือสงขลา</div><div class="rec-d">0.3 ล้านลิตร/วัน · ภายใน 36 ชม.</div></div></div>
+    <div class="res-foot"><div class="disc">AI ช่วยเสนอแผนเท่านั้น ผู้มีอำนาจต้องตรวจสอบก่อนอนุมัติทุกครั้ง</div><div class="controls"><div class="btn sec">ส่งออก PDF</div><div class="btn pri">เปิดแผนฉบับเต็ม</div></div></div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+  <div class="card-h"><div><div class="card-t">ประวัติการวิเคราะห์</div><div class="card-s">การวิเคราะห์ทั้งหมดที่ผ่านมา</div></div><div class="tabs"><div class="tab on">ทั้งหมด</div><div class="tab">กำลังดำเนินการ</div><div class="tab">รออนุมัติ</div><div class="tab">ปิดแล้ว</div></div></div>
+  <table>
+    <tr><th>วันที่</th><th>จังหวัด</th><th>สถานการณ์</th><th>ผลที่ AI ประเมิน</th><th>สถานะ</th><th></th></tr>
+    <tr><td class="muted">24 ต.ค. 2569 09:15</td><td><b>สงขลา</b></td><td>น้ำท่วม · สูง</td><td>+42% · ขาด 1.1 ล้านลิตร/วัน</td><td><span class="st info">กำลังดำเนินการ</span></td><td class="r" style="color:#2F5D8A;font-weight:700">เปิด</td></tr><tr><td class="muted">24 ต.ค. 2569 08:40</td><td><b>เชียงใหม่</b></td><td>น้ำท่วม · กลาง</td><td>+35% · ขาด 1.5 ล้านลิตร/วัน</td><td><span class="st watch">รออนุมัติ</span></td><td class="r" style="color:#2F5D8A;font-weight:700">เปิด</td></tr><tr><td class="muted">22 ต.ค. 2569 16:05</td><td><b>ภูเก็ต</b></td><td>ขนส่งล่าช้า · กลาง</td><td>+12% · สต็อกพอ 5.2 วัน</td><td><span class="st watch">รออนุมัติ</span></td><td class="r" style="color:#2F5D8A;font-weight:700">เปิด</td></tr><tr><td class="muted">02 ก.ย. 2569 11:20</td><td><b>อุบลราชธานี</b></td><td>น้ำท่วม · สูง</td><td>+38% · ขาด 0.9 ล้านลิตร/วัน</td><td><span class="st grey">ปิดแล้ว</span></td><td class="r" style="color:#2F5D8A;font-weight:700">เปิด</td></tr><tr><td class="muted">14 มี.ค. 2569 13:45</td><td><b>เชียงราย</b></td><td>ไฟป่า/หมอกควัน · กลาง</td><td>+8% · สต็อกพอ 6.8 วัน</td><td><span class="st grey">ปิดแล้ว</span></td><td class="r" style="color:#2F5D8A;font-weight:700">เปิด</td></tr>
+  </table>
+</div>
+  <div class="foot">ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ · อัปเดตล่าสุด 30 ต.ค. 2569 10:30</div>
+</div>
+</div></body></html>

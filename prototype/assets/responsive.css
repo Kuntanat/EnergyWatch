@@ -1,0 +1,298 @@
+/* EnergyWatch prototype: responsive layer, loaded after each page's own <style>.
+   Desktop keeps the Figma layout but stretches to the window.
+   <= 1024px : sidebar becomes a slide-out menu, cards wrap.
+   <=  640px : single column, tighter spacing, wide tables / charts scroll sideways. */
+
+/* =========================================================
+   1. Fluid base (all sizes)
+   ========================================================= */
+html, body { width: auto; }
+body { overflow-x: clip; }
+.app { width: auto; min-height: 100vh; }
+.main { width: auto; flex: 1 1 auto; min-width: 0; }
+.side { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+
+.topbar { flex-wrap: wrap; gap: 16px; }
+.controls { flex-wrap: wrap; }
+.card-h, .ai-h, .ai-foot, .res-foot, .toolbar, .list-h, .crisis-banner, .hc-tools, .pros-h { flex-wrap: wrap; gap: 12px; }
+.scen { flex-wrap: wrap; }
+.hc-tools, .hc-tools > * { min-width: 0; max-width: 100%; }
+.note { display: block; line-height: 1.6; }
+.note > svg { vertical-align: -3px; margin-right: 6px; }
+.rg, .tab, .seg > div, .chip, .pill, .st, .btn { white-space: nowrap; }
+.ranges, .tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.ranges::-webkit-scrollbar, .tabs::-webkit-scrollbar { display: none; }
+img, svg { max-width: 100%; }
+
+/* rows of cards: wide cards grow twice as fast as narrow ones, wrap when too tight */
+.main .row { flex-wrap: wrap; }
+.main .row > * { flex: 1 1 0; width: auto; min-width: min(300px, 100%); }
+.main .row > .ai-card, .main .row > .ai-sum, .main .row > .supply, .main .row > .monthly,
+.main .row > .match, .main .row > .list, .main .row > #listCol { flex-grow: 2; min-width: min(460px, 100%); }
+.main .row > .result { flex-grow: 1.5; min-width: min(420px, 100%); }
+
+/* equal tiles */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.kpis > .kpi { width: auto; }
+.tpls, .active, .re-grid, .insights {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+.res-kpis, .inc-sum, .dm-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+.tpls > *, .active > *, .re-grid > *, .insights > *, .dm-box { width: auto; }
+.re-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.tpls, .active { grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); }
+
+/* inner fixed widths -> flexible */
+.src-main, .step-b { flex: 1 1 0; width: auto; min-width: 0; }
+.b-info { flex: 1 1 0; width: auto; min-width: 0; }
+.kv b { width: auto; max-width: 65%; }
+.bub-u { max-width: 85%; }
+.bub-a { width: auto; max-width: 85%; }
+.disc { width: auto; flex: 1 1 260px; }
+.lng { flex-wrap: wrap; }
+.lng > * { flex: 1 1 260px; width: auto; }
+.lc-bar { width: auto; flex: 0 1 24px; }
+.mg-row { flex-wrap: wrap; }
+.mg-stats, .mg-side { flex: 1 1 240px; width: auto; }
+.mg-flow { flex: 0 0 500px; }
+.ms { flex: 1 1 100px; width: auto; }
+.fc-b { flex: 1 1 0; width: auto; }
+.ic-col, .ic-m { flex: 1 1 0; width: auto; }
+.m-col, .m-l { flex: 1 1 0; width: auto !important; min-width: 0; }
+.m-stack { width: min(32px, 70%) !important; }
+.chat { min-width: min(300px, 100%); }
+
+/* forms and filters */
+.filters { flex-wrap: wrap; }
+.main .field { max-width: 100%; }
+.filters .field { flex: 1 1 140px; width: auto; }
+.filters .field:first-child:has(.search) { flex: 2 1 260px; }
+.search { width: auto; flex: 1 1 220px; min-width: 0; }
+.filters .search { width: 100%; }
+.two, .th { flex-wrap: wrap; }
+.two .field, .th .field { flex: 1 1 220px; width: auto; }
+.set { flex-wrap: wrap; }
+.set-nav { flex: 0 0 240px; }
+.set-body { flex: 1 1 480px; width: auto; min-width: 0; }
+
+/* used market grid */
+#grid { width: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); }
+#grid .item { width: auto; }
+#grid .grid-empty { grid-column: 1 / -1; }
+.side-col { width: auto; }
+#listCol > .card { width: auto !important; }
+
+/* under-development pages */
+.soon-list, .soon-btns { flex-wrap: wrap; justify-content: center; }
+
+/* mobile bar + drawer pieces (hidden on desktop) */
+.mbar, .ew-backdrop, .nav-toggle { display: none; }
+
+/* =========================================================
+   1b. Compact density for the app pages (dashboard, P2P, used market)
+       smaller boxes, text and charts; content width capped on big screens
+   ========================================================= */
+.main { max-width: 1360px; margin: 0 auto; padding: 22px 28px 36px; }
+.topbar { margin-bottom: 18px; }
+.crumb { font-size: 13px; margin-bottom: 4px; }
+.title { font-size: 23px; }
+.select, .main .btn { padding: 8px 12px; font-size: 13px; }
+.main .btn.sm { padding: 6px 12px; font-size: 12px; }
+.seg div { padding: 8px; font-size: 13px; }
+.toggle { padding: 8px 12px; font-size: 13px; }
+
+.main .card { padding: 18px; border-radius: 14px; }
+.main .card[style*="margin-bottom:20px"] { margin-bottom: 14px !important; }
+.card-h, .ai-h { margin-bottom: 14px; }
+.card-t { font-size: 15px; }
+.card-s { font-size: 12px; margin-top: 3px; }
+.main .row, .kpis, .tpls, .active { gap: 12px; margin-bottom: 14px; }
+.pill { font-size: 11px; padding: 5px 9px; }
+.ai-ic { width: 34px; height: 34px; border-radius: 10px; font-size: 12px; }
+.ai-text, .res-text { font-size: 14px; line-height: 1.65; margin-bottom: 14px; }
+
+/* KPI tiles */
+.kpi-l { font-size: 12px; margin-bottom: 6px; }
+.kpi-v { font-size: 24px; }
+.kpi-u { font-size: 12px; }
+.kpi-d { font-size: 12px; margin-top: 6px; }
+.kpi-bar { margin-top: 8px; }
+
+/* tables */
+.main th { padding: 8px 10px; font-size: 11px; }
+.main td { padding: 9px 10px; font-size: 13px; }
+
+/* charts: shorter plot areas (JS charts use matching scales) */
+.bars, .fc-zone { height: 220px; }
+#histY { height: 220px; }
+.m-chart { height: 196px; }
+.ic-chart { height: 150px; }
+.fc-bars { height: 52px; }
+.mg-flow { zoom: 0.86; }
+.share-row { margin-bottom: 12px; }
+.season div, .ins, .re, .dm-box, .gap-box, .is, .ms, .of { padding: 10px 12px; }
+.ins-v, .is-v { font-size: 17px; }
+.re-pv, .gap-v, .bt-v { font-size: 20px; }
+.li-v { font-size: 24px; }
+.dm-v { font-size: 22px; }
+.rk-v { font-size: 20px; }
+
+/* dashboard crisis + chat */
+.crisis-banner { padding: 16px 20px; margin: 4px 0 14px; }
+.cb-t { font-size: 17px; }
+.cb-ic { width: 40px; height: 40px; }
+.chip { padding: 6px 12px; font-size: 12px; }
+.src { padding: 10px 0; }
+.line { height: 36px; }
+.dot { width: 26px; height: 26px; }
+.rail { width: 26px; }
+.bub-u, .bub-a { font-size: 13px; padding: 9px 12px; }
+
+/* market pages */
+.buyer { padding: 10px 0; }
+.b-ic { width: 34px; height: 34px; }
+.b-n { font-size: 14px; }
+.b-p { font-size: 16px; }
+.kv { padding: 8px 0; font-size: 13px; }
+.ct { padding: 10px 12px; }
+.thumb { height: 84px; }
+.it-b { padding: 14px; }
+.it-t { font-size: 15px; }
+.it-p { font-size: 19px; margin-top: 8px; }
+.it-h { margin: 8px 0 5px; }
+.msg { height: 76px; }
+.filters .field-l { font-size: 12px; margin-bottom: 6px; }
+.main .input, .search { padding: 8px 12px; font-size: 13px; }
+.tpl-ic { width: 38px; height: 38px; margin-bottom: 12px; }
+.soon { padding: 52px 32px; }
+
+/* =========================================================
+   2. Home page (index.html)
+   ========================================================= */
+.hero, .pillars, .pros, .section, .footer, .nav, .hero-body {
+  --pad: clamp(16px, 6.67vw, 96px);
+  --side: max(var(--pad), calc((100vw - 1248px) / 2));
+}
+.nav, .hero-body, .pillars, .section, .footer { padding-left: var(--side); padding-right: var(--side); }
+.nav { flex-wrap: wrap; gap: 12px; position: relative; }
+.lead { width: auto; max-width: 760px; }
+h1 { font-size: clamp(28px, 4.4vw, 48px); }
+.prov { flex-wrap: wrap; justify-content: center; }
+.pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+.pillar { width: auto; }
+.p-d { height: auto; min-height: 72px; }
+.pros { margin-left: var(--side); margin-right: var(--side); }
+.pros-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.pst { width: auto; }
+.parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+.part { width: auto; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+.cols > .col { width: auto; }
+.footer { flex-wrap: wrap; gap: 12px; }
+
+/* =========================================================
+   3. Tablet  (<= 1024px)
+   ========================================================= */
+@media (max-width: 1024px) {
+  /* sidebar -> slide-out menu */
+  .side { position: fixed; top: 0; left: 0; bottom: 0; height: auto; z-index: 960; transform: translateX(-100%);
+    transition: transform .22s ease; box-shadow: none; }
+  body.nav-open .side { transform: none; box-shadow: 0 0 40px rgba(15, 23, 42, .35); }
+  body.nav-open { overflow: hidden; }
+  .ew-backdrop { display: block; position: fixed; inset: 0; background: rgba(15, 23, 42, .45); z-index: 950;
+    opacity: 0; pointer-events: none; transition: opacity .2s; }
+  body.nav-open .ew-backdrop { opacity: 1; pointer-events: auto; }
+
+  .mbar { display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 900; margin: -22px -28px 18px;
+    padding: 12px 20px; background: #0F172A; color: #FFFFFF; }
+  .mbar-btn { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px;
+    border: 1px solid #334155; background: transparent; cursor: pointer; }
+  .mbar-brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; }
+  .mbar-brand .brand-mark { width: 32px; height: 32px; border-radius: 9px; background: #22A06B; display: flex; align-items: center; justify-content: center; }
+  .mbar-sec { white-space: nowrap; margin-left: auto; font-size: 13px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: #1E293B; }
+
+  /* wide tables scroll sideways */
+  .main table { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+
+  .set-nav { flex: 1 1 100%; position: static; display: flex; gap: 6px; overflow-x: auto; padding: 8px; }
+  .set-nav .sn { flex: 0 0 auto; white-space: nowrap; }
+
+  /* home: menu button */
+  .nav-toggle { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px;
+    border: 1px solid #334155; background: transparent; cursor: pointer; order: 3; flex-shrink: 0; }
+  .nav .login { margin-left: auto; order: 2; white-space: nowrap; }
+  .nav .links { display: none; }
+  .nav.open .links { display: flex; flex-direction: column; gap: 4px; order: 10; flex: 1 1 100%; background: #1E293B;
+    border-radius: 12px; padding: 8px; }
+  .nav.open .links a { padding: 10px 12px; border-radius: 8px; }
+  .nav.open .links a.on { background: #0F172A; }
+}
+
+@media (max-width: 400px) { .mbar-sec { display: none; } }
+
+
+/* =========================================================
+   4. Mobile  (<= 640px)
+   ========================================================= */
+@media (max-width: 640px) {
+  .main { padding: 20px 16px 32px; }
+  .mbar { margin: -20px -16px 16px; padding: 10px 16px; }
+  .title { font-size: 22px; }
+  .topbar { margin-bottom: 20px; }
+  .controls { width: 100%; }
+  .controls > .select, .controls > .seg, .controls > .btn { flex: 1 1 auto; }
+  .card { padding: 16px; border-radius: 14px; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .kpi-v { font-size: 22px; }
+  .main .row > *, .main .row > .ai-card, .main .row > .supply, .main .row > .match { min-width: 100%; }
+
+
+  /* charts */
+  .m-tot { font-size: 9px; }
+  .m-l { font-size: 10px; }
+  .m-chart { padding: 0; }
+  .m-chart.yearly .m-tot { display: none; }
+  .m-chart.yearly .m-l { font-size: 9px; }
+  .mg-flow { zoom: 0.58; }
+
+  /* list rows */
+  .buyer { flex-wrap: wrap; }
+  .b-right { width: 100%; flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .src { flex-wrap: wrap; }
+  .src-main { flex: 1 1 calc(100% - 40px); }
+  .src-cap { flex: 1 1 120px; margin-left: 40px; width: auto; }
+  .offer { flex-wrap: wrap; }
+  .of { flex: 1 1 40%; }
+  .flow { flex-wrap: wrap; }
+  .kv { gap: 12px; }
+  .crisis-banner { padding: 16px; }
+  .cb-t { font-size: 17px; }
+  .prof { flex-wrap: wrap; }
+  .sugs { flex-wrap: wrap; }
+  .step-top { flex-wrap: wrap; gap: 4px; }
+  .soon { padding: 40px 16px; }
+  .mbar-brand { font-size: 16px; }
+
+  /* home */
+  .nav { padding-top: 16px; padding-bottom: 16px; }
+  .hero-body { padding-top: 28px; }
+  .lead { font-size: 15px; }
+  .hero { padding-bottom: 130px; }
+  .pros { padding: 18px; margin-top: 28px; }
+  .pros-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .pst-v { font-size: 20px; }
+  .section { padding-top: 40px; }
+  .sec-t { font-size: 22px; }
+  .footer { margin-top: 48px; padding-top: 24px; padding-bottom: 24px; flex-direction: column; }
+  .login { padding: 8px 12px; }
+  .nav { gap: 8px; }
+  .nav .brand { font-size: 17px; gap: 8px; }
+  .nav .brand-mark { width: 32px; height: 32px; }
+  .nav .login { font-size: 13px; padding: 7px 10px; }
+}
+
+/* very small phones */
+@media (max-width: 360px) { .mg-flow { zoom: 0.52; } }
+
+/* notices use the available width on small screens */
+.ew-toast-wrap { width: calc(100% - 32px); max-width: 560px; }

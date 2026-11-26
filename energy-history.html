@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><title>EnergyWatch - ข้อมูลย้อนหลัง</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 1440px; font-family: "Inter", "Noto Sans Thai", sans-serif; background: #F4F6F9; color: #111827; }
+.app { display: flex; width: 1440px; }
+.side { width: 240px; background: #0F172A; color: #CBD5E1; padding: 28px 20px; }
+.brand { display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-size: 20px; font-weight: 800; margin-bottom: 40px; }
+.brand-mark { width: 36px; height: 36px; border-radius: 10px; background: #22A06B; display: flex; align-items: center; justify-content: center; }
+.nav-label { font-size: 12px; color: #64748B; font-weight: 600; letter-spacing: 1px; margin: 0 12px 12px; }
+.nav-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; font-size: 15px; margin-bottom: 4px; }
+.nav-item.active { background: #1E293B; color: #FFFFFF; font-weight: 600; }
+.nav-dot { width: 8px; height: 8px; border-radius: 4px; background: #E5484D; margin-left: auto; }
+.main { width: 1200px; padding: 28px 32px 48px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+.crumb { font-size: 14px; color: #6B7280; margin-bottom: 6px; }
+.crumb b { color: #2563EB; font-weight: 500; }
+.title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+.controls { display: flex; gap: 12px; align-items: center; }
+.select { display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 10px; padding: 10px 14px; font-size: 14px; }
+.select .lbl { color: #6B7280; } .select .val { font-weight: 600; } .select .caret { color: #9CA3AF; font-size: 11px; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 16px; border-radius: 10px; font-size: 14px; font-weight: 700; }
+.btn.pri { background: #2F5D8A; color: #FFFFFF; }
+.btn.sec { background: #FFFFFF; border: 1px solid #D1D5DB; color: #111827; }
+.btn.red { background: #E5484D; color: #FFFFFF; }
+.card { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 24px; }
+.card-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.card-t { font-size: 17px; font-weight: 700; }
+.card-s { font-size: 13px; color: #6B7280; margin-top: 4px; }
+.pill { font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #F3F4F6; color: #4B5563; }
+.row { display: flex; gap: 16px; margin-bottom: 20px; }
+.kpis { display: flex; gap: 16px; margin-bottom: 20px; }
+.kpi { width: 272px; }
+.kpi-l { font-size: 13px; color: #6B7280; margin-bottom: 10px; }
+.kpi-v { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+.kpi-u { font-size: 14px; color: #6B7280; font-weight: 500; }
+.kpi-d { font-size: 13px; margin-top: 10px; font-weight: 600; }
+.up { color: #16A34A; } .down { color: #DC2626; } .warn { color: #D97706; } .muted { color: #6B7280; }
+.fossil { background: #F08C3A; } .clean { background: #22A06B; }
+.sw { width: 12px; height: 12px; border-radius: 3px; }
+.legend { display: flex; gap: 16px; font-size: 13px; color: #4B5563; }
+.lg { display: flex; align-items: center; gap: 6px; }
+.bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: #F3F4F6; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 12px; color: #6B7280; font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #E5E7EB; background: #F9FAFB; }
+td { padding: 12px; border-bottom: 1px solid #F3F4F6; }
+.r { text-align: right; }
+.st { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.st.ok { background: #DCFCE7; color: #166534; }
+.st.watch { background: #FEF3C7; color: #92400E; }
+.st.crit { background: #FEE2E2; color: #B91C1C; }
+.st.info { background: #E2EAF3; color: #24496E; }
+.st.grey { background: #F3F4F6; color: #4B5563; }
+.tabs { display: flex; gap: 4px; background: #E9EDF2; border-radius: 10px; padding: 4px; }
+.tab { padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: #6B7280; }
+.tab.on { background: #FFFFFF; color: #111827; }
+.ai-ic { width: 40px; height: 40px; border-radius: 12px; background: #2F5D8A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
+.ai-title { display: flex; align-items: center; gap: 12px; }
+.field { margin-bottom: 16px; }
+.field-l { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+.input { display: flex; align-items: center; justify-content: space-between; border: 1px solid #D1D5DB; border-radius: 10px; padding: 11px 14px; font-size: 14px; background: #FFFFFF; }
+.input .ph { color: #9CA3AF; }
+.seg { display: flex; border: 1px solid #D1D5DB; border-radius: 10px; overflow: hidden; }
+.seg div { flex: 1; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; color: #4B5563; border-right: 1px solid #D1D5DB; }
+.seg div:last-child { border-right: none; }
+.seg .on { background: #2F5D8A; color: #FFFFFF; }
+.switch { width: 40px; height: 22px; border-radius: 11px; background: #D1D5DB; display: flex; align-items: center; padding: 2px; }
+.switch.on { background: #2F5D8A; justify-content: flex-end; }
+.knob { width: 18px; height: 18px; border-radius: 9px; background: #FFFFFF; }
+.foot { font-size: 12px; color: #9CA3AF; margin-top: 8px; }
+
+.nav-item.sec { font-weight: 600; color: #CBD5E1; border-left: 3px solid transparent; }
+.nav-item.sec.on { background: #1E293B; color: #FFFFFF; }
+.nav-item.sub { padding: 9px 12px 9px 20px; font-size: 14px; color: #94A3B8; gap: 10px; }
+.nav-item.sub.on { color: #FFFFFF; font-weight: 600; }
+.sub-dot { width: 6px; height: 6px; border-radius: 3px; background: #334155; display: inline-block; }
+
+.filters { display: flex; gap: 12px; align-items: flex-end; margin-bottom: 20px; }
+.filters .field { margin-bottom: 0; width: 200px; }
+.monthly { width: 744px; }
+.m-chart { display: flex; align-items: flex-end; justify-content: space-between; height: 260px; border-bottom: 1px solid #E5E7EB; padding: 0 8px; }
+.m-col { width: 52px; display: flex; flex-direction: column; align-items: center; }
+.m-tot { font-size: 11px; font-weight: 700; color: #374151; margin-bottom: 4px; }
+.m-stack { width: 32px; display: flex; flex-direction: column; border-radius: 6px 6px 0 0; overflow: hidden; }
+.m-labels { display: flex; justify-content: space-between; padding: 8px 8px 0; }
+.m-l { width: 52px; text-align: center; font-size: 12px; color: #6B7280; }
+.season { display: flex; gap: 10px; margin-top: 16px; }
+.season div { flex: 1; background: #F9FAFB; border-radius: 10px; padding: 12px; font-size: 12px; color: #4B5563; line-height: 1.5; }
+.season b { display: block; font-size: 14px; color: #111827; margin-bottom: 2px; }
+.sources { width: 376px; }
+.src { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F3F4F6; }
+.src-ic { width: 36px; height: 36px; border-radius: 10px; background: #E2EAF3; display: flex; align-items: center; justify-content: center; }
+.src-t { font-size: 14px; font-weight: 600; }
+.src-d { font-size: 12px; color: #6B7280; margin-top: 2px; }
+.ytable td, .ytable th { padding: 10px 6px; font-size: 13px; }
+.ytable th:first-child, .ytable td:first-child { width: 120px; }
+.ytable .tot td { font-weight: 800; border-top: 2px solid #E5E7EB; }
+.ytable .shr td { color: #15803D; font-weight: 600; }
+.ytable .covid { background: #FFF7ED; }
+</style></head>
+<body><div class="app">
+<div class="side">
+  <div class="brand"><div class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>EnergyWatch</div>
+  <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg> หน้าแรก</div>
+  <div class="nav-label" style="margin-top:20px">ส่วนหลัก</div>
+  <div class="nav-item sec on" style="border-left-color:#4F8BC9"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4F8BC9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><path d="M8 17v-6M13 17V7M18 17v-4"/></svg> แดชบอร์ดพลังงาน</div><div class="nav-item sec"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h14l-4-4M20 17H6l4 4"/></svg> ตลาดไฟฟ้า P2P</div><div class="nav-item sec"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg> ตลาดอุปกรณ์มือสอง</div>
+  <div class="nav-label" style="margin-top:24px">เมนูแดชบอร์ด</div>
+  <div class="nav-item sub"><span class="sub-dot" style="background:#334155"></span>รายจังหวัด</div><div class="nav-item sub on"><span class="sub-dot" style="background:#4F8BC9"></span>ข้อมูลย้อนหลัง</div><div class="nav-item sub"><span class="sub-dot" style="background:#334155"></span>AI วิเคราะห์วิกฤต<div class="nav-dot"></div></div><div class="nav-item sub"><span class="sub-dot" style="background:#334155"></span>รายงาน</div>
+  <div class="nav-label" style="margin-top:24px">ระบบ</div>
+  <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg> ตั้งค่า</div>
+</div>
+<div class="main">
+  <div class="topbar">
+    <div><div class="crumb"><b>หน้าแรก</b> / ข้อมูลย้อนหลัง</div><div class="title">ข้อมูลพลังงานย้อนหลัง</div></div>
+    <div class="controls"><div class="select"><span class="lbl">จังหวัด</span><span class="val">เชียงใหม่</span><span class="caret">▼</span></div></div>
+  </div>
+  
+<div class="card filters">
+  <div class="field"><div class="field-l">จังหวัด</div><div class="input">เชียงใหม่<span class="caret">▼</span></div></div>
+  <div class="field"><div class="field-l">ประเภทพลังงาน</div><div class="input">ทั้งหมด<span class="caret">▼</span></div></div>
+  <div class="field"><div class="field-l">ช่วงปี</div><div class="input">2555 – 2569<span class="caret">▼</span></div></div>
+  <div class="field" style="width:220px"><div class="field-l">ความละเอียด</div><div class="seg"><div>รายปี</div><div class="on">รายเดือน</div></div></div>
+  <div class="btn pri" style="margin-left:auto">ใช้ตัวกรอง</div>
+</div>
+
+<div class="row">
+  <div class="card monthly">
+    <div class="card-h"><div><div class="card-t">การใช้พลังงานรายเดือน ปี 2568</div><div class="card-s">เชียงใหม่ · ktoe/เดือน · รวมทั้งปี 2,435</div></div>
+      <div class="legend"><div class="lg"><div class="sw fossil"></div>ฟอสซิล</div><div class="lg"><div class="sw clean"></div>พลังงานสะอาด</div></div></div>
+    <div class="m-chart"><div class="m-col"><div class="m-tot">215</div><div class="m-stack"><div class="clean" style="height:40px"></div><div class="fossil" style="height:157px"></div></div><div class="m-l">ม.ค.</div></div><div class="m-col"><div class="m-tot">210</div><div class="m-stack"><div class="clean" style="height:42px"></div><div class="fossil" style="height:150px"></div></div><div class="m-l">ก.พ.</div></div><div class="m-col"><div class="m-tot">225</div><div class="m-stack"><div class="clean" style="height:50px"></div><div class="fossil" style="height:157px"></div></div><div class="m-l">มี.ค.</div></div><div class="m-col"><div class="m-tot">230</div><div class="m-stack"><div class="clean" style="height:52px"></div><div class="fossil" style="height:159px"></div></div><div class="m-l">เม.ย.</div></div><div class="m-col"><div class="m-tot">212</div><div class="m-stack"><div class="clean" style="height:47px"></div><div class="fossil" style="height:148px"></div></div><div class="m-l">พ.ค.</div></div><div class="m-col"><div class="m-tot">196</div><div class="m-stack"><div class="clean" style="height:40px"></div><div class="fossil" style="height:139px"></div></div><div class="m-l">มิ.ย.</div></div><div class="m-col"><div class="m-tot">190</div><div class="m-stack"><div class="clean" style="height:37px"></div><div class="fossil" style="height:138px"></div></div><div class="m-l">ก.ค.</div></div><div class="m-col"><div class="m-tot">188</div><div class="m-stack"><div class="clean" style="height:36px"></div><div class="fossil" style="height:137px"></div></div><div class="m-l">ส.ค.</div></div><div class="m-col"><div class="m-tot">186</div><div class="m-stack"><div class="clean" style="height:35px"></div><div class="fossil" style="height:136px"></div></div><div class="m-l">ก.ย.</div></div><div class="m-col"><div class="m-tot">195</div><div class="m-stack"><div class="clean" style="height:38px"></div><div class="fossil" style="height:140px"></div></div><div class="m-l">ต.ค.</div></div><div class="m-col"><div class="m-tot">198</div><div class="m-stack"><div class="clean" style="height:38px"></div><div class="fossil" style="height:143px"></div></div><div class="m-l">พ.ย.</div></div><div class="m-col"><div class="m-tot">190</div><div class="m-stack"><div class="clean" style="height:39px"></div><div class="fossil" style="height:135px"></div></div><div class="m-l">ธ.ค.</div></div></div>
+    <div class="season">
+      <div><b>ใช้สูงสุด: เม.ย.</b>230 ktoe · หน้าร้อน ใช้ไฟฟ้าทำความเย็นมาก</div>
+      <div><b>ใช้ต่ำสุด: ก.ย.</b>186 ktoe · ช่วงฤดูฝน การเดินทางลดลง</div>
+      <div><b>สะอาดสูงสุด: เม.ย.</b>57 ktoe · แดดแรง โซลาร์ผลิตได้มาก</div>
+    </div>
+  </div>
+  <div class="card sources">
+    <div class="card-h"><div><div class="card-t">แหล่งข้อมูล</div><div class="card-s">ข้อมูลที่ใช้ในหน้านี้</div></div></div>
+    <div class="src"><div class="src-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div><div><div class="src-t">สถิติการใช้พลังงานรายจังหวัด</div><div class="src-d">อัปเดตรายเดือน · ล่าสุด ก.ย. 2569</div></div></div>
+    <div class="src"><div class="src-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div><div><div class="src-t">การผลิตไฟฟ้าจากพลังงานหมุนเวียน</div><div class="src-d">อัปเดตรายเดือน · ล่าสุด ก.ย. 2569</div></div></div>
+    <div class="src"><div class="src-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><path d="M8 17v-6M13 17V7M18 17v-4"/></svg></div><div><div class="src-t">ยอดจำหน่ายน้ำมันเชื้อเพลิง</div><div class="src-d">อัปเดตรายวัน · ล่าสุด 23 ต.ค. 2569</div></div></div>
+    <div class="btn sec" style="margin-top:16px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg> ดาวน์โหลดข้อมูลดิบ (CSV)</div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+  <div class="card-h"><div><div class="card-t">ข้อมูลรายปี 2555 – 2569</div><div class="card-s">เชียงใหม่ · ktoe/ปี · แถบสีส้มคือปีที่ได้รับผลกระทบจากโควิด-19</div></div>
+    <div class="controls"><div class="btn sec"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg> Excel</div><div class="btn sec"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></svg> CSV</div></div></div>
+  <table class="ytable">
+    <tr><th>ประเภท</th><th class="r">2555</th><th class="r">2556</th><th class="r">2557</th><th class="r">2558</th><th class="r">2559</th><th class="r">2560</th><th class="r">2561</th><th class="r">2562</th><th class="r covid">2563</th><th class="r">2564</th><th class="r">2565</th><th class="r">2566</th><th class="r">2567</th><th class="r">2568</th><th class="r">2569</th></tr>
+    <tr class=""><td>ฟอสซิล</td><td class="r">1,840</td><td class="r">1,865</td><td class="r">1,880</td><td class="r">1,880</td><td class="r">1,885</td><td class="r">1,890</td><td class="r">1,930</td><td class="r">1,960</td><td class="r">1,720</td><td class="r">1,760</td><td class="r">1,850</td><td class="r">1,900</td><td class="r">1,910</td><td class="r">1,895</td><td class="r">1,880</td></tr>
+    <tr class=""><td>พลังงานสะอาด</td><td class="r">180</td><td class="r">195</td><td class="r">210</td><td class="r">230</td><td class="r">245</td><td class="r">260</td><td class="r">290</td><td class="r">320</td><td class="r">340</td><td class="r">380</td><td class="r">420</td><td class="r">470</td><td class="r">510</td><td class="r">540</td><td class="r">570</td></tr>
+    <tr class="tot"><td>รวม</td><td class="r">2,020</td><td class="r">2,060</td><td class="r">2,090</td><td class="r">2,110</td><td class="r">2,130</td><td class="r">2,150</td><td class="r">2,220</td><td class="r">2,280</td><td class="r">2,060</td><td class="r">2,140</td><td class="r">2,270</td><td class="r">2,370</td><td class="r">2,420</td><td class="r">2,435</td><td class="r">2,450</td></tr>
+    <tr class="shr"><td>สัดส่วนสะอาด</td><td class="r">9%</td><td class="r">9%</td><td class="r">10%</td><td class="r">11%</td><td class="r">12%</td><td class="r">12%</td><td class="r">13%</td><td class="r">14%</td><td class="r">17%</td><td class="r">18%</td><td class="r">19%</td><td class="r">20%</td><td class="r">21%</td><td class="r">22%</td><td class="r">23%</td></tr>
+  </table>
+</div>
+  <div class="foot">ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ · อัปเดตล่าสุด 30 ต.ค. 2569 10:30</div>
+</div>
+</div></body></html>

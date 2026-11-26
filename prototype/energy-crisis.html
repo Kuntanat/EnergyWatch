@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EnergyWatch - AI วิเคราะห์วิกฤต</title>
+<link rel="stylesheet" href="assets/base.css?v=3">
+<link rel="stylesheet" href="assets/components.css?v=3">
+<style>
+.active { display: flex; gap: 16px; margin-bottom: 20px; }
+.ac { width: 368px; border-radius: 16px; padding: 20px; background: #FFFFFF; border: 1px solid #E5E7EB; }
+.ac.crit { border: 2px solid #E5484D; }
+.ac-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.ac-n { font-size: 18px; font-weight: 800; }
+.ac-s { font-size: 13px; color: #6B7280; margin-top: 2px; }
+.ac-stats { display: flex; gap: 10px; margin-bottom: 14px; }
+.ac-stat { flex: 1; background: #F9FAFB; border-radius: 10px; padding: 10px; }
+.ac-l { font-size: 11px; color: #6B7280; }
+.ac-v { font-size: 18px; font-weight: 800; margin-top: 2px; }
+.ac-foot { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #6B7280; }
+.ac-link { font-weight: 700; color: #2F5D8A; font-size: 13px; }
+.sim { width: 440px; }
+.result { width: 680px; }
+.res-text { font-size: 15px; line-height: 1.7; color: #1F2937; margin-bottom: 18px; }
+.res-text b { color: #24496E; }
+.res-kpis { display: flex; gap: 12px; margin-bottom: 18px; }
+.rk { flex: 1; border-radius: 12px; padding: 14px; background: #F9FAFB; }
+.rk-l { font-size: 12px; color: #6B7280; }
+.rk-v { font-size: 22px; font-weight: 800; margin-top: 4px; }
+.rec { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #F3F4F6; }
+.rec-n { width: 24px; height: 24px; border-radius: 12px; background: #E2EAF3; color: #24496E; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.rec-t { font-size: 14px; font-weight: 600; }
+.rec-d { font-size: 12px; color: #6B7280; margin-top: 2px; }
+.res-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+.disc { font-size: 12px; color: #6B7280; width: 360px; }
+.slider { position: relative; height: 6px; border-radius: 3px; background: #E5E7EB; margin: 14px 0 8px; }
+.slider-fill { width: 33%; height: 6px; border-radius: 3px; background: #2F5D8A; }
+.slider-knob { position: absolute; left: 31%; top: -6px; width: 18px; height: 18px; border-radius: 9px; background: #FFFFFF; border: 3px solid #2F5D8A; }
+.slider-marks { display: flex; justify-content: space-between; font-size: 12px; color: #6B7280; }
+.slider { cursor: pointer; }
+.slider-knob { cursor: grab; }
+.ac-link { cursor: pointer; }
+.ac.pick { box-shadow: 0 0 0 2px #2F5D8A; }
+.open-link { color: #2F5D8A; font-weight: 700; cursor: pointer; }
+.open-link:hover { text-decoration: underline; }
+tr.new td { background: #F1F5F9; }
+</style>
+<link rel="stylesheet" href="assets/responsive.css?v=3">
+</head>
+<body><div class="app">
+<aside class="side" data-section="dash" data-sub="crisis"></aside>
+<div class="main">
+  <div class="topbar">
+    <div><div class="crumb"><b>หน้าแรก</b> / AI วิเคราะห์วิกฤต</div><div class="title">ศูนย์วิเคราะห์วิกฤตพลังงาน</div></div>
+    <div class="controls"><div class="btn pri" id="newAnalysis"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M5 12h14"/></svg> วิเคราะห์ใหม่</div></div>
+  </div>
+  
+<div class="card-t" style="margin-bottom:12px">สถานการณ์ที่กำลังเกิดขึ้น</div>
+<div class="active">
+  <div class="ac crit" id="songkhla">
+    <div class="ac-top"><div><div class="ac-n">สงขลา</div><div class="ac-s">น้ำท่วม 6 อำเภอ · วันที่ 3</div></div><span class="st crit">วิกฤต</span></div>
+    <div class="ac-stats"><div class="ac-stat"><div class="ac-l">สต็อกพอใช้</div><div class="ac-v" style="color:#B91C1C">2.1 วัน</div></div><div class="ac-stat"><div class="ac-l">ความต้องการ</div><div class="ac-v">+42%</div></div></div>
+    <div class="ac-foot"><span>แผนดำเนินการแล้ว 3/6 ขั้น</span><span class="ac-link" role="button" tabindex="0" data-prov="สงขลา">ดูแผน →</span></div>
+  </div>
+  <div class="ac" id="chiangmai">
+    <div class="ac-top"><div><div class="ac-n">เชียงใหม่</div><div class="ac-s">เสี่ยงน้ำท่วม · ฝนตกหนัก 3 วัน</div></div><span class="st watch">เฝ้าระวัง</span></div>
+    <div class="ac-stats"><div class="ac-stat"><div class="ac-l">สต็อกพอใช้</div><div class="ac-v">4.5 วัน</div></div><div class="ac-stat"><div class="ac-l">ถ้าเกิดวิกฤต</div><div class="ac-v">+35%</div></div></div>
+    <div class="ac-foot"><span>แผนรออนุมัติ</span><span class="ac-link" role="button" tabindex="0" data-prov="เชียงใหม่">ดูแผน →</span></div>
+  </div>
+  <div class="ac" id="phuket">
+    <div class="ac-top"><div><div class="ac-n">ภูเก็ต</div><div class="ac-s">เรือขนส่งน้ำมันล่าช้า 2 วัน</div></div><span class="st watch">เฝ้าระวัง</span></div>
+    <div class="ac-stats"><div class="ac-stat"><div class="ac-l">สต็อกพอใช้</div><div class="ac-v">5.2 วัน</div></div><div class="ac-stat"><div class="ac-l">ถ้าล่าช้าต่อ</div><div class="ac-v">+12%</div></div></div>
+    <div class="ac-foot"><span>แผนรออนุมัติ</span><span class="ac-link" role="button" tabindex="0" data-prov="ภูเก็ต">ดูแผน →</span></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="card sim" id="simulate">
+    <div class="card-h"><div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">จำลองสถานการณ์ใหม่</div><div class="card-s">กรอกข้อมูลแล้วให้ AI วิเคราะห์</div></div></div></div>
+    <div class="field"><div class="field-l">จังหวัด</div><div class="input" id="sProv" data-options="ปทุมธานี|สงขลา|เชียงใหม่|ภูเก็ต|นนทบุรี|อุบลราชธานี|เชียงราย">สงขลา<span class="caret">▼</span></div></div>
+    <div class="field"><div class="field-l">ประเภทวิกฤต</div><div class="input" id="sType" data-options="น้ำท่วม|ไฟฟ้าดับ|ขาดแคลนก๊าซ|ราคา LNG พุ่ง|ขนส่งล่าช้า|ไฟป่า/หมอกควัน">น้ำท่วม<span class="caret">▼</span></div></div>
+    <div class="field"><div class="field-l">ความรุนแรง</div><div class="seg" id="sSev"><div>ต่ำ</div><div>กลาง</div><div class="on">สูง</div></div></div>
+    <div class="field"><div class="field-l" id="sDaysL">ระยะเวลาที่คาดว่าจะเกิด: 7 วัน</div>
+      <div class="slider" id="sSlider" role="slider" tabindex="0" aria-label="ระยะเวลาที่คาดว่าจะเกิด" aria-valuemin="1" aria-valuemax="21" aria-valuenow="7"><div class="slider-fill"></div><div class="slider-knob"></div></div>
+      <div class="slider-marks"><span>1 วัน</span><span>7 วัน</span><span>14 วัน</span><span>21 วัน</span></div></div>
+    <div class="field"><div class="field-l">ข้อมูลเพิ่มเติม (ไม่บังคับ)</div><div class="input" style="height:72px;align-items:flex-start"><textarea class="in" id="sNote" placeholder="เช่น ถนนสาย 43 ถูกตัดขาด" aria-label="ข้อมูลเพิ่มเติม"></textarea></div></div>
+    <div class="btn pri" id="sRun">ให้ AI วิเคราะห์</div>
+  </div>
+
+  <div class="card result" id="result">
+    <div class="card-h"><div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t" id="rTitle">ผลการวิเคราะห์ล่าสุด: สงขลา</div><div class="card-s" id="rSub">น้ำท่วม · ความรุนแรงสูง · 7 วัน · วิเคราะห์เมื่อ 09:15</div></div></div><span class="pill" id="rConf">ความมั่นใจ 82%</span></div>
+    <div id="rBody"><div class="res-text">AI ประเมินว่าความต้องการน้ำมันจะ<b>เพิ่มขึ้น 42%</b> จากเครื่องสูบน้ำ เครื่องปั่นไฟ และเรือกู้ภัย ขณะที่ถนนเพชรเกษมบางช่วงถูกน้ำท่วม สต็อกปัจจุบัน<b>พอใช้ 2.1 วัน</b> จึงควรขนส่งทางรถไฟจากสุราษฎร์ธานีและใช้คลังน้ำมันริมทะเลเป็นหลัก</div>
+    <div class="res-kpis">
+      <div class="rk"><div class="rk-l">ความต้องการช่วงวิกฤต</div><div class="rk-v">3.7 <span class="kpi-u">ล้านลิตร/วัน</span></div></div>
+      <div class="rk"><div class="rk-l">ต้องจัดหาเพิ่ม</div><div class="rk-v" style="color:#C2410C">+1.1 <span class="kpi-u">ล้านลิตร/วัน</span></div></div>
+      <div class="rk"><div class="rk-l">หาได้ตามแผน</div><div class="rk-v" style="color:#15803D">1.3 <span class="kpi-u">ล้านลิตร/วัน</span></div></div>
+    </div>
+    <div class="rec"><div class="rec-n">1</div><div><div class="rec-t">ปล่อยน้ำมันสำรองคลังจังหวัดทันที</div><div class="rec-d">0.5 ล้านลิตร/วัน · ภายใน 6 ชม.</div></div></div>
+    <div class="rec"><div class="rec-n">2</div><div><div class="rec-t">ขนส่งทางรถไฟจากคลังสุราษฎร์ธานี</div><div class="rec-d">0.5 ล้านลิตร/วัน · ภายใน 18 ชม.</div></div></div>
+    <div class="rec"><div class="rec-n">3</div><div><div class="rec-t">ส่งทางเรือเข้าท่าเรือสงขลา</div><div class="rec-d">0.3 ล้านลิตร/วัน · ภายใน 36 ชม.</div></div></div>
+    </div>
+    <div class="res-foot"><div class="disc">AI ช่วยเสนอแผนเท่านั้น ผู้มีอำนาจต้องตรวจสอบก่อนอนุมัติทุกครั้ง</div><div class="controls"><div class="btn sec" data-toast="ไฟล์ PDF ยังไม่ถูกสร้างจริงในต้นแบบนี้">ส่งออก PDF</div><div class="btn pri" id="rOpen">เปิดแผนฉบับเต็ม</div></div></div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+  <div class="card-h"><div><div class="card-t">ประวัติการวิเคราะห์</div><div class="card-s">การวิเคราะห์ทั้งหมดที่ผ่านมา</div></div><div class="tabs" id="hTabs"><div class="tab on">ทั้งหมด</div><div class="tab">กำลังดำเนินการ</div><div class="tab">รออนุมัติ</div><div class="tab">ปิดแล้ว</div></div></div>
+  <table id="hTable">
+    <tr><th>วันที่</th><th>จังหวัด</th><th>สถานการณ์</th><th>ผลที่ AI ประเมิน</th><th>สถานะ</th><th></th></tr>
+    <tr><td class="muted">24 ต.ค. 2569 09:15</td><td><b>สงขลา</b></td><td>น้ำท่วม · สูง</td><td>+42% · ขาด 1.1 ล้านลิตร/วัน</td><td><span class="st info">กำลังดำเนินการ</span></td><td class="r"><span class="open-link" role="button" tabindex="0">เปิด</span></td></tr><tr><td class="muted">24 ต.ค. 2569 08:40</td><td><b>เชียงใหม่</b></td><td>น้ำท่วม · กลาง</td><td>+35% · ขาด 1.5 ล้านลิตร/วัน</td><td><span class="st watch">รออนุมัติ</span></td><td class="r"><span class="open-link" role="button" tabindex="0">เปิด</span></td></tr><tr><td class="muted">22 ต.ค. 2569 16:05</td><td><b>ภูเก็ต</b></td><td>ขนส่งล่าช้า · กลาง</td><td>+12% · สต็อกพอ 5.2 วัน</td><td><span class="st watch">รออนุมัติ</span></td><td class="r"><span class="open-link" role="button" tabindex="0">เปิด</span></td></tr><tr><td class="muted">02 ก.ย. 2569 11:20</td><td><b>อุบลราชธานี</b></td><td>น้ำท่วม · สูง</td><td>+38% · ขาด 0.9 ล้านลิตร/วัน</td><td><span class="st grey">ปิดแล้ว</span></td><td class="r"><span class="open-link" role="button" tabindex="0">เปิด</span></td></tr><tr><td class="muted">14 มี.ค. 2569 13:45</td><td><b>เชียงราย</b></td><td>ไฟป่า/หมอกควัน · กลาง</td><td>+8% · สต็อกพอ 6.8 วัน</td><td><span class="st grey">ปิดแล้ว</span></td><td class="r"><span class="open-link" role="button" tabindex="0">เปิด</span></td></tr>
+  </table>
+</div>
+  <div class="foot">ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ · อัปเดตล่าสุด 30 ต.ค. 2569 10:30</div>
+</div>
+</div><script src="assets/app.js?v=3"></script>
+<script src="assets/sidebar.js?v=3"></script>
+<script src="assets/pages/crisis.js?v=3"></script>
+</body></html>

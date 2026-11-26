@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "energywatch-prototype",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["tools/serve_prototype.py", "8780"],
+      "port": 8780
+    }
+  ]
+}

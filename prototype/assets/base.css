@@ -1,0 +1,73 @@
+/* EnergyWatch prototype: base layout, shared sidebar, and prototype helpers.
+   Section colours: dashboard #4F8BC9 · P2P market #22A06B · used market #F08C3A */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: clip; background: #F4F6F9; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea, select { font: inherit; color: inherit; }
+body { width: 1440px; font-family: "Inter", "Noto Sans Thai", sans-serif; background: #F4F6F9; color: #111827; }
+.app { display: flex; width: 1440px; }
+.main { width: 1200px; padding: 28px 32px 48px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+.crumb { font-size: 14px; color: #6B7280; margin-bottom: 6px; }
+.crumb b { color: #2563EB; font-weight: 500; }
+.title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+.controls { display: flex; gap: 12px; align-items: center; }
+.foot { font-size: 12px; color: #9CA3AF; margin-top: 8px; }
+
+/* sidebar */
+.side { width: 240px; background: #0F172A; color: #CBD5E1; padding: 28px 20px; }
+.side .brand { display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-size: 20px; font-weight: 800; margin-bottom: 40px; }
+.side .brand-mark { width: 36px; height: 36px; border-radius: 10px; background: #22A06B; display: flex; align-items: center; justify-content: center; }
+.side .nav-label { font-size: 12px; color: #64748B; font-weight: 600; letter-spacing: 1px; margin: 0 12px 12px; }
+.side .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; font-size: 15px; margin-bottom: 4px; }
+.side .nav-item.active { background: #1E293B; color: #FFFFFF; font-weight: 600; }
+.side .nav-dot { width: 8px; height: 8px; border-radius: 4px; background: #E5484D; margin-left: auto; }
+.side .nav-item.sec { font-weight: 600; color: #CBD5E1; border-left: 3px solid transparent; }
+.side .nav-item.sec.on { background: #1E293B; color: #FFFFFF; }
+.side .nav-item.sub { padding: 9px 12px 9px 20px; font-size: 14px; color: #94A3B8; gap: 10px; }
+.side .nav-item.sub.on { color: #FFFFFF; font-weight: 600; }
+.side .sub-dot { width: 6px; height: 6px; border-radius: 3px; background: #334155; display: inline-block; }
+.side { flex-shrink: 0; }
+
+.side .nav-item { cursor: pointer; transition: background .15s, color .15s; }
+.side .nav-item:hover { background: #1E293B; color: #FFFFFF; }
+.side .nav-item.sub:hover { background: #172033; }
+.side .brand { cursor: pointer; }
+.crumb a { color: #2563EB; font-weight: 500; }
+.crumb a:hover { text-decoration: underline; }
+
+/* things you can press */
+[data-action], [data-toast], [data-href], .is-clickable, .tab, .seg > div, .switch, .rg, .chip, .ct, .sn, .item, .select, .sug { cursor: pointer; user-select: none; }
+.btn, .p-btn, .ai-btn, .tpl-btn, .c-more, .ac-link, .dl, .pill.is-clickable { cursor: pointer; transition: filter .15s, opacity .15s; }
+.btn:hover, .p-btn:hover, .ai-btn:hover { filter: brightness(0.94); }
+.c-more:hover, .ac-link:hover, .tpl-btn:hover { text-decoration: underline; }
+.switch, .switch .knob { transition: background .15s; }
+:focus-visible { outline: 2px solid #4F8BC9; outline-offset: 2px; }
+.is-hidden { display: none !important; }
+
+/* prototype toast */
+.ew-toast-wrap { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; z-index: 1000; pointer-events: none; }
+.ew-toast { display: flex; align-items: flex-start; gap: 10px; max-width: 560px; background: #0F172A; color: #F1F5F9; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5; box-shadow: 0 10px 30px rgba(15, 23, 42, .25); opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; }
+.ew-toast.show { opacity: 1; transform: none; }
+.ew-toast svg { flex-shrink: 0; margin-top: 2px; }
+.ew-toast b { color: #FFFFFF; }
+
+/* dropdown menu used by .select / .input[data-options] */
+.ew-menu { position: absolute; z-index: 900; min-width: 160px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 10px; padding: 6px; box-shadow: 0 12px 28px rgba(15, 23, 42, .14); font-size: 14px; }
+.ew-menu div { padding: 8px 12px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.ew-menu div:hover { background: #F3F4F6; }
+.ew-menu div.on { font-weight: 700; color: #2F5D8A; }
+
+/* real form fields placed inside the original .input / .search boxes */
+.in { border: none; outline: none; background: transparent; width: 100%; font-size: 14px; }
+.in::placeholder { color: #9CA3AF; }
+textarea.in { resize: none; height: 100%; line-height: 1.5; }
+
+/* "under development" pages */
+.soon { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 72px 40px; margin-bottom: 20px; }
+.soon-ic { width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.soon-t { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.soon-d { font-size: 15px; color: #4B5563; line-height: 1.7; max-width: 560px; margin-bottom: 24px; }
+.soon-list { display: flex; gap: 12px; margin-bottom: 28px; }
+.soon-li { background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #374151; }
+.soon-btns { display: flex; gap: 12px; }

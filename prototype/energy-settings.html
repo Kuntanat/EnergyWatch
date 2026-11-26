@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EnergyWatch - ตั้งค่า</title>
+<link rel="stylesheet" href="assets/base.css?v=3">
+<link rel="stylesheet" href="assets/components.css?v=3">
+<style>
+.set { display: flex; gap: 20px; align-items: flex-start; }
+.set-nav { width: 240px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 12px; }
+.sn { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 10px; font-size: 14px; color: #4B5563; }
+.sn.on { background: #E2EAF3; color: #24496E; font-weight: 700; }
+.set-body { width: 876px; }
+.sec { margin-bottom: 20px; }
+.two { display: flex; gap: 16px; }
+.two .field { width: 402px; }
+.avatar { width: 64px; height: 64px; border-radius: 32px; background: #2F5D8A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; }
+.prof { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: #F3F4F6; font-size: 14px; font-weight: 600; }
+.chip.add { background: #FFFFFF; border: 1px dashed #9CA3AF; color: #4B5563; }
+.opt { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #F3F4F6; }
+.opt:last-child { border-bottom: none; }
+.opt-t { font-size: 14px; font-weight: 600; }
+.opt-d { font-size: 12px; color: #6B7280; margin-top: 3px; }
+.lock { font-size: 12px; color: #6B7280; display: flex; align-items: center; gap: 6px; }
+.th { display: flex; gap: 16px; }
+.th .field { width: 264px; }
+.unit { color: #6B7280; }
+.actions { display: flex; justify-content: flex-end; gap: 12px; }
+.chip-x { display: inline-flex; cursor: pointer; border-radius: 999px; padding: 2px; }
+.chip-x:hover { background: #E5E7EB; }
+.chip:not(.add) { cursor: default; }
+.sn:hover:not(.on) { background: #F3F4F6; }
+.card.sec { scroll-margin-top: 20px; transition: box-shadow .3s; }
+.card.sec.flash { box-shadow: 0 0 0 2px #4F8BC9; }
+.input .in[type=number] { width: 80px; }
+.set-nav { position: sticky; top: 20px; align-self: flex-start; }
+</style>
+<link rel="stylesheet" href="assets/responsive.css?v=3">
+</head>
+<body><div class="app">
+<aside class="side" data-section="dash" data-sub="settings"></aside>
+<div class="main">
+  <div class="topbar">
+    <div><div class="crumb"><b>หน้าแรก</b> / ตั้งค่า</div><div class="title">ตั้งค่า</div></div>
+    <div class="controls"></div>
+  </div>
+  
+<div class="set">
+  <div class="set-nav" id="setNav">
+    <div class="sn on"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#24496E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg> บัญชีผู้ใช้</div>
+    <div class="sn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> จังหวัดที่ติดตาม</div>
+    <div class="sn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 21h4"/></svg> การแจ้งเตือน</div>
+    <div class="sn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/></svg> เกณฑ์วิกฤต</div>
+    <div class="sn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg> การตั้งค่า AI</div>
+    <div class="sn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg> ข้อมูลและการส่งออก</div>
+    <div class="sn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg> ความปลอดภัย</div>
+  </div>
+  <div class="set-body">
+    <div class="card sec" id="set-1">
+      <div class="card-h"><div><div class="card-t">บัญชีผู้ใช้</div><div class="card-s">ข้อมูลส่วนตัวและบทบาท</div></div></div>
+      <div class="prof"><div class="avatar">สช</div><div><div class="card-t">สมชาย ใจดี</div><div class="card-s">เจ้าหน้าที่พลังงานจังหวัด · สิทธิ์อนุมัติแผน</div></div><div class="btn sec" style="margin-left:auto" data-toast="การอัปโหลดรูปโปรไฟล์ยังไม่ได้ทำในต้นแบบนี้">เปลี่ยนรูป</div></div>
+      <div class="two"><div class="field"><div class="field-l">ชื่อ-นามสกุล</div><div class="input"><input class="in" type="text" value="สมชาย ใจดี" aria-label="ชื่อ-นามสกุล"></div></div><div class="field"><div class="field-l">อีเมล</div><div class="input"><input class="in" type="email" value="somchai@example.com" aria-label="อีเมล"></div></div></div>
+      <div class="two"><div class="field"><div class="field-l">หน่วยงาน</div><div class="input"><input class="in" type="text" value="สำนักงานพลังงานจังหวัดปทุมธานี" aria-label="หน่วยงาน"></div></div><div class="field"><div class="field-l">บทบาท</div><div class="input" data-options="ผู้อนุมัติแผน|ผู้วิเคราะห์ข้อมูล|ผู้ดูข้อมูล">ผู้อนุมัติแผน<span class="caret">▼</span></div></div></div>
+    </div>
+
+    <div class="card sec" id="set-2">
+      <div class="card-h"><div><div class="card-t">จังหวัดที่ติดตาม</div><div class="card-s">แสดงในหน้าแรกและส่งการแจ้งเตือนเมื่อมีวิกฤต</div></div></div>
+      <div class="chips" id="chips"><div class="chip" data-prov="ปทุมธานี">ปทุมธานี <span class="chip-x" role="button" tabindex="0" aria-label="นำ ปทุมธานี ออก"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div><div class="chip" data-prov="นนทบุรี">นนทบุรี <span class="chip-x" role="button" tabindex="0" aria-label="นำ นนทบุรี ออก"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div><div class="chip" data-prov="พระนครศรีอยุธยา">พระนครศรีอยุธยา <span class="chip-x" role="button" tabindex="0" aria-label="นำ พระนครศรีอยุธยา ออก"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div><div class="chip" data-prov="กรุงเทพมหานคร">กรุงเทพมหานคร <span class="chip-x" role="button" tabindex="0" aria-label="นำ กรุงเทพมหานคร ออก"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div><div class="chip" data-prov="สงขลา">สงขลา <span class="chip-x" role="button" tabindex="0" aria-label="นำ สงขลา ออก"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div><div class="chip add" id="addProv" data-keep="" data-options=""><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M5 12h14"/></svg> เพิ่มจังหวัด</div></div>
+    </div>
+
+    <div class="card sec" id="set-3">
+      <div class="card-h"><div><div class="card-t">การแจ้งเตือน</div><div class="card-s">เลือกช่องทางที่ต้องการรับแจ้งเตือน</div></div></div>
+      <div class="opt"><div><div class="opt-t">อีเมล</div><div class="opt-d">สรุปรายวันและแจ้งเตือนวิกฤตทันที</div></div><div class="switch on"><div class="knob"></div></div></div>
+      <div class="opt"><div><div class="opt-t">SMS</div><div class="opt-d">เฉพาะเมื่อจังหวัดที่ติดตามเข้าสู่ภาวะวิกฤต</div></div><div class="switch on"><div class="knob"></div></div></div>
+      <div class="opt"><div><div class="opt-t">แจ้งเตือนในเว็บ</div><div class="opt-d">แสดงจุดแดงที่เมนูเมื่อมีเรื่องใหม่</div></div><div class="switch on"><div class="knob"></div></div></div>
+      <div class="opt"><div><div class="opt-t">สรุปประจำสัปดาห์</div><div class="opt-d">ส่งทุกวันจันทร์ 07:30</div></div><div class="switch"><div class="knob"></div></div></div>
+    </div>
+
+    <div class="card sec" id="set-4">
+      <div class="card-h"><div><div class="card-t">เกณฑ์วิกฤต</div><div class="card-s">ระบบจะเปลี่ยนสถานะจังหวัดเมื่อถึงเกณฑ์เหล่านี้</div></div></div>
+      <div class="th">
+        <div class="field"><div class="field-l">สต็อกน้ำมันต่ำกว่า</div><div class="input"><input class="in" type="number" min="0" value="7" aria-label="สต็อกน้ำมันต่ำกว่า"><span class="unit">วัน</span></div></div>
+        <div class="field"><div class="field-l">ความต้องการเพิ่มเกิน</div><div class="input"><input class="in" type="number" min="0" value="20" aria-label="ความต้องการเพิ่มเกิน"><span class="unit">%</span></div></div>
+        <div class="field"><div class="field-l">เตือนล่วงหน้า</div><div class="input"><input class="in" type="number" min="0" value="48" aria-label="เตือนล่วงหน้า"><span class="unit">ชั่วโมง</span></div></div>
+      </div>
+    </div>
+
+    <div class="card sec" id="set-5">
+      <div class="card-h"><div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">การตั้งค่า AI</div><div class="card-s">กำหนดวิธีที่ AI ช่วยวิเคราะห์</div></div></div></div>
+      <div class="opt"><div><div class="opt-t">สรุปแนวโน้มอัตโนมัติทุกเช้า</div><div class="opt-d">AI สรุปการเปลี่ยนแปลงของจังหวัดที่ติดตามเวลา 07:00</div></div><div class="switch on"><div class="knob"></div></div></div>
+      <div class="opt"><div><div class="opt-t">วิเคราะห์ทันทีเมื่อมีเหตุวิกฤต</div><div class="opt-d">AI เริ่มประเมินความต้องการน้ำมันเมื่อสถานะเปลี่ยนเป็นวิกฤต</div></div><div class="switch on"><div class="knob"></div></div></div>
+      <div class="opt"><div><div class="opt-t">ต้องมีผู้อนุมัติก่อนใช้แผนของ AI</div><div class="opt-d">ป้องกันไม่ให้แผนถูกนำไปใช้โดยไม่ผ่านการตรวจสอบ</div></div><div class="lock"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg> เปิดตลอด</div></div>
+      <div class="field" style="margin-top:16px;width:402px"><div class="field-l">ระดับรายละเอียดของคำอธิบาย</div><div class="seg"><div>สั้น</div><div class="on">ปานกลาง</div><div>ละเอียด</div></div></div>
+    </div>
+
+    <div class="actions"><div class="btn sec" id="cancel">ยกเลิก</div><div class="btn pri" id="save">บันทึกการเปลี่ยนแปลง</div></div>
+  </div>
+</div>
+<div style="height:20px"></div>
+  <div class="foot">ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ · อัปเดตล่าสุด 30 ต.ค. 2569 10:30</div>
+</div>
+</div><script src="assets/app.js?v=3"></script>
+<script src="assets/sidebar.js?v=3"></script>
+<script src="assets/pages/settings.js?v=3"></script>
+</body></html>

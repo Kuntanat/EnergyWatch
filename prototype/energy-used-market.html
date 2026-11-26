@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EnergyWatch - ตลาดอุปกรณ์มือสอง</title>
+<link rel="stylesheet" href="assets/base.css?v=3">
+<link rel="stylesheet" href="assets/components.css?v=3">
+<style>
+.filters { display: flex; gap: 12px; align-items: flex-end; margin-bottom: 16px; }
+.filters .field { margin-bottom: 0; width: 170px; }
+.search { display: flex; align-items: center; gap: 10px; width: 340px; border: 1px solid #D1D5DB; border-radius: 10px; padding: 11px 14px; font-size: 14px; color: #9CA3AF; background: #FFFFFF; }
+.chk { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding-bottom: 10px; }
+.box { width: 18px; height: 18px; border-radius: 5px; background: #2F5D8A; display: flex; align-items: center; justify-content: center; }
+.list-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.grid { width: 744px; display: flex; flex-wrap: wrap; gap: 16px; }
+.item { width: 364px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; overflow: hidden; }
+.item.sel { border: 2px solid #2F5D8A; }
+.thumb { height: 110px; background: #E2EAF3; display: flex; align-items: center; justify-content: center; }
+.it-b { padding: 16px; }
+.it-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.st svg { vertical-align: -2px; }
+.it-t { font-size: 16px; font-weight: 700; }
+.it-s { font-size: 12px; color: #6B7280; margin-top: 4px; }
+.it-h { display: flex; justify-content: space-between; font-size: 12px; color: #4B5563; margin: 12px 0 6px; }
+.it-p { font-size: 22px; font-weight: 800; margin-top: 12px; }
+.it-p span { font-size: 13px; color: #6B7280; font-weight: 500; }
+.it-c { font-size: 12px; color: #6B7280; margin-top: 4px; }
+.btn.sm { padding: 9px 14px; font-size: 13px; }
+.side-col { width: 376px; display: flex; flex-direction: column; gap: 16px; }
+.ref table td, .ref table th { padding: 8px 6px; font-size: 13px; }
+.ref-sub { font-size: 13px; font-weight: 700; margin: 14px 0 6px; }
+.ref-n { font-size: 12px; color: #6B7280; margin-top: 12px; line-height: 1.5; }
+.seller { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.av { width: 44px; height: 44px; border-radius: 22px; background: #E2EAF3; color: #24496E; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.sel-sum { background: #F9FAFB; border-radius: 10px; padding: 12px; font-size: 13px; line-height: 1.6; margin-bottom: 12px; }
+.msg { border: 1px solid #D1D5DB; border-radius: 10px; padding: 12px; font-size: 13px; color: #4B5563; height: 88px; line-height: 1.5; margin-bottom: 12px; }
+.c-btns { display: flex; gap: 8px; }
+.c-btns .btn { flex: 1; padding: 10px 8px; font-size: 13px; }
+.warn-n { display: flex; gap: 8px; font-size: 12px; color: #92400E; background: #FFFBEB; border-radius: 10px; padding: 10px; margin-top: 12px; line-height: 1.5; }
+.search { cursor: text; }
+.search .in { color: #111827; }
+.box.off { background: #FFFFFF; border: 2px solid #9CA3AF; }
+.box.off svg { display: none; }
+.chk { cursor: pointer; user-select: none; }
+.item { cursor: pointer; scroll-margin-top: 20px; transition: box-shadow .15s; }
+.item:hover { box-shadow: 0 8px 20px rgba(15, 23, 42, .08); }
+.msg { padding: 0; }
+.msg textarea.in { padding: 12px; font-size: 13px; color: #4B5563; }
+.grid-empty { width: 100%; padding: 40px; text-align: center; color: #6B7280; font-size: 14px; background: #FFFFFF; border: 1px dashed #D1D5DB; border-radius: 16px; }
+.mine td { vertical-align: middle; }
+.inq { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F3F4F6; }
+.inq:last-of-type { border-bottom: none; }
+.inq-t { font-size: 14px; font-weight: 700; }
+.inq-d { font-size: 13px; color: #4B5563; margin-top: 2px; line-height: 1.5; }
+.inq-m { font-size: 12px; color: #9CA3AF; margin-top: 4px; }
+.link-o { color: #C2410C; font-weight: 700; }
+.link-o:hover { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="assets/responsive.css?v=3">
+</head>
+<body><div class="app">
+<aside class="side" data-section="used" data-sub="search"></aside>
+<div class="main">
+  <div class="topbar">
+    <div><div class="crumb"><b>หน้าแรก</b> / ตลาดอุปกรณ์มือสอง</div><div class="title">ตลาดอุปกรณ์พลังงานมือสอง</div></div>
+    <div class="controls"><div class="select" data-toast="ตลาดมือสองในต้นแบบนี้มีเฉพาะจังหวัดปทุมธานี"><span class="lbl">จังหวัด</span><span class="val">ปทุมธานี</span><span class="caret">▼</span></div><div class="seg" id="role" style="width:220px;background:#FFFFFF"><div>ฉันเป็นผู้ขาย</div><div class="on">ฉันเป็นผู้ซื้อ</div></div><a class="btn pri" href="used-sell.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M5 12h14"/></svg> ลงขายอุปกรณ์</a></div>
+  </div>
+  
+<div class="kpis">
+  <div class="card kpi"><div class="kpi-l">รายการขายในจังหวัด</div><div class="kpi-v">48 <span class="kpi-u">รายการ</span></div></div>
+  <div class="card kpi"><div class="kpi-l">แผงโซลาร์</div><div class="kpi-v">31 <span class="kpi-u">รายการ</span></div></div>
+  <div class="card kpi"><div class="kpi-l">แบตเตอรี่ EV / BESS</div><div class="kpi-v">17 <span class="kpi-u">รายการ</span></div></div>
+  <div class="card kpi"><div class="kpi-l">ตรวจรับรองแล้ว</div><div class="kpi-v">39 <span class="kpi-u">รายการ</span></div><div class="kpi-d muted">โดยมหาวิทยาลัยในพื้นที่</div></div>
+</div>
+
+<div class="card filters" id="filters">
+  <div class="field" style="width:340px"><div class="field-l">ค้นหา</div><label class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg> <input class="in" id="q" placeholder="เช่น แผง 550W, แบต LFP" aria-label="ค้นหาสินค้า"></label></div>
+  <div class="field"><div class="field-l">ประเภท</div><div class="input" id="fType" data-options="ทั้งหมด|แผงโซลาร์|แบตเตอรี่">ทั้งหมด<span class="caret">▼</span></div></div>
+  <div class="field"><div class="field-l">สภาพคงเหลือ</div><div class="input" id="fHealth" data-options="ทุกสภาพ|70% ขึ้นไป|80% ขึ้นไป|90% ขึ้นไป">70% ขึ้นไป<span class="caret">▼</span></div></div>
+  <div class="field"><div class="field-l">ระยะทาง</div><div class="input" id="fDist" data-options="ไม่เกิน 5 กม.|ไม่เกิน 10 กม.|ไม่เกิน 25 กม.|ไม่จำกัด">ไม่เกิน 25 กม.<span class="caret">▼</span></div></div>
+  <div class="chk" id="fCert" role="checkbox" aria-checked="false" tabindex="0"><div class="box off"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5 12l5 5 9-10"/></svg></div>เฉพาะที่ตรวจรับรองแล้ว</div>
+</div>
+
+<div class="row">
+  <div id="listCol">
+    <div class="list-h"><div class="tabs" id="tTabs"><div class="tab on">ทั้งหมด (6)</div><div class="tab">แผงโซลาร์ (3)</div><div class="tab">แบตเตอรี่ (3)</div></div><span class="muted" style="font-size:13px">เรียงตามระยะทาง</span></div>
+    <div class="grid" id="grid">
+    <div id="item-1" data-i="0" data-type="panel" data-health="88" data-km="8" data-cert="1" class="item sel">
+      <div class="thumb"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#24496E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M3 8h18M3 12h18M9 4v12M15 4v12M12 16v4M8 20h8"/></svg></div>
+      <div class="it-b">
+        <div class="it-top"><span class="st ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg> ตรวจรับรองแล้ว</span><span class="muted" style="font-size:12px">ใช้งานมา 5 ปี</span></div>
+        <div class="it-t">แผงโซลาร์ 550W โมโน</div>
+        <div class="it-s">20 แผ่น · อ.คลองหลวง · 8 กม.</div>
+        <div class="it-h"><span>ประสิทธิภาพคงเหลือ</span><b>88%</b></div>
+        <div class="bar" style="height:6px"><div style="width:88%;background:#22A06B"></div></div>
+        <div class="it-p">1,200 <span>บาท/แผ่น</span></div>
+        <div class="it-c">ราคากลาง 1,265 บาท · <span style="color:#15803D">ต่ำกว่าราคากลาง 5%</span></div>
+        <div class="btn pri sm contact-btn" style="margin-top:12px">ติดต่อผู้ขาย</div>
+      </div>
+    </div>
+    <div id="item-2" data-i="1" data-type="batt" data-health="76" data-km="15" data-cert="1" class="item">
+      <div class="thumb"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#24496E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 11v2M6 10v4M10 10v4"/></svg></div>
+      <div class="it-b">
+        <div class="it-top"><span class="st ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg> ตรวจรับรองแล้ว</span><span class="muted" style="font-size:12px">ใช้งานมา 6 ปี</span></div>
+        <div class="it-t">แบตเตอรี่ EV (LFP) 40 kWh</div>
+        <div class="it-s">1 ชุด · อ.ลำลูกกา · 15 กม.</div>
+        <div class="it-h"><span>ความจุคงเหลือ</span><b>76%</b></div>
+        <div class="bar" style="height:6px"><div style="width:76%;background:#D97706"></div></div>
+        <div class="it-p">72,000 <span>บาท/ชุด</span></div>
+        <div class="it-c">ราคากลาง 76,000 บาท · <span style="color:#15803D">ต่ำกว่าราคากลาง 5%</span></div>
+        <div class="btn sec sm contact-btn" style="margin-top:12px">ติดต่อผู้ขาย</div>
+      </div>
+    </div>
+    <div id="item-3" data-i="2" data-type="panel" data-health="81" data-km="4" data-cert="1" class="item">
+      <div class="thumb"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#24496E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M3 8h18M3 12h18M9 4v12M15 4v12M12 16v4M8 20h8"/></svg></div>
+      <div class="it-b">
+        <div class="it-top"><span class="st ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg> ตรวจรับรองแล้ว</span><span class="muted" style="font-size:12px">ใช้งานมา 7 ปี</span></div>
+        <div class="it-t">แผงโซลาร์ 450W โมโน</div>
+        <div class="it-s">12 แผ่น · อ.ธัญบุรี · 4 กม.</div>
+        <div class="it-h"><span>ประสิทธิภาพคงเหลือ</span><b>81%</b></div>
+        <div class="bar" style="height:6px"><div style="width:81%;background:#22A06B"></div></div>
+        <div class="it-p">1,050 <span>บาท/แผ่น</span></div>
+        <div class="it-c">ราคากลาง 1,035 บาท · <span style="color:#B45309">สูงกว่าราคากลาง 1%</span></div>
+        <div class="btn sec sm contact-btn" style="margin-top:12px">ติดต่อผู้ขาย</div>
+      </div>
+    </div>
+    <div id="item-4" data-i="3" data-type="batt" data-health="84" data-km="2" data-cert="0" class="item">
+      <div class="thumb"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#24496E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 11v2M6 10v4M10 10v4"/></svg></div>
+      <div class="it-b">
+        <div class="it-top"><span class="st grey">รอตรวจรับรอง</span><span class="muted" style="font-size:12px">ใช้งานมา 4 ปี</span></div>
+        <div class="it-t">แบตเตอรี่บ้าน (BESS) 10 kWh</div>
+        <div class="it-s">1 ชุด · อ.เมืองปทุมธานี · 2 กม.</div>
+        <div class="it-h"><span>ความจุคงเหลือ</span><b>84%</b></div>
+        <div class="bar" style="height:6px"><div style="width:84%;background:#22A06B"></div></div>
+        <div class="it-p">30,000 <span>บาท/ชุด</span></div>
+        <div class="it-c">ราคากลาง 29,400 บาท · <span style="color:#B45309">สูงกว่าราคากลาง 2%</span></div>
+        <div class="btn sec sm contact-btn" style="margin-top:12px">ติดต่อผู้ขาย</div>
+      </div>
+    </div>
+    <div id="item-5" data-i="4" data-type="panel" data-health="73" data-km="22" data-cert="1" class="item">
+      <div class="thumb"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#24496E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M3 8h18M3 12h18M9 4v12M15 4v12M12 16v4M8 20h8"/></svg></div>
+      <div class="it-b">
+        <div class="it-top"><span class="st ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg> ตรวจรับรองแล้ว</span><span class="muted" style="font-size:12px">ใช้งานมา 10 ปี</span></div>
+        <div class="it-t">แผงโซลาร์ 330W โพลี</div>
+        <div class="it-s">30 แผ่น · อ.หนองเสือ · 22 กม.</div>
+        <div class="it-h"><span>ประสิทธิภาพคงเหลือ</span><b>73%</b></div>
+        <div class="bar" style="height:6px"><div style="width:73%;background:#D97706"></div></div>
+        <div class="it-p">520 <span>บาท/แผ่น</span></div>
+        <div class="it-c">ราคากลาง 561 บาท · <span style="color:#15803D">ต่ำกว่าราคากลาง 7%</span></div>
+        <div class="btn sec sm contact-btn" style="margin-top:12px">ติดต่อผู้ขาย</div>
+      </div>
+    </div>
+    <div id="item-6" data-i="5" data-type="batt" data-health="71" data-km="12" data-cert="1" class="item">
+      <div class="thumb"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#24496E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 11v2M6 10v4M10 10v4"/></svg></div>
+      <div class="it-b">
+        <div class="it-top"><span class="st ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg> ตรวจรับรองแล้ว</span><span class="muted" style="font-size:12px">ใช้งานมา 8 ปี</span></div>
+        <div class="it-t">แบตเตอรี่ EV (NMC) 60 kWh</div>
+        <div class="it-s">1 ชุด · อ.สามโคก · 12 กม.</div>
+        <div class="it-h"><span>ความจุคงเหลือ</span><b>71%</b></div>
+        <div class="bar" style="height:6px"><div style="width:71%;background:#D97706"></div></div>
+        <div class="it-p">99,000 <span>บาท/ชุด</span></div>
+        <div class="it-c">ราคากลาง 106,500 บาท · <span style="color:#15803D">ต่ำกว่าราคากลาง 7%</span></div>
+        <div class="btn sec sm contact-btn" style="margin-top:12px">ติดต่อผู้ขาย</div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="side-col" id="sideCol">
+    <div class="card ref">
+      <div class="card-h" style="margin-bottom:6px"><div><div class="card-t">ราคากลางอ้างอิง</div><div class="card-s">อัปเดต ต.ค. 2569 จากราคาซื้อขายจริงในระบบ</div></div></div>
+      <div class="ref-sub">แผงโซลาร์ (บาท/วัตต์)</div>
+      <table><tr><th>สภาพ (ประสิทธิภาพคงเหลือ)</th><th class="r">ราคา</th></tr><tr><td>ของใหม่</td><td class="r">5.5</td></tr><tr><td>90% ขึ้นไป</td><td class="r">2.7</td></tr><tr><td>80–89%</td><td class="r">2.3</td></tr><tr><td>70–79%</td><td class="r">1.7</td></tr></table>
+      <div class="ref-sub">แบตเตอรี่ (บาท/kWh ของความจุคงเหลือ)</div>
+      <table><tr><th>สภาพ (ความจุคงเหลือ)</th><th class="r">ราคา</th></tr><tr><td>ของใหม่</td><td class="r">7,000</td></tr><tr><td>80% ขึ้นไป</td><td class="r">3,500</td></tr><tr><td>70–79%</td><td class="r">2,500</td></tr></table>
+      <div class="ref-n">ของมือสองที่ผ่านการตรวจรับรอง ราคาถูกกว่าของใหม่ราว 50–70%</div>
+    </div>
+
+    <div class="card" id="contact">
+      <div class="card-h" style="margin-bottom:14px"><div><div class="card-t">ติดต่อผู้ขาย</div><div class="card-s" id="cItem">แผงโซลาร์ 550W โมโน · 20 แผ่น</div></div></div>
+      <div class="seller"><div class="av" id="cAv">วส</div><div><div style="font-weight:700" id="cName">คุณวิชัย ส.</div><div class="card-s" style="margin-top:2px" id="cMeta">ยืนยันตัวตนแล้ว · ตอบกลับภายใน ~1 ชม. · ขายแล้ว 3 รายการ</div></div></div>
+      <div class="sel-sum" id="cSum">ราคา <b>1,200 บาท/แผ่น</b> (รวม 24,000 บาท)<br>ประสิทธิภาพคงเหลือ 88% · ใบรับรองเลขที่ PT-2569-0142</div>
+      <div class="msg"><textarea class="in" id="cMsg" aria-label="ข้อความถึงผู้ขาย">สวัสดีครับ หน่วยงานของเราสนใจแผงทั้ง 20 แผ่น ขอนัดดูสินค้าและใบรับรองได้ไหมครับ</textarea></div>
+      <div class="btn pri" id="cSend" style="margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M4 5h16v11H8l-4 4z"/></svg> ส่งข้อความถึงผู้ขาย</div>
+      <div class="c-btns"><div class="btn sec" id="cCall"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5 3h4l2 5-3 2a11 11 0 006 6l2-3 5 2v4a2 2 0 01-2 2A18 18 0 013 5a2 2 0 012-2z"/></svg> โทร</div><div class="btn sec" id="cMeet"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg> นัดดูสินค้า</div></div>
+      <div class="warn-n"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#92400E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/></svg><span>ตรวจใบรับรองและสภาพอุปกรณ์ก่อนชำระเงิน ระบบไม่ได้รับชำระเงินแทนผู้ขาย</span></div>
+    </div>
+  </div>
+</div>
+  <div class="foot">ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ · อัปเดตล่าสุด 30 ต.ค. 2569 10:30</div>
+</div>
+</div><script src="assets/app.js?v=3"></script>
+<script src="assets/sidebar.js?v=3"></script>
+<script src="assets/pages/used-market.js?v=3"></script>
+</body></html>

@@ -1,0 +1,14 @@
+# Not part of EnergyWatch
+StockAlarm/
+coffee-landing.html
+
+# Python / OS / editor noise
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local Claude Code settings
+.claude/settings.local.json

@@ -1,0 +1,51 @@
+/* EnergyWatch: shared components (cards, KPI, tables, tabs, forms, switches) */
+.select { display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 10px; padding: 10px 14px; font-size: 14px; }
+.select .lbl { color: #6B7280; } .select .val { font-weight: 600; } .select .caret { color: #9CA3AF; font-size: 11px; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 16px; border-radius: 10px; font-size: 14px; font-weight: 700; }
+.btn.pri { background: #2F5D8A; color: #FFFFFF; }
+.btn.sec { background: #FFFFFF; border: 1px solid #D1D5DB; color: #111827; }
+.btn.red { background: #E5484D; color: #FFFFFF; }
+.card { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 24px; }
+.card-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.card-t { font-size: 17px; font-weight: 700; }
+.card-s { font-size: 13px; color: #6B7280; margin-top: 4px; }
+.pill { font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #F3F4F6; color: #4B5563; }
+.row { display: flex; gap: 16px; margin-bottom: 20px; }
+.kpis { display: flex; gap: 16px; margin-bottom: 20px; }
+.kpi { width: 272px; }
+.kpi-l { font-size: 13px; color: #6B7280; margin-bottom: 10px; }
+.kpi-v { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+.kpi-u { font-size: 14px; color: #6B7280; font-weight: 500; }
+.kpi-d { font-size: 13px; margin-top: 10px; font-weight: 600; }
+.up { color: #16A34A; } .down { color: #DC2626; } .warn { color: #D97706; } .muted { color: #6B7280; }
+.fossil { background: #F08C3A; } .clean { background: #22A06B; }
+.sw { width: 12px; height: 12px; border-radius: 3px; }
+.legend { display: flex; gap: 16px; font-size: 13px; color: #4B5563; }
+.lg { display: flex; align-items: center; gap: 6px; }
+.bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: #F3F4F6; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 12px; color: #6B7280; font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #E5E7EB; background: #F9FAFB; }
+td { padding: 12px; border-bottom: 1px solid #F3F4F6; }
+.r { text-align: right; }
+.st { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.st.ok { background: #DCFCE7; color: #166534; }
+.st.watch { background: #FEF3C7; color: #92400E; }
+.st.crit { background: #FEE2E2; color: #B91C1C; }
+.st.info { background: #E2EAF3; color: #24496E; }
+.st.grey { background: #F3F4F6; color: #4B5563; }
+.tabs { display: flex; gap: 4px; background: #E9EDF2; border-radius: 10px; padding: 4px; }
+.tab { padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: #6B7280; }
+.tab.on { background: #FFFFFF; color: #111827; }
+.ai-ic { width: 40px; height: 40px; border-radius: 12px; background: #2F5D8A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
+.ai-title { display: flex; align-items: center; gap: 12px; }
+.field { margin-bottom: 16px; }
+.field-l { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+.input { display: flex; align-items: center; justify-content: space-between; border: 1px solid #D1D5DB; border-radius: 10px; padding: 11px 14px; font-size: 14px; background: #FFFFFF; }
+.input .ph { color: #9CA3AF; }
+.seg { display: flex; border: 1px solid #D1D5DB; border-radius: 10px; overflow: hidden; }
+.seg div { flex: 1; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; color: #4B5563; border-right: 1px solid #D1D5DB; }
+.seg div:last-child { border-right: none; }
+.seg .on { background: #2F5D8A; color: #FFFFFF; }
+.switch { width: 40px; height: 22px; border-radius: 11px; background: #D1D5DB; display: flex; align-items: center; padding: 2px; }
+.switch.on { background: #2F5D8A; justify-content: flex-end; }
+.knob { width: 18px; height: 18px; border-radius: 9px; background: #FFFFFF; }

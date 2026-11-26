@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><title>EnergyWatch - ตลาดไฟฟ้า P2P</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 1440px; font-family: "Inter", "Noto Sans Thai", sans-serif; background: #F4F6F9; color: #111827; }
+.app { display: flex; width: 1440px; }
+.side { width: 240px; background: #0F172A; color: #CBD5E1; padding: 28px 20px; }
+.brand { display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-size: 20px; font-weight: 800; margin-bottom: 40px; }
+.brand-mark { width: 36px; height: 36px; border-radius: 10px; background: #22A06B; display: flex; align-items: center; justify-content: center; }
+.nav-label { font-size: 12px; color: #64748B; font-weight: 600; letter-spacing: 1px; margin: 0 12px 12px; }
+.nav-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; font-size: 15px; margin-bottom: 4px; }
+.nav-item.active { background: #1E293B; color: #FFFFFF; font-weight: 600; }
+.nav-dot { width: 8px; height: 8px; border-radius: 4px; background: #E5484D; margin-left: auto; }
+.main { width: 1200px; padding: 28px 32px 48px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+.crumb { font-size: 14px; color: #6B7280; margin-bottom: 6px; }
+.crumb b { color: #2563EB; font-weight: 500; }
+.title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+.controls { display: flex; gap: 12px; align-items: center; }
+.select { display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 10px; padding: 10px 14px; font-size: 14px; }
+.select .lbl { color: #6B7280; } .select .val { font-weight: 600; } .select .caret { color: #9CA3AF; font-size: 11px; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 16px; border-radius: 10px; font-size: 14px; font-weight: 700; }
+.btn.pri { background: #2F5D8A; color: #FFFFFF; }
+.btn.sec { background: #FFFFFF; border: 1px solid #D1D5DB; color: #111827; }
+.btn.red { background: #E5484D; color: #FFFFFF; }
+.card { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 24px; }
+.card-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.card-t { font-size: 17px; font-weight: 700; }
+.card-s { font-size: 13px; color: #6B7280; margin-top: 4px; }
+.pill { font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #F3F4F6; color: #4B5563; }
+.row { display: flex; gap: 16px; margin-bottom: 20px; }
+.kpis { display: flex; gap: 16px; margin-bottom: 20px; }
+.kpi { width: 272px; }
+.kpi-l { font-size: 13px; color: #6B7280; margin-bottom: 10px; }
+.kpi-v { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+.kpi-u { font-size: 14px; color: #6B7280; font-weight: 500; }
+.kpi-d { font-size: 13px; margin-top: 10px; font-weight: 600; }
+.up { color: #16A34A; } .down { color: #DC2626; } .warn { color: #D97706; } .muted { color: #6B7280; }
+.fossil { background: #F08C3A; } .clean { background: #22A06B; }
+.sw { width: 12px; height: 12px; border-radius: 3px; }
+.legend { display: flex; gap: 16px; font-size: 13px; color: #4B5563; }
+.lg { display: flex; align-items: center; gap: 6px; }
+.bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: #F3F4F6; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 12px; color: #6B7280; font-weight: 600; padding: 10px 12px; border-bottom: 1px solid #E5E7EB; background: #F9FAFB; }
+td { padding: 12px; border-bottom: 1px solid #F3F4F6; }
+.r { text-align: right; }
+.st { display: inline-block; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.st.ok { background: #DCFCE7; color: #166534; }
+.st.watch { background: #FEF3C7; color: #92400E; }
+.st.crit { background: #FEE2E2; color: #B91C1C; }
+.st.info { background: #E2EAF3; color: #24496E; }
+.st.grey { background: #F3F4F6; color: #4B5563; }
+.tabs { display: flex; gap: 4px; background: #E9EDF2; border-radius: 10px; padding: 4px; }
+.tab { padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: #6B7280; }
+.tab.on { background: #FFFFFF; color: #111827; }
+.ai-ic { width: 40px; height: 40px; border-radius: 12px; background: #2F5D8A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
+.ai-title { display: flex; align-items: center; gap: 12px; }
+.field { margin-bottom: 16px; }
+.field-l { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+.input { display: flex; align-items: center; justify-content: space-between; border: 1px solid #D1D5DB; border-radius: 10px; padding: 11px 14px; font-size: 14px; background: #FFFFFF; }
+.input .ph { color: #9CA3AF; }
+.seg { display: flex; border: 1px solid #D1D5DB; border-radius: 10px; overflow: hidden; }
+.seg div { flex: 1; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; color: #4B5563; border-right: 1px solid #D1D5DB; }
+.seg div:last-child { border-right: none; }
+.seg .on { background: #2F5D8A; color: #FFFFFF; }
+.switch { width: 40px; height: 22px; border-radius: 11px; background: #D1D5DB; display: flex; align-items: center; padding: 2px; }
+.switch.on { background: #2F5D8A; justify-content: flex-end; }
+.knob { width: 18px; height: 18px; border-radius: 9px; background: #FFFFFF; }
+.foot { font-size: 12px; color: #9CA3AF; margin-top: 8px; }
+
+.nav-item.sec { font-weight: 600; color: #CBD5E1; border-left: 3px solid transparent; }
+.nav-item.sec.on { background: #1E293B; color: #FFFFFF; }
+.nav-item.sub { padding: 9px 12px 9px 20px; font-size: 14px; color: #94A3B8; gap: 10px; }
+.nav-item.sub.on { color: #FFFFFF; font-weight: 600; }
+.sub-dot { width: 6px; height: 6px; border-radius: 3px; background: #334155; display: inline-block; }
+
+.match { width: 744px; }
+.offer { display: flex; gap: 12px; background: #F1F5F9; border-radius: 12px; padding: 14px; margin-bottom: 8px; }
+.of { flex: 1; }
+.of-l { font-size: 12px; color: #6B7280; }
+.of-v { font-size: 16px; font-weight: 800; margin-top: 3px; }
+.buyer { display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid #F3F4F6; }
+.b-ic { width: 40px; height: 40px; border-radius: 10px; background: #E2EAF3; display: flex; align-items: center; justify-content: center; }
+.b-info { width: 420px; }
+.b-n { font-size: 15px; font-weight: 700; }
+.b-d { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 12px; color: #6B7280; margin-top: 5px; }
+.b-right { width: 200px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.b-p { font-size: 18px; font-weight: 800; }
+.b-p span { font-size: 12px; color: #6B7280; font-weight: 500; }
+.b-ov { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #4B5563; }
+.btn.sm { padding: 7px 14px; font-size: 13px; }
+.pricing { width: 376px; }
+.pc { margin-bottom: 14px; }
+.pc-top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+.pc-n { font-size: 12px; color: #6B7280; margin-top: 4px; }
+.gain { background: #F0FDF4; border-radius: 10px; padding: 12px; font-size: 13px; color: #166534; line-height: 1.6; margin-bottom: 18px; }
+.ct-l { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+.ct { border: 1px solid #E5E7EB; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+.ct.on { border: 2px solid #2F5D8A; background: #F1F5F9; }
+.ct-t { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; }
+.ct-d { font-size: 12px; color: #6B7280; margin-top: 4px; }
+.draft { width: 560px; }
+.kv { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F3F4F6; font-size: 14px; }
+.kv span { color: #6B7280; }
+.kv b { text-align: right; width: 300px; }
+.flow { display: flex; align-items: center; gap: 8px; margin: 16px 0; font-size: 12px; }
+.fs { display: flex; align-items: center; gap: 6px; color: #6B7280; }
+.fs-d { width: 22px; height: 22px; border-radius: 11px; background: #E5E7EB; color: #6B7280; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; }
+.fs.on { color: #24496E; font-weight: 700; }
+.fs.on .fs-d { background: #2F5D8A; color: #FFFFFF; }
+.fl { width: 24px; height: 2px; background: #E5E7EB; }
+.income { width: 560px; }
+.inc-sum { display: flex; gap: 12px; margin-bottom: 18px; }
+.is { flex: 1; background: #F9FAFB; border-radius: 12px; padding: 12px; }
+.is-l { font-size: 12px; color: #6B7280; }
+.is-v { font-size: 20px; font-weight: 800; margin-top: 4px; }
+.ic-chart { display: flex; align-items: flex-end; justify-content: space-around; height: 180px; border-bottom: 1px solid #E5E7EB; }
+.ic-col { width: 60px; display: flex; flex-direction: column; align-items: center; }
+.ic-v { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+.ic-bar { width: 36px; background: #22A06B; border-radius: 6px 6px 0 0; }
+.ic-labels { display: flex; justify-content: space-around; padding-top: 8px; }
+.ic-m { width: 60px; text-align: center; font-size: 12px; color: #6B7280; }
+
+.mg { margin-bottom: 20px; }
+.live { display: flex; align-items: center; gap: 6px; background: #DCFCE7; color: #166534; }
+.live-dot { width: 8px; height: 8px; border-radius: 4px; background: #22A06B; }
+.mg-row { display: flex; gap: 24px; }
+.mg-flow { width: 500px; height: 236px; position: relative; background: #F8FAFC; border-radius: 14px; }
+.nd { position: absolute; width: 132px; border-radius: 12px; padding: 10px 12px; background: #FFFFFF; border: 1px solid #E5E7EB; }
+.nd.grid { border: 2px solid #22A06B; }
+.nd-t { font-size: 13px; font-weight: 700; }
+.nd-s { font-size: 11px; color: #6B7280; margin-top: 2px; }
+.nd-v { font-size: 14px; font-weight: 800; margin-top: 6px; }
+.fl-l { position: absolute; font-size: 11px; font-weight: 700; }
+.mg-stats { width: 260px; display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; }
+.ms { width: 120px; background: #F9FAFB; border-radius: 12px; padding: 12px; }
+.ms-l { font-size: 11px; color: #6B7280; }
+.ms-v { font-size: 18px; font-weight: 800; margin-top: 4px; }
+.ms-u { font-size: 11px; color: #6B7280; font-weight: 500; }
+.mg-side { width: 280px; }
+.bt-top { display: flex; justify-content: space-between; align-items: baseline; }
+.bt-v { font-size: 26px; font-weight: 800; color: #15803D; }
+.bt-bar { height: 12px; border-radius: 6px; background: #E5E7EB; overflow: hidden; margin: 8px 0 4px; }
+.bt-fill { height: 12px; background: #22A06B; border-radius: 6px; }
+.fc-t { font-size: 12px; font-weight: 700; margin: 16px 0 8px; }
+.fc-bars { display: flex; align-items: flex-end; gap: 4px; height: 64px; border-bottom: 1px solid #E5E7EB; }
+.fc-b { width: 18px; background: #86EFAC; border-radius: 3px 3px 0 0; }
+.fc-x { display: flex; justify-content: space-between; font-size: 11px; color: #6B7280; margin-top: 4px; }
+</style></head>
+<body><div class="app">
+<div class="side">
+  <div class="brand"><div class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>EnergyWatch</div>
+  <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg> หน้าแรก</div>
+  <div class="nav-label" style="margin-top:20px">ส่วนหลัก</div>
+  <div class="nav-item sec"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><path d="M8 17v-6M13 17V7M18 17v-4"/></svg> แดชบอร์ดพลังงาน</div><div class="nav-item sec on" style="border-left-color:#22A06B"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22A06B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h14l-4-4M20 17H6l4 4"/></svg> ตลาดไฟฟ้า P2P</div><div class="nav-item sec"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg> ตลาดอุปกรณ์มือสอง</div>
+  <div class="nav-label" style="margin-top:24px">เมนูตลาดไฟฟ้า</div>
+  <div class="nav-item sub on"><span class="sub-dot" style="background:#22A06B"></span>จับคู่ผู้ซื้อ</div><div class="nav-item sub"><span class="sub-dot" style="background:#334155"></span>สัญญาของฉัน</div><div class="nav-item sub"><span class="sub-dot" style="background:#334155"></span>ประวัติและรายได้</div>
+  <div class="nav-label" style="margin-top:24px">ระบบ</div>
+  <div class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg> ตั้งค่า</div>
+</div>
+<div class="main">
+  <div class="topbar">
+    <div><div class="crumb"><b>หน้าแรก</b> / ตลาดไฟฟ้า P2P</div><div class="title">ตลาดซื้อขายไฟฟ้า P2P</div></div>
+    <div class="controls"><div class="select"><span class="lbl">จังหวัด</span><span class="val">ปทุมธานี</span><span class="caret">▼</span></div><div class="seg" style="width:220px;background:#FFFFFF"><div class="on">ฉันเป็นผู้ขาย</div><div>ฉันเป็นผู้ซื้อ</div></div><div class="btn pri"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M5 12h14"/></svg> ลงขายไฟฟ้า</div></div>
+  </div>
+  
+<div class="kpis">
+  <div class="card kpi"><div class="kpi-l">ไฟที่เสนอขายในจังหวัดวันนี้</div><div class="kpi-v">18,400 <span class="kpi-u">kWh</span></div></div>
+  <div class="card kpi"><div class="kpi-l">ผู้ขาย (ประชาชน)</div><div class="kpi-v">326 <span class="kpi-u">ครัวเรือน</span></div></div>
+  <div class="card kpi"><div class="kpi-l">ผู้ซื้อที่เปิดรับซื้อ</div><div class="kpi-v">14 <span class="kpi-u">หน่วยงาน/องค์กร</span></div></div>
+  <div class="card kpi"><div class="kpi-l">ราคาเฉลี่ยวันนี้</div><div class="kpi-v">3.20 <span class="kpi-u">บาท/หน่วย</span></div></div>
+</div>
+
+<div class="card mg">
+  <div class="card-h"><div><div class="card-t">ไมโครกริดชุมชน ต.คลองหก</div><div class="card-s">ไฟไหลได้ 2 ทิศทาง · ข้อมูลจาก Smart Meter และอุปกรณ์ IoT แบบเรียลไทม์</div></div>
+    <span class="pill live"><span class="live-dot"></span>ออนไลน์ · อัปเดต 13:45</span></div>
+  <div class="mg-row">
+    <div class="mg-flow">
+      <svg width="500" height="236" viewBox="0 0 500 236" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;left:0;top:0"><path d="M148 96h26" stroke="#22A06B" stroke-width="2.5"/><path d="M172 91l8 5-8 5z" fill="#22A06B"/><path d="M180 126h-26" stroke="#94A3B8" stroke-width="2" stroke-dasharray="4 3"/><path d="M156 121l-8 5 8 5z" fill="#94A3B8"/><path d="M320 96h26" stroke="#22A06B" stroke-width="2.5"/><path d="M344 91l8 5-8 5z" fill="#22A06B"/><path d="M236 146v26" stroke="#22A06B" stroke-width="2.5"/><path d="M231 170l5 8 5-8z" fill="#22A06B"/><path d="M264 178v-26" stroke="#94A3B8" stroke-width="2" stroke-dasharray="4 3"/><path d="M259 154l5-8 5 8z" fill="#94A3B8"/></svg>
+      <div class="nd" style="left:12px;top:60px"><div class="nd-t">บ้านโซลาร์</div><div class="nd-s">148 ครัวเรือน</div><div class="nd-v" style="color:#15803D">ผลิต 0.62 MW</div></div>
+      <div class="nd grid" style="left:184px;top:60px"><div class="nd-t">กริดชุมชน</div><div class="nd-s">Microgrid</div><div class="nd-v">สมดุล</div></div>
+      <div class="nd" style="left:356px;top:60px"><div class="nd-t">ผู้ซื้อในพื้นที่</div><div class="nd-s">อบจ. เทศบาล โรงงาน</div><div class="nd-v">รับ 0.44 MW</div></div>
+      <div class="nd" style="left:184px;top:184px;padding:8px 12px"><div class="nd-t">แบตเตอรี่ชุมชน 72%</div></div>
+      <div class="fl-l" style="left:150px;top:76px;color:#15803D">ขาย</div>
+      <div class="fl-l" style="left:146px;top:132px;color:#64748B;font-size:10px">กลางคืน</div>
+      <div class="fl-l" style="left:322px;top:76px;color:#15803D">0.44</div>
+      <div class="fl-l" style="left:200px;top:154px;color:#15803D">ชาร์จ</div>
+      <div class="fl-l" style="left:272px;top:154px;color:#64748B">จ่ายกลับ</div>
+      <div class="fl-l" style="left:12px;top:16px;color:#4B5563;font-weight:600">กลางวัน: บ้าน → กริด → ผู้ซื้อ / แบตเตอรี่ · กลางคืน: แบตเตอรี่ → บ้าน</div>
+    </div>
+    <div class="mg-stats">
+      <div class="ms"><div class="ms-l">ผลิตตอนนี้</div><div class="ms-v">0.62 <span class="ms-u">MW</span></div></div>
+      <div class="ms"><div class="ms-l">ใช้ในชุมชน</div><div class="ms-v">0.44 <span class="ms-u">MW</span></div></div>
+      <div class="ms"><div class="ms-l">ชาร์จแบตเตอรี่</div><div class="ms-v">0.18 <span class="ms-u">MW</span></div></div>
+      <div class="ms"><div class="ms-l">มิเตอร์ออนไลน์</div><div class="ms-v">146<span class="ms-u">/148</span></div></div>
+    </div>
+    <div class="mg-side">
+      <div class="bt-top"><div class="ms-l">แบตเตอรี่สำรองชุมชน</div><div class="bt-v">72%</div></div>
+      <div class="bt-bar"><div class="bt-fill" style="width:72%"></div></div>
+      <div class="ms-l">0.86 / 1.2 MWh · สำรองไฟให้จุดสำคัญได้ช่วงไฟดับ</div>
+      <div class="fc-t">ไฟส่วนเกินที่คาดว่าจะขายได้วันนี้ (MW)</div>
+      <div class="fc-bars"><div class="fc-b" style="height:3px"></div><div class="fc-b" style="height:8px"></div><div class="fc-b" style="height:19px"></div><div class="fc-b" style="height:32px"></div><div class="fc-b" style="height:44px"></div><div class="fc-b" style="height:55px"></div><div class="fc-b" style="height:60px"></div><div class="fc-b" style="height:56px"></div><div class="fc-b" style="height:47px"></div><div class="fc-b" style="height:33px"></div><div class="fc-b" style="height:17px"></div><div class="fc-b" style="height:7px"></div><div class="fc-b" style="height:2px"></div></div>
+      <div class="fc-x"><span>06:00</span><span>12:00</span><span>18:00</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="card match">
+    <div class="card-h"><div><div class="card-t">จับคู่กับผู้ซื้อในพื้นที่</div><div class="card-s">เรียงตามระยะทาง และช่วงเวลาที่ผู้ซื้อต้องการไฟตรงกับช่วงที่คุณผลิตได้</div></div><div class="pill">รัศมี 10 กม.</div></div>
+    <div class="offer">
+      <div class="of"><div class="of-l">โซลาร์ที่ติดตั้ง</div><div class="of-v">5 kW</div></div>
+      <div class="of"><div class="of-l">ไฟเหลือขายเฉลี่ย</div><div class="of-v">10 kWh/วัน</div></div>
+      <div class="of"><div class="of-l">ช่วงเวลาที่ขายได้</div><div class="of-v">10:00–15:00</div></div>
+      <div class="of"><div class="of-l">ราคาที่ตั้งไว้</div><div class="of-v">3.20 บาท/หน่วย</div></div>
+    </div>
+    <div class="buyer"><div class="b-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg></div><div class="b-info"><div class="b-n">อบจ.ปทุมธานี (อาคารสำนักงาน)</div><div class="b-d"><span class="st info">หน่วยงานรัฐ</span><span>3.2 กม.</span><span>ต้องการไฟ 09:00–16:00</span><span>400 kWh/วัน</span></div></div><div class="b-right"><div class="b-p">3.20 <span>บาท/หน่วย</span></div><div class="b-ov"><div class="bar" style="width:90px"><div style="width:100%;background:#22A06B"></div></div><span>เวลาตรงกัน 100%</span></div><div class="btn pri sm">เสนอขาย</div></div></div><div class="buyer"><div class="b-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg></div><div class="b-info"><div class="b-n">เทศบาลนครรังสิต (ศูนย์บริการสาธารณสุข)</div><div class="b-d"><span class="st info">หน่วยงานรัฐ</span><span>5.8 กม.</span><span>ต้องการไฟ 08:00–17:00</span><span>150 kWh/วัน</span></div></div><div class="b-right"><div class="b-p">3.25 <span>บาท/หน่วย</span></div><div class="b-ov"><div class="bar" style="width:90px"><div style="width:100%;background:#22A06B"></div></div><span>เวลาตรงกัน 100%</span></div><div class="btn pri sm">เสนอขาย</div></div></div><div class="buyer"><div class="b-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 21V10l6 4V10l6 4V6h6v15z"/><path d="M7 17h2M12 17h2M17 17h2"/></svg></div><div class="b-info"><div class="b-n">โรงงานแปรรูปอาหาร ต.คลองหนึ่ง</div><div class="b-d"><span class="st grey">องค์กรเอกชน</span><span>7.5 กม.</span><span>ต้องการไฟ 06:00–14:00</span><span>2,000 kWh/วัน</span></div></div><div class="b-right"><div class="b-p">3.10 <span>บาท/หน่วย</span></div><div class="b-ov"><div class="bar" style="width:90px"><div style="width:80%;background:#D97706"></div></div><span>เวลาตรงกัน 80%</span></div><div class="btn sec sm">เสนอขาย</div></div></div><div class="buyer"><div class="b-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 21V10l6 4V10l6 4V6h6v15z"/><path d="M7 17h2M12 17h2M17 17h2"/></svg></div><div class="b-info"><div class="b-n">ห้างค้าปลีกชุมชน อ.ลำลูกกา</div><div class="b-d"><span class="st grey">องค์กรเอกชน</span><span>9.1 กม.</span><span>ต้องการไฟ 12:00–21:00</span><span>300 kWh/วัน</span></div></div><div class="b-right"><div class="b-p">3.30 <span>บาท/หน่วย</span></div><div class="b-ov"><div class="bar" style="width:90px"><div style="width:60%;background:#D97706"></div></div><span>เวลาตรงกัน 60%</span></div><div class="btn sec sm">เสนอขาย</div></div></div>
+  </div>
+
+  <div class="card pricing">
+    <div class="card-h"><div><div class="card-t">ราคาและสัญญา</div><div class="card-s">เทียบราคาต่อหน่วย (kWh)</div></div></div>
+    <div class="pc"><div class="pc-top"><span>ขายคืนการไฟฟ้า</span><b>2.20 บาท</b></div><div class="bar" style="height:12px"><div style="width:53%;background:#9CA3AF"></div></div></div>
+    <div class="pc"><div class="pc-top"><span>ราคาตลาด P2P</span><b>3.20 บาท</b></div><div class="bar" style="height:12px"><div style="width:77%;background:#22A06B"></div></div><div class=pc-n>ผู้ซื้อจ่ายค่าผ่านสายส่งเพิ่ม 0.30 บาท/หน่วย</div></div>
+    <div class="pc"><div class="pc-top"><span>ค่าไฟที่ผู้ซื้อจ่ายปกติ</span><b>4.18 บาท</b></div><div class="bar" style="height:12px"><div style="width:100%;background:#F08C3A"></div></div></div>
+    <div class="gain">ผู้ขายได้มากกว่าขายคืนการไฟฟ้า <b>1.00 บาท/หน่วย</b><br>ผู้ซื้อประหยัดกว่าค่าไฟปกติ <b>0.68 บาท/หน่วย</b></div>
+    <div class="ct-l">เลือกรูปแบบสัญญา</div>
+    <div class="ct"><div class="ct-t"><span>รายวัน</span><span class="muted">ยกเลิกได้ทุกวัน</span></div><div class="ct-d">ซื้อขายตามไฟที่ผลิตได้จริงในแต่ละวัน</div></div>
+    <div class="ct on"><div class="ct-t"><span>รายเดือน</span><span style="color:#2F5D8A">เลือกอยู่</span></div><div class="ct-d">ราคาคงที่ 1 เดือน · ขั้นต่ำ 200 kWh/เดือน</div></div>
+    <div class="ct"><div class="ct-t"><span>รายปี (Direct PPA)</span><span class="muted">สำหรับองค์กร</span></div><div class="ct-d">ราคาคงที่ 12 เดือน · ทำสัญญาตรงกับผู้ซื้อ</div></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="card draft">
+    <div class="card-h"><div><div class="card-t">ร่างสัญญาซื้อขายไฟฟ้า</div><div class="card-s">กับ อบจ.ปทุมธานี · สัญญารายเดือน</div></div><span class="st watch">รอผู้ซื้อตรวจ</span></div>
+    <div class="flow">
+      <div class="fs on"><div class="fs-d">1</div>ร่างสัญญา</div><div class="fl"></div>
+      <div class="fs on"><div class="fs-d">2</div>ผู้ซื้อตรวจ</div><div class="fl"></div>
+      <div class="fs"><div class="fs-d">3</div>ลงนามทั้งสองฝ่าย</div><div class="fl"></div>
+      <div class="fs"><div class="fs-d">4</div>เริ่มซื้อขาย</div>
+    </div>
+    <div class="kv"><span>ผู้ขาย</span><b>คุณ (บ้านโซลาร์ 5 kW, ต.คลองหก)</b></div>
+    <div class="kv"><span>ผู้ซื้อ</span><b>อบจ.ปทุมธานี (อาคารสำนักงาน)</b></div>
+    <div class="kv"><span>ปริมาณ</span><b>300 kWh/เดือน</b></div>
+    <div class="kv"><span>ราคา</span><b>3.20 บาท/หน่วย</b></div>
+    <div class="kv"><span>ระยะเวลา</span><b>1 – 30 พ.ย. 2569</b></div>
+    <div class="kv"><span>การวัดปริมาณไฟ</span><b>มิเตอร์อัจฉริยะของการไฟฟ้า</b></div>
+    <div class="kv"><span>การชำระเงิน</span><b>โอนเข้าบัญชีทุกสิ้นเดือน</b></div>
+    <div class="controls" style="margin-top:16px;justify-content:flex-end"><div class="btn sec">แก้ไขสัญญา</div><div class="btn pri">ส่งให้ผู้ซื้อ</div></div>
+  </div>
+
+  <div class="card income">
+    <div class="card-h"><div><div class="card-t">รายได้จากการขายไฟ</div><div class="card-s">6 เดือนล่าสุด · บาท</div></div></div>
+    <div class="inc-sum">
+      <div class="is"><div class="is-l">รายได้รวม</div><div class="is-v" style="color:#15803D">5,296 บาท</div></div>
+      <div class="is"><div class="is-l">ไฟที่ขายได้</div><div class="is-v">1,655 kWh</div></div>
+      <div class="is"><div class="is-l">ได้มากกว่าขายคืนการไฟฟ้า</div><div class="is-v">+1,655 บาท</div></div>
+    </div>
+    <div class="ic-chart"><div class="ic-col"><div class="ic-v">1,120</div><div class="ic-bar" style="height:140px"></div></div><div class="ic-col"><div class="ic-v">864</div><div class="ic-bar" style="height:108px"></div></div><div class="ic-col"><div class="ic-v">784</div><div class="ic-bar" style="height:98px"></div></div><div class="ic-col"><div class="ic-v">816</div><div class="ic-bar" style="height:102px"></div></div><div class="ic-col"><div class="ic-v">768</div><div class="ic-bar" style="height:96px"></div></div><div class="ic-col"><div class="ic-v">944</div><div class="ic-bar" style="height:118px"></div></div></div>
+    <div class="ic-labels"><div class="ic-m">พ.ค.</div><div class="ic-m">มิ.ย.</div><div class="ic-m">ก.ค.</div><div class="ic-m">ส.ค.</div><div class="ic-m">ก.ย.</div><div class="ic-m">ต.ค.</div></div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+  <div class="card-h"><div><div class="card-t">ประวัติการซื้อขาย</div><div class="card-s">รายการล่าสุด</div></div><div class="tabs"><div class="tab on">ทั้งหมด</div><div class="tab">ชำระแล้ว</div><div class="tab">รอชำระ</div></div></div>
+  <table>
+    <tr><th>วันที่</th><th>ผู้ซื้อ</th><th>สัญญา</th><th class="r">ปริมาณ (kWh)</th><th class="r">ราคา (บาท/หน่วย)</th><th class="r">รวม (บาท)</th><th>สถานะ</th></tr>
+    <tr><td class="muted">28 ต.ค. 2569</td><td><b>อบจ.ปทุมธานี</b></td><td>รายเดือน</td><td class="r">11.5</td><td class="r">3.20</td><td class="r"><b>36.80</b></td><td><span class="st watch">รอชำระ</span></td></tr><tr><td class="muted">27 ต.ค. 2569</td><td><b>อบจ.ปทุมธานี</b></td><td>รายเดือน</td><td class="r">12.0</td><td class="r">3.20</td><td class="r"><b>38.40</b></td><td><span class="st ok">ชำระแล้ว</span></td></tr><tr><td class="muted">26 ต.ค. 2569</td><td><b>เทศบาลนครรังสิต</b></td><td>รายวัน</td><td class="r">9.5</td><td class="r">3.20</td><td class="r"><b>30.40</b></td><td><span class="st ok">ชำระแล้ว</span></td></tr><tr><td class="muted">25 ต.ค. 2569</td><td><b>อบจ.ปทุมธานี</b></td><td>รายเดือน</td><td class="r">10.0</td><td class="r">3.20</td><td class="r"><b>32.00</b></td><td><span class="st ok">ชำระแล้ว</span></td></tr><tr><td class="muted">24 ต.ค. 2569</td><td><b>อบจ.ปทุมธานี</b></td><td>รายเดือน</td><td class="r">8.0</td><td class="r">3.20</td><td class="r"><b>25.60</b></td><td><span class="st ok">ชำระแล้ว</span></td></tr>
+  </table>
+</div>
+  <div class="foot">ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ · อัปเดตล่าสุด 30 ต.ค. 2569 10:30</div>
+</div>
+</div></body></html>

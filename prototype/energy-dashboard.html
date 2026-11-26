@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EnergyWatch - แดชบอร์ดพลังงาน ปทุมธานี</title>
+<link rel="stylesheet" href="assets/base.css?v=3">
+<style>
+/* Main */
+  .main { width: 1200px; padding: 28px 32px 48px; }
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+  .crumb { font-size: 14px; color: #6B7280; margin-bottom: 6px; }
+  .crumb b { color: #2563EB; font-weight: 500; }
+  .title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+  .controls { display: flex; gap: 12px; align-items: center; }
+  .select { display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 10px; padding: 10px 14px; font-size: 14px; }
+  .select .lbl { color: #6B7280; }
+  .select .val { font-weight: 600; }
+  .select .caret { color: #9CA3AF; font-size: 12px; }
+  .toggle { display: flex; align-items: center; gap: 10px; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; border-radius: 10px; padding: 10px 14px; font-size: 14px; font-weight: 600; }
+  .switch { width: 36px; height: 20px; border-radius: 10px; background: #E5484D; display: flex; align-items: center; justify-content: flex-end; padding: 2px; }
+  .knob { width: 16px; height: 16px; border-radius: 8px; background: #FFFFFF; }
+
+  .card { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 24px; }
+  .card-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .card-t { font-size: 17px; font-weight: 700; }
+  .card-s { font-size: 13px; color: #6B7280; margin-top: 4px; }
+  .pill { font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: #F3F4F6; color: #4B5563; }
+  .row { display: flex; gap: 16px; margin-bottom: 20px; }
+
+  /* KPIs */
+  .kpis { display: flex; gap: 16px; margin-bottom: 20px; }
+  .kpi { width: 272px; }
+  .kpi-l { font-size: 13px; color: #6B7280; margin-bottom: 10px; }
+  .kpi-v { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+  .kpi-u { font-size: 14px; color: #6B7280; font-weight: 500; }
+  .kpi-d { font-size: 13px; margin-top: 10px; font-weight: 600; }
+  .up { color: #16A34A; } .down { color: #DC2626; } .warn { color: #D97706; }
+  .kpi-bar { height: 6px; border-radius: 3px; background: #F3F4F6; margin-top: 12px; display: flex; overflow: hidden; }
+
+  /* History chart */
+  .fossil { background: #F08C3A; } .clean { background: #22A06B; }
+  .legend { display: flex; gap: 16px; font-size: 13px; color: #4B5563; align-items: center; }
+  .lg { display: flex; align-items: center; gap: 6px; }
+  .sw { width: 12px; height: 12px; border-radius: 3px; }
+  .sw.fc { background: #FFFFFF; border: 2px dashed #9CA3AF; }
+  .ranges { display: flex; gap: 4px; background: #F3F4F6; border-radius: 10px; padding: 4px; }
+  .rg { padding: 7px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; color: #6B7280; }
+  .rg.on { background: #FFFFFF; color: #111827; }
+  .hc-tools { display: flex; gap: 16px; align-items: center; }
+  .plot { display: flex; }
+  .yaxis { width: 48px; height: 290px; display: flex; flex-direction: column; justify-content: space-between; font-size: 12px; color: #9CA3AF; padding-top: 22px; }
+  .bars { display: flex; align-items: flex-end; height: 290px; border-bottom: 1px solid #E5E7EB; }
+  .fc-zone { display: flex; align-items: flex-end; height: 290px; background: #F1F5F9; border-radius: 10px 10px 0 0; position: relative; }
+  .fc-label { position: absolute; top: 8px; left: 0; width: 240px; text-align: center; font-size: 12px; font-weight: 700; color: #2F5D8A; }
+  .col { width: 80px; display: flex; flex-direction: column; align-items: center; }
+  .tot { font-size: 11px; font-weight: 700; color: #374151; margin-bottom: 4px; }
+  .stack { width: 40px; display: flex; flex-direction: column; border-radius: 6px 6px 0 0; overflow: hidden; }
+  .col.fc .stack { opacity: 0.55; }
+  .col.now .tot { color: #2563EB; }
+  .xaxis { display: flex; margin-left: 48px; padding-top: 10px; }
+  .xl { width: 80px; text-align: center; font-size: 12px; color: #6B7280; }
+  .xl.now { color: #2563EB; font-weight: 700; }
+  .xl.fc { color: #2F5D8A; }
+  .note { display: flex; gap: 8px; align-items: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #F3F4F6; font-size: 13px; color: #6B7280; }
+  .note b { color: #111827; }
+
+  /* Share + AI trend */
+  .share { width: 376px; }
+  .share-row { margin-bottom: 16px; }
+  .share-top { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+  .share-bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; }
+  .target { margin-top: 6px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 12px; font-size: 13px; color: #166534; line-height: 1.5; }
+
+  .ai-card { width: 744px; background: linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%); border: 1px solid #CBD8E6; }
+  .ai-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .ai-title { display: flex; align-items: center; gap: 12px; }
+  .ai-ic { width: 40px; height: 40px; border-radius: 12px; font-size: 14px; font-weight: 800; background: #2F5D8A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .ai-meta { font-size: 12px; color: #2F5D8A; font-weight: 600; background: #E2EAF3; padding: 6px 10px; border-radius: 999px; }
+  .ai-text { font-size: 15px; line-height: 1.7; color: #1F2937; margin-bottom: 18px; }
+  .ai-text b { color: #2F5D8A; }
+  .insights { display: flex; gap: 12px; margin-bottom: 16px; }
+  .ins { width: 222px; background: #FFFFFF; border: 1px solid #E2EAF3; border-radius: 12px; padding: 14px; }
+  .ins-l { font-size: 12px; color: #6B7280; margin-bottom: 6px; }
+  .ins-v { font-size: 20px; font-weight: 800; }
+  .ins-d { font-size: 12px; color: #6B7280; margin-top: 4px; }
+  .ai-foot { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #6B7280; }
+  .ai-btn { padding: 8px 14px; border-radius: 10px; background: #2F5D8A; color: #FFFFFF; font-size: 13px; font-weight: 700; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: right; font-size: 12px; color: #6B7280; font-weight: 600; padding: 10px 10px; border-bottom: 1px solid #E5E7EB; background: #F9FAFB; }
+  th.now, td.now { background: #EFF6FF; }
+  th.fc { color: #2F5D8A; }
+  th:first-child, td:first-child { text-align: left; }
+  td { text-align: right; padding: 10px 10px; border-bottom: 1px solid #F3F4F6; }
+  td.fc { color: #2F5D8A; }
+  .grp td { font-weight: 700; font-size: 13px; background: #FAFAFA; }
+  .grp td.now { background: #E0ECFF; }
+  .grp .tag { display: inline-flex; align-items: center; gap: 8px; }
+  .total td { font-weight: 800; border-top: 2px solid #E5E7EB; border-bottom: none; }
+
+  /* AI crisis */
+  .crisis-banner { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(120deg, #1E3A5F 0%, #7F1D1D 100%); color: #FFFFFF; border-radius: 16px; padding: 22px 24px; margin: 8px 0 20px; }
+  .cb-l { display: flex; align-items: center; gap: 16px; }
+  .cb-ic { width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .cb-t { font-size: 20px; font-weight: 800; }
+  .cb-s { font-size: 14px; color: #E2E8F0; margin-top: 4px; }
+  .scen { display: flex; gap: 8px; }
+  .chip { padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; background: rgba(255,255,255,0.12); color: #F1F5F9; }
+  .chip.on { background: #FFFFFF; color: #1E3A5F; }
+
+  .ai-sum { width: 744px; border: 1px solid #CBD8E6; }
+  .conf { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #6B7280; }
+  .conf-bar { width: 120px; height: 8px; border-radius: 4px; background: #E2EAF3; overflow: hidden; }
+  .conf-fill { width: 87%; height: 8px; background: #2F5D8A; }
+  .factors { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+  .factor { white-space: nowrap; font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 8px; background: #F1F5F9; color: #24496E; }
+  .factor-l { font-size: 12px; color: #6B7280; margin-bottom: 8px; }
+
+  .demand { width: 376px; }
+  .dm-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .dm-box { width: 158px; border-radius: 12px; padding: 14px; }
+  .dm-box.n { background: #F3F4F6; }
+  .dm-box.c { background: #FEF2F2; border: 1px solid #FECACA; }
+  .dm-l { font-size: 12px; color: #6B7280; margin-bottom: 6px; }
+  .dm-v { font-size: 24px; font-weight: 800; }
+  .dm-u { font-size: 12px; color: #6B7280; }
+  .gap-box { background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 14px; margin-bottom: 16px; }
+  .gap-v { font-size: 22px; font-weight: 800; color: #C2410C; }
+  .gauge-l { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+  .gauge { height: 12px; border-radius: 6px; background: #F3F4F6; display: flex; overflow: hidden; margin-bottom: 6px; }
+  .gauge-note { font-size: 12px; color: #6B7280; }
+
+  .supply { width: 752px; }
+  .src { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid #F3F4F6; }
+  .src-n { width: 26px; height: 26px; border-radius: 13px; background: #E2EAF3; color: #2F5D8A; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .src-main { width: 330px; }
+  .src-t { font-size: 14px; font-weight: 600; }
+  .src-why { font-size: 12px; color: #2F5D8A; margin-top: 4px; line-height: 1.5; }
+  .src-cap { width: 150px; }
+  .src-s { font-size: 12px; color: #6B7280; }
+  .cap-bar { height: 8px; border-radius: 4px; background: #F3F4F6; overflow: hidden; margin-top: 6px; }
+  .cap-fill { height: 8px; background: #2563EB; border-radius: 4px; }
+  .src-eta { width: 70px; font-size: 13px; text-align: right; }
+  .src-st { width: 80px; text-align: right; }
+  .st { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+  .st.ok { background: #DCFCE7; color: #166534; }
+  .st.go { background: #DBEAFE; color: #1E40AF; }
+  .st.wait { background: #FEF3C7; color: #92400E; }
+  .sum { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; background: #F0FDF4; border-radius: 12px; padding: 14px 16px; font-size: 14px; color: #166534; }
+  .sum b { font-size: 16px; }
+
+  .alloc { width: 368px; }
+  .al-bar { display: flex; height: 28px; border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+  .al-seg { display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 12px; font-weight: 700; }
+  .al-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F3F4F6; font-size: 14px; }
+  .al-name { display: flex; align-items: center; gap: 10px; }
+  .al-v { font-weight: 700; }
+  .al-ai { margin-top: 14px; background: #F1F5F9; border-radius: 10px; padding: 12px; font-size: 12px; line-height: 1.6; color: #24496E; }
+  .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+  .btn { flex: 1; text-align: center; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 700; }
+  .btn.pri { background: #E5484D; color: #FFFFFF; }
+  .btn.sec { background: #FFFFFF; border: 1px solid #E5E7EB; color: #111827; }
+
+  .steps { width: 560px; }
+  .step { display: flex; gap: 14px; }
+  .rail { width: 30px; display: flex; flex-direction: column; align-items: center; }
+  .dot { width: 30px; height: 30px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #FFFFFF; background: #2F5D8A; }
+  .dot.todo { background: #E5E7EB; color: #6B7280; }
+  .line { width: 2px; height: 46px; background: #E5E7EB; }
+  .step-b { padding-bottom: 12px; width: 470px; }
+  .step-top { display: flex; justify-content: space-between; }
+  .step-t { font-size: 14px; font-weight: 700; padding-top: 5px; }
+  .step-time { font-size: 12px; color: #6B7280; padding-top: 6px; }
+  .step-d { font-size: 13px; color: #4B5563; margin-top: 4px; line-height: 1.5; }
+
+  .chat { width: 560px; display: flex; flex-direction: column; }
+  .msgs { flex: 1; }
+  .msg-u { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+  .bub-u { max-width: 380px; background: #111827; color: #FFFFFF; padding: 10px 14px; border-radius: 14px 14px 4px 14px; font-size: 14px; line-height: 1.5; }
+  .msg-a { display: flex; gap: 10px; margin-bottom: 12px; }
+  .av { width: 30px; height: 30px; border-radius: 10px; font-size: 11px; font-weight: 800; background: #2F5D8A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .bub-a { width: 440px; background: #F1F5F9; color: #1F2937; padding: 12px 14px; border-radius: 14px 14px 14px 4px; font-size: 14px; line-height: 1.6; }
+  .bub-a b { color: #2F5D8A; }
+  .sugs { display: flex; gap: 8px; margin: 6px 0 12px; }
+  .sug { font-size: 12px; padding: 7px 10px; border-radius: 999px; border: 1px solid #CBD8E6; color: #24496E; background: #FFFFFF; }
+  .input { display: flex; align-items: center; gap: 10px; border: 1px solid #D1D5DB; border-radius: 12px; padding: 8px 8px 8px 14px; }
+  .input-t { flex: 1; font-size: 14px; color: #9CA3AF; }
+  .send { width: 36px; height: 36px; border-radius: 10px; background: #2F5D8A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; }
+  .disc { font-size: 12px; color: #9CA3AF; margin-top: 10px; }
+  .foot { font-size: 12px; color: #9CA3AF; margin-top: 8px; }
+
+  /* Renewable potential */
+  .re-sum { display: flex; align-items: center; gap: 12px; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 14px 16px; margin-bottom: 18px; font-size: 14px; color: #166534; }
+  .re-sum b { font-size: 16px; }
+  .re-grid { display: flex; gap: 16px; }
+  .re { width: 260px; border: 1px solid #E5E7EB; border-radius: 14px; padding: 16px; }
+  .re.hi { border-color: #86EFAC; }
+  .re-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .re-n { font-size: 16px; font-weight: 800; }
+  .lv { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+  .lv.hi { background: #DCFCE7; color: #166534; }
+  .lv.lo { background: #F3F4F6; color: #6B7280; }
+  .re-score { display: flex; justify-content: space-between; font-size: 12px; color: #6B7280; margin-bottom: 6px; }
+  .re-bar { height: 6px; border-radius: 3px; background: #F3F4F6; overflow: hidden; margin-bottom: 12px; }
+  .re-fact { font-size: 13px; color: #4B5563; line-height: 1.6; padding-left: 10px; border-left: 2px solid #E5E7EB; margin-bottom: 6px; }
+  .re-pot { font-size: 12px; color: #6B7280; margin-top: 12px; }
+  .re-pv { font-size: 22px; font-weight: 800; }
+  .re-rec { margin-top: 12px; border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.5; }
+  .re-rec.hi { background: #F0FDF4; color: #166534; }
+  .re-rec.lo { background: #F9FAFB; color: #6B7280; }
+  /* LNG price crisis */
+  .lng { display: flex; gap: 24px; }
+  .lng-chart { width: 420px; }
+  .lc-plot { position: relative; display: flex; align-items: flex-end; justify-content: space-between; height: 160px; border-bottom: 1px solid #E5E7EB; padding: 0 4px; }
+  .lc-bar { width: 24px; border-radius: 4px 4px 0 0; }
+  .lc-th { position: absolute; left: 0; right: 0; border-top: 2px dashed #E5484D; }
+  .lc-thl { position: absolute; left: 4px; font-size: 11px; font-weight: 700; color: #B91C1C; background: #FFFFFF; padding: 0 4px; }
+  .lc-x { display: flex; justify-content: space-between; font-size: 12px; color: #6B7280; margin-top: 8px; }
+  .lng-imp { width: 300px; }
+  .li-v { font-size: 30px; font-weight: 800; color: #B91C1C; }
+  .li-u { font-size: 13px; color: #6B7280; font-weight: 500; }
+  .li-d { font-size: 13px; font-weight: 700; color: #B91C1C; margin: 2px 0 14px; }
+  .li-row { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; padding: 9px 0; border-top: 1px solid #F3F4F6; }
+  .li-row span { color: #4B5563; }
+  .li-row b { text-align: right; white-space: nowrap; }
+  .lng-rec { width: 320px; }
+  .lr-t { font-size: 13px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .lr { display: flex; gap: 10px; font-size: 13px; line-height: 1.5; margin-bottom: 10px; }
+  .lr-n { width: 22px; height: 22px; border-radius: 11px; background: #E2EAF3; color: #24496E; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ai-mini { font-size: 10px; font-weight: 800; color: #FFFFFF; background: #2F5D8A; padding: 2px 6px; border-radius: 5px; }
+  /* prototype states */
+  .toggle { cursor: pointer; }
+  .toggle.off { background: #FFFFFF; border-color: #E5E7EB; color: #4B5563; }
+  .toggle .switch:not(.on) { background: #D1D5DB; justify-content: flex-start; }
+  .bars .col { cursor: pointer; }
+  .bars .col:hover .stack, .bars .col.pick .stack { outline: 2px solid #2F5D8A; outline-offset: 2px; }
+  .bars, .fc-zone { transition: none; }
+  .chip { cursor: pointer; }
+  .chip:not(.on):hover { background: rgba(255,255,255,0.22); }
+  .msgs { max-height: 300px; overflow-y: auto; }
+  .chat-hidden { display: none; }
+  .hist-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .hist-scroll.is-scrolling .plot, .hist-scroll.is-scrolling .xaxis { width: max-content; }
+</style>
+<link rel="stylesheet" href="assets/responsive.css?v=3">
+</head>
+<body>
+<div class="app">
+  <aside class="side" data-section="dash" data-sub="province"></aside>
+<div class="main">
+    <div class="topbar">
+      <div>
+        <div class="crumb"><b>หน้าแรก</b> / ภาคกลาง / ปทุมธานี</div>
+        <div class="title">การใช้พลังงาน จังหวัดปทุมธานี</div>
+      </div>
+      <div class="controls">
+        <div class="select" data-toast="ต้นแบบนี้มีข้อมูลตัวอย่างของจังหวัดปทุมธานีเท่านั้น"><span class="lbl">จังหวัด</span><span class="val">ปทุมธานี</span><span class="caret">▼</span></div>
+        <div class="select" id="yearSel" data-options="2555 – 2572|2560 – 2572|2565 – 2572|2567 – 2572"><span class="lbl">ช่วงปี</span><span class="val">2560 – 2572</span><span class="caret">▼</span></div>
+        <div class="toggle is-clickable" id="crisisToggle">โหมดวิกฤต<div class="switch on" aria-label="โหมดวิกฤต"><div class="knob"></div></div></div>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="card kpi">
+        <div class="kpi-l">การใช้พลังงานรวม (ปี 2569)</div>
+        <div class="kpi-v">4,350 <span class="kpi-u">ktoe/ปี</span></div>
+        <div class="kpi-d warn">▲ 10.1% จากปี 2560</div>
+      </div>
+      <div class="card kpi">
+        <div class="kpi-l">พลังงานฟอสซิล</div>
+        <div class="kpi-v">3,850 <span class="kpi-u">ktoe · 89%</span></div>
+        <div class="kpi-bar"><div class="fossil" style="width:89%"></div></div>
+      </div>
+      <div class="card kpi">
+        <div class="kpi-l">พลังงานสะอาด</div>
+        <div class="kpi-v">500 <span class="kpi-u">ktoe · 11%</span></div>
+        <div class="kpi-d up">▲ เพิ่ม 2.8 เท่า ตั้งแต่ปี 2560</div>
+      </div>
+      <div class="card kpi">
+        <div class="kpi-l">น้ำมันสำรองในจังหวัด</div>
+        <div class="kpi-v">3.8 <span class="kpi-u">วัน</span></div>
+        <div class="kpi-d down">▼ เหลือ 2.9 วัน หากเกิดวิกฤต</div>
+      </div>
+    </div>
+
+    <!-- History chart -->
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-h">
+        <div><div class="card-t">การใช้พลังงานย้อนหลังและพยากรณ์</div><div class="card-s">ฟอสซิลเทียบพลังงานสะอาด · ktoe/ปี</div></div>
+        <div class="hc-tools">
+          <div class="legend"><div class="lg"><div class="sw fossil"></div>ฟอสซิล</div><div class="lg"><div class="sw clean"></div>พลังงานสะอาด</div><div class="lg"><div class="sw fc"></div>พยากรณ์</div></div>
+          <div class="ranges" id="ranges"><div class="rg">3 ปี</div><div class="rg">5 ปี</div><div class="rg on">10 ปี</div><div class="rg">ทั้งหมด</div><div class="rg">กำหนดเอง</div></div>
+        </div>
+      </div>
+      <div class="plot">
+        <div class="yaxis" id="histY" style="padding-top:33px"><div>5,000</div><div>2,500</div><div>0</div></div>
+        <div class="bars" id="histBars">
+          <div class="col"><div class="tot">3,950</div><div class="stack"><div class="clean" style="height:9px"></div><div class="fossil" style="height:189px"></div></div></div>
+          <div class="col"><div class="tot">4,080</div><div class="stack"><div class="clean" style="height:10px"></div><div class="fossil" style="height:194px"></div></div></div>
+          <div class="col"><div class="tot">4,170</div><div class="stack"><div class="clean" style="height:11px"></div><div class="fossil" style="height:198px"></div></div></div>
+          <div class="col"><div class="tot">3,700</div><div class="stack"><div class="clean" style="height:12px"></div><div class="fossil" style="height:174px"></div></div></div>
+          <div class="col"><div class="tot">3,860</div><div class="stack"><div class="clean" style="height:13px"></div><div class="fossil" style="height:180px"></div></div></div>
+          <div class="col"><div class="tot">4,050</div><div class="stack"><div class="clean" style="height:15px"></div><div class="fossil" style="height:188px"></div></div></div>
+          <div class="col"><div class="tot">4,180</div><div class="stack"><div class="clean" style="height:18px"></div><div class="fossil" style="height:192px"></div></div></div>
+          <div class="col"><div class="tot">4,260</div><div class="stack"><div class="clean" style="height:20px"></div><div class="fossil" style="height:193px"></div></div></div>
+          <div class="col"><div class="tot">4,300</div><div class="stack"><div class="clean" style="height:23px"></div><div class="fossil" style="height:193px"></div></div></div>
+          <div class="col now"><div class="tot">4,350</div><div class="stack"><div class="clean" style="height:25px"></div><div class="fossil" style="height:193px"></div></div></div>
+          <div class="fc-zone">
+            <div class="fc-label">พยากรณ์โดย AI →</div>
+            <div class="col fc"><div class="tot">4,420</div><div class="stack"><div class="clean" style="height:30px"></div><div class="fossil" style="height:191px"></div></div></div>
+            <div class="col fc"><div class="tot">4,480</div><div class="stack"><div class="clean" style="height:36px"></div><div class="fossil" style="height:189px"></div></div></div>
+            <div class="col fc"><div class="tot">4,540</div><div class="stack"><div class="clean" style="height:42px"></div><div class="fossil" style="height:186px"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="xaxis" id="histX">
+        <div class="xl">2560</div><div class="xl">2561</div><div class="xl">2562</div><div class="xl">2563</div><div class="xl">2564</div><div class="xl">2565</div><div class="xl">2566</div><div class="xl">2567</div><div class="xl">2568</div><div class="xl now">2569 (ปัจจุบัน)</div><div class="xl fc">2570 · ปี 1</div><div class="xl fc">2571 · ปี 2</div><div class="xl fc">2572 · ปี 3</div>
+      </div>
+      <div class="note" id="histNote"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg> ปี 2563 การใช้พลังงานลดลง <b>11.3%</b> ช่วงสถานการณ์โควิด-19 โรงงานหลายแห่งลดกำลังการผลิต · กดที่แท่งกราฟเพื่อดูรายละเอียดของปีนั้น</div>
+    </div>
+
+    <!-- Share + AI trend -->
+    <div class="row">
+      <div class="card share">
+        <div class="card-h"><div><div class="card-t">สัดส่วนพลังงานตามปี</div><div class="card-s">ฟอสซิล : พลังงานสะอาด</div></div></div>
+        <div class="share-row"><div class="share-top"><span>2560</span><b>95% : 5%</b></div><div class="share-bar"><div class="fossil" style="width:95%"></div><div class="clean" style="width:5%"></div></div></div>
+        <div class="share-row"><div class="share-top"><span>2565</span><b>93% : 7%</b></div><div class="share-bar"><div class="fossil" style="width:93%"></div><div class="clean" style="width:7%"></div></div></div>
+        <div class="share-row"><div class="share-top"><span>2569 (ปัจจุบัน)</span><b>89% : 11%</b></div><div class="share-bar"><div class="fossil" style="width:89%"></div><div class="clean" style="width:11%"></div></div></div>
+        <div class="share-row"><div class="share-top"><span style="color:#2F5D8A">2572 (พยากรณ์)</span><b>82% : 18%</b></div><div class="share-bar" style="opacity:.6"><div class="fossil" style="width:82%"></div><div class="clean" style="width:18%"></div></div></div>
+        <div class="target" style="background:#FFFBEB;border-color:#FDE68A;color:#92400E">เป้าหมายจังหวัด: พลังงานสะอาด 20% ภายในปี 2572 — <b>คาดว่าทำได้ 18% ต่ำกว่าเป้า 2 จุด</b></div>
+      </div>
+
+      <div class="card ai-card">
+        <div class="ai-h">
+          <div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">AI สรุปแนวโน้มพลังงาน</div><div class="card-s">วิเคราะห์จากข้อมูล 10 ปีย้อนหลัง</div></div></div>
+          <div class="ai-meta">อัปเดต 10:30 วันนี้</div>
+        </div>
+        <div class="ai-text">ใน 10 ปีที่ผ่านมา ปทุมธานีใช้พลังงานเพิ่มขึ้นเฉลี่ย <b>1.1% ต่อปี</b> ส่วนใหญ่มาจากภาคอุตสาหกรรมและการขยายตัวของเมือง พลังงานสะอาดโตเร็วกว่ามาก เฉลี่ย <b>12.0% ต่อปี</b> จากโซลาร์รูฟท็อปบนหลังคาโรงงาน ส่วนการใช้ฟอสซิลทรงตัวตั้งแต่ปี 2566 และ AI คาดว่าจะ<b>เริ่มลดลงตั้งแต่ปี 2570</b> แต่สัดส่วนพลังงานสะอาดยัง<b>ต่ำกว่าเป้าของจังหวัด</b></div>
+        <div class="insights">
+          <div class="ins"><div class="ins-l">โตเร็วที่สุด</div><div class="ins-v" style="color:#15803D">แสงอาทิตย์</div><div class="ins-d">เพิ่ม 4 เท่า จากปี 2565 ถึง 2572</div></div>
+          <div class="ins"><div class="ins-l">ใช้มากที่สุด</div><div class="ins-v" style="color:#EA7A1F">ดีเซล</div><div class="ins-d">33% ของการใช้ทั้งหมด</div></div>
+          <div class="ins"><div class="ins-l">ความเสี่ยง</div><div class="ins-v" style="color:#B91C1C">สูง</div><div class="ins-d">พื้นที่ลุ่มเจ้าพระยา เสี่ยงน้ำท่วม</div></div>
+        </div>
+        <div class="ai-foot"><span>AI อาจผิดพลาดได้ ควรตรวจสอบกับข้อมูลต้นทาง</span><div class="ai-btn" data-toast="ระบบจะสร้างรายงานฉบับเต็มและเก็บไว้ที่หน้ารายงาน">สร้างรายงานฉบับเต็ม</div></div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-h">
+        <div><div class="card-t">รายละเอียดตามประเภทพลังงาน</div><div class="card-s">หน่วย ktoe/ปี · เลื่อนดูปีก่อนหน้าได้</div></div>
+        <div class="controls"><div class="pill is-clickable" id="tblPrev">◀ 2560–2564</div><div class="pill is-clickable" data-toast="ไฟล์ CSV ยังไม่ถูกสร้างจริงในต้นแบบนี้">ส่งออก CSV</div></div>
+      </div>
+      <table id="typeTable">
+        <tr><th>ประเภท</th><th>2565</th><th>2566</th><th>2567</th><th>2568</th><th class="now">2569</th><th class="fc">2570</th><th class="fc">2571</th><th class="fc">2572</th></tr>
+        <tr class="grp"><td><span class="tag"><span class="sw fossil"></span>ฟอสซิล</span></td><td>3,750</td><td>3,830</td><td>3,860</td><td>3,850</td><td class="now">3,850</td><td class="fc">3,820</td><td class="fc">3,770</td><td class="fc">3,710</td></tr>
+        <tr><td>น้ำมันดีเซล</td><td>1,430</td><td>1,460</td><td>1,470</td><td>1,460</td><td class="now">1,450</td><td class="fc">1,430</td><td class="fc">1,400</td><td class="fc">1,360</td></tr>
+        <tr><td>น้ำมันเบนซิน</td><td>640</td><td>655</td><td>660</td><td>655</td><td class="now">650</td><td class="fc">635</td><td class="fc">615</td><td class="fc">590</td></tr>
+        <tr><td>ก๊าซ LPG</td><td>380</td><td>385</td><td>385</td><td>380</td><td class="now">375</td><td class="fc">370</td><td class="fc">360</td><td class="fc">350</td></tr>
+        <tr><td>ก๊าซธรรมชาติ (อุตสาหกรรมและผลิตไฟฟ้า)</td><td>1,300</td><td>1,330</td><td>1,345</td><td>1,355</td><td class="now">1,375</td><td class="fc">1,385</td><td class="fc">1,395</td><td class="fc">1,410</td></tr>
+        <tr class="grp"><td><span class="tag"><span class="sw clean"></span>พลังงานสะอาด</span></td><td>300</td><td>350</td><td>400</td><td>450</td><td class="now">500</td><td class="fc">600</td><td class="fc">710</td><td class="fc">830</td></tr>
+        <tr><td>พลังงานแสงอาทิตย์</td><td>150</td><td>190</td><td>230</td><td>270</td><td class="now">310</td><td class="fc">400</td><td class="fc">500</td><td class="fc">610</td></tr>
+        <tr><td>ชีวมวล</td><td>60</td><td>62</td><td>64</td><td>66</td><td class="now">68</td><td class="fc">70</td><td class="fc">72</td><td class="fc">74</td></tr>
+        <tr><td>ก๊าซชีวภาพและพลังงานจากขยะ</td><td>80</td><td>85</td><td>90</td><td>95</td><td class="now">100</td><td class="fc">105</td><td class="fc">110</td><td class="fc">115</td></tr>
+        <tr><td>พลังงานอื่นๆ</td><td>10</td><td>13</td><td>16</td><td>19</td><td class="now">22</td><td class="fc">25</td><td class="fc">28</td><td class="fc">31</td></tr>
+        <tr class="total"><td>รวม</td><td>4,050</td><td>4,180</td><td>4,260</td><td>4,300</td><td class="now">4,350</td><td class="fc">4,420</td><td class="fc">4,480</td><td class="fc">4,540</td></tr>
+      </table>
+    </div>
+
+
+    <!-- Renewable potential -->
+    <div class="card" style="margin-bottom:20px">
+      <div class="ai-h">
+        <div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">AI แนะนำพลังงานหมุนเวียนตามศักยภาพพื้นที่</div><div class="card-s">ประเมินจากพื้นที่เกษตร หลังคาอาคาร ความเข้มแสง และความเร็วลมของจังหวัด</div></div></div>
+        <div class="ai-meta">อัปเดต 30 ต.ค. 2569</div>
+      </div>
+      <div class="re-sum"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5 12l5 5 9-10"/></svg><span>ถ้าทำตามคำแนะนำ พลังงานสะอาดปี 2572 จะเพิ่มจาก 830 เป็น <b>920 ktoe</b> สัดส่วนจาก 18% เป็น <b>20% ถึงเป้าของจังหวัด</b></span></div>
+      <div class="re-grid"><div class="re hi"><div class="re-top"><div class="re-n">ฟางข้าว</div><span class="lv hi">ศักยภาพสูง</span></div><div class="re-score"><span>คะแนนความเหมาะสม</span><b>85/100</b></div><div class="re-bar"><div style="width:85%;height:6px;background:#22A06B"></div></div><div class="re-fact">นาข้าว ~280,000 ไร่ ใน อ.ลาดหลุมแก้ว หนองเสือ ลำลูกกา</div><div class="re-fact">ฟางเหลือทิ้ง ~180,000 ตัน/ปี</div><div class="re-pot">พลังงานที่ได้</div><div class="re-pv">+40 <span class="li-u">ktoe/ปี</span></div><div class="re-rec hi">โรงไฟฟ้าชีวมวลชุมชน 2 แห่ง รวม ~16 MW ช่วยลดการเผาฟาง และลดฝุ่น PM2.5</div></div><div class="re hi"><div class="re-top"><div class="re-n">แสงอาทิตย์</div><span class="lv hi">ศักยภาพสูง</span></div><div class="re-score"><span>คะแนนความเหมาะสม</span><b>90/100</b></div><div class="re-bar"><div style="width:90%;height:6px;background:#22A06B"></div></div><div class="re-fact">หลังคาโรงงานและอาคารรัฐที่ยังไม่ติดตั้ง ~2.2 ล้าน ตร.ม.</div><div class="re-fact">แสงแดดเฉลี่ย ~5 kWh/ตร.ม./วัน</div><div class="re-pot">พลังงานที่ได้</div><div class="re-pv">+50 <span class="li-u">ktoe/ปี</span></div><div class="re-rec hi">โซลาร์รูฟท็อป ~450 MW ทยอยติดตั้งใน 3 ปี ลดการใช้ก๊าซช่วงกลางวัน</div></div><div class="re"><div class="re-top"><div class="re-n">ชานอ้อย</div><span class="lv lo">ศักยภาพต่ำ</span></div><div class="re-score"><span>คะแนนความเหมาะสม</span><b>10/100</b></div><div class="re-bar"><div style="width:10%;height:6px;background:#9CA3AF"></div></div><div class="re-fact">พื้นที่ปลูกอ้อยน้อยมาก</div><div class="re-fact">ไม่มีโรงงานน้ำตาลในจังหวัด</div><div class="re-pot">พลังงานที่ได้</div><div class="re-pv">< 1 <span class="li-u">ktoe/ปี</span></div><div class="re-rec lo">ไม่แนะนำ เหมาะกับจังหวัดที่มีโรงงานน้ำตาล เช่น ภาคอีสาน</div></div><div class="re"><div class="re-top"><div class="re-n">ลม</div><span class="lv lo">ศักยภาพต่ำ</span></div><div class="re-score"><span>คะแนนความเหมาะสม</span><b>15/100</b></div><div class="re-bar"><div style="width:15%;height:6px;background:#9CA3AF"></div></div><div class="re-fact">ลมเฉลี่ย ~3 ม./วินาที</div><div class="re-fact">ต่ำกว่าเกณฑ์ ~6 ม./วินาที ของกังหันขนาดใหญ่</div><div class="re-pot">พลังงานที่ได้</div><div class="re-pv">< 1 <span class="li-u">ktoe/ปี</span></div><div class="re-rec lo">ไม่แนะนำ เหมาะกับพื้นที่ชายฝั่งทะเล</div></div></div>
+      <div class="ai-foot" style="margin-top:16px"><span>AI อาจผิดพลาดได้ ควรสำรวจพื้นที่จริงก่อนตัดสินใจลงทุน</span></div>
+    </div>
+
+    <!-- LNG price crisis -->
+    <div class="card" style="margin-bottom:20px">
+      <div class="ai-h">
+        <div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">วิกฤตราคาเชื้อเพลิง: Spot LNG</div><div class="card-s">ราคา LNG นำเข้าแบบตลาดจร (USD/MMBtu) · ติดตามรายสัปดาห์</div></div></div>
+        <span class="st crit" style="font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;background:#FEE2E2;color:#B91C1C">เกินเกณฑ์เฝ้าระวัง</span>
+      </div>
+      <div class="lng">
+        <div class="lng-chart">
+          <div class="lc-plot"><div class="lc-bar" style="height:78px;background:#2F5D8A"></div><div class="lc-bar" style="height:77px;background:#2F5D8A"></div><div class="lc-bar" style="height:80px;background:#2F5D8A"></div><div class="lc-bar" style="height:83px;background:#2F5D8A"></div><div class="lc-bar" style="height:87px;background:#2F5D8A"></div><div class="lc-bar" style="height:92px;background:#2F5D8A"></div><div class="lc-bar" style="height:102px;background:#2F5D8A"></div><div class="lc-bar" style="height:111px;background:#2F5D8A"></div><div class="lc-bar" style="height:120px;background:#E5484D"></div><div class="lc-bar" style="height:129px;background:#E5484D"></div><div class="lc-bar" style="height:134px;background:#E5484D"></div><div class="lc-bar" style="height:137px;background:#E5484D"></div>
+            <div class="lc-th" style="bottom:112px"></div><div class="lc-thl" style="bottom:116px">เกณฑ์เฝ้าระวัง 16</div>
+          </div>
+          <div class="lc-x"><span>12 สัปดาห์ก่อน · 11.2</span><span>สัปดาห์นี้ · 19.6</span></div>
+        </div>
+        <div class="lng-imp">
+          <div class="li-v">19.6 <span class="li-u">USD/MMBtu</span></div>
+          <div class="li-d">▲ 75% จาก 12 สัปดาห์ก่อน</div>
+          <div class="li-row"><span>ก๊าซธรรมชาติในจังหวัด</span><b>32% ของพลังงานทั้งหมด</b></div>
+          <div class="li-row"><span>ต้นทุนก๊าซของโรงงาน</span><b style="color:#B91C1C">+18%</b></div>
+          <div class="li-row"><span>ค่าไฟรอบปรับ Ft ถัดไป</span><b style="color:#B91C1C">+0.30 บาท/หน่วย</b></div>
+        </div>
+        <div class="lng-rec">
+          <div class="lr-t"><span class="ai-mini">AI</span>แนะนำ</div>
+          <div class="lr"><div class="lr-n">1</div><div>จัดสรรเชื้อเพลิงสำรองให้โรงพยาบาล ประปา และระบบสาธารณูปโภคก่อน</div></div>
+          <div class="lr"><div class="lr-n">2</div><div>จำกัดการซื้อเกินปกติ เพื่อป้องกันการกักตุน</div></div>
+          <div class="lr"><div class="lr-n">3</div><div>รับซื้อไฟจากโซลาร์ประชาชนผ่านตลาด P2P ลดการพึ่งก๊าซ</div></div>
+          <div class="lr"><div class="lr-n">4</div><div>ช่วยค่าไฟครัวเรือนรายได้น้อยที่ได้รับผลกระทบ</div></div>
+        </div>
+      </div>
+      <div class="ai-foot" style="margin-top:12px"><span>ตัวเลขผลกระทบเป็นการประมาณของ AI ควรตรวจสอบกับข้อมูลต้นทาง</span><a class="ai-btn" href="energy-crisis.html#simulate">จำลองฉากทัศน์ราคา</a></div>
+    </div>
+    <!-- AI crisis -->
+    <div id="crisisZone">
+    <div class="crisis-banner" id="crisis">
+      <div class="cb-l">
+        <div class="cb-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg></div>
+        <div><div class="cb-t">AI วิเคราะห์วิกฤต: การจัดหาน้ำมัน จ.ปทุมธานี</div><div class="cb-s">เลือกสถานการณ์ แล้ว AI จะประเมินความต้องการและเสนอแผนให้</div></div>
+      </div>
+      <div class="scen" id="scen"><div class="chip on">น้ำท่วม</div><div class="chip">ไฟฟ้าดับ</div><div class="chip">ขาดแคลนก๊าซ</div><div class="chip">ราคา LNG พุ่ง</div></div>
+    </div>
+
+    <div class="row">
+      <div class="card ai-sum" id="aiSum">
+        <div class="ai-h">
+          <div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">ผลการวิเคราะห์ของ AI</div><div class="card-s">สถานการณ์: น้ำท่วม · วิเคราะห์เมื่อ 10:30</div></div></div>
+          <div class="conf">ความมั่นใจ<div class="conf-bar"><div class="conf-fill"></div></div><b style="color:#2F5D8A">87%</b></div>
+        </div>
+        <div class="ai-text">AI ประเมินว่าความต้องการน้ำมันจะ<b>เพิ่มขึ้น 30%</b> (ช่วง 24–36%) ภายใน 48 ชั่วโมง เพราะต้องใช้เครื่องสูบน้ำ เครื่องปั่นไฟ และเรือกู้ภัยมากขึ้น ขณะที่ถนนสายหลักหลายเส้นถูกน้ำท่วม ทำให้สต็อกในจังหวัด<b>เหลือพอใช้ 2.9 วัน</b> ต่ำกว่าเกณฑ์ปลอดภัย 7 วัน<br>AI แนะนำให้<b>ปล่อยน้ำมันสำรองในจังหวัดทันที</b> แล้วโยกน้ำมันจากคลังในกรุงเทพฯ และนนทบุรีผ่านทางยกระดับ ร่วมกับขนส่งทางเรือตามแม่น้ำเจ้าพระยา โดยให้โรงพยาบาลและหน่วยกู้ภัยได้รับน้ำมันก่อน</div>
+        <div class="factor-l">ปัจจัยที่ AI ใช้วิเคราะห์</div>
+        <div class="factors"><div class="factor">ข้อมูลการใช้ 10 ปี</div><div class="factor">น้ำท่วมใหญ่ปี 2554</div><div class="factor">ระดับน้ำแม่น้ำเจ้าพระยา</div><div class="factor">สต็อกคลังรายวัน</div><div class="factor">พยากรณ์อากาศ 7 วัน</div></div>
+      </div>
+
+      <div class="card demand" id="demand">
+        <div class="card-h"><div><div class="card-t">ความต้องการน้ำมันที่ AI คาดการณ์</div><div class="card-s">ดีเซล + เบนซิน + LPG (ล้านลิตร/วัน)</div></div></div>
+        <div class="dm-row">
+          <div class="dm-box n"><div class="dm-l">ภาวะปกติ</div><div class="dm-v">6.8</div><div class="dm-u">ล้านลิตร/วัน</div></div>
+          <div class="dm-box c"><div class="dm-l">ช่วงวิกฤต</div><div class="dm-v" style="color:#B91C1C">8.8</div><div class="dm-u">ล้านลิตร/วัน (+30%)</div></div>
+        </div>
+        <div class="gap-box"><div class="dm-l">ต้องจัดหาเพิ่ม</div><div class="gap-v">+2.0 ล้านลิตร/วัน</div></div>
+        <div class="gauge-l"><span>น้ำมันสำรองพอใช้</span><b style="color:#B91C1C">2.9 / 7 วัน</b></div>
+        <div class="gauge"><div style="width:41%;background:#E5484D"></div></div>
+        <div class="gauge-note">เกณฑ์ปลอดภัย 7 วัน (สต็อก 25.8 ล้านลิตร)</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card supply" id="supply">
+        <div class="card-h">
+          <div><div class="card-t">แหล่งจัดหาที่ AI แนะนำ</div><div class="card-s">เรียงตามคะแนนความเร็วและความคุ้มค่า</div></div>
+          <div class="pill">รวม 2.4 ล้านลิตร/วัน</div>
+        </div>
+        <div class="src">
+          <div class="src-n">1</div>
+          <div class="src-main"><div class="src-t">ปล่อยน้ำมันสำรองคลังจังหวัด</div><div class="src-why">เหตุผล: อยู่ในพื้นที่ ส่งได้ทันที ไม่ต้องใช้เส้นทางที่ถูกน้ำท่วม</div></div>
+          <div class="src-cap"><div class="src-s">0.6 ล้านลิตร/วัน</div><div class="cap-bar"><div class="cap-fill" style="width:75%"></div></div></div>
+          <div class="src-eta">0–6 ชม.</div>
+          <div class="src-st"><span class="st ok">พร้อม</span></div>
+        </div>
+        <div class="src">
+          <div class="src-n">2</div>
+          <div class="src-main"><div class="src-t">โยกจากคลังในกรุงเทพฯ และนนทบุรี</div><div class="src-why">เหตุผล: ใกล้ที่สุดราว 30 กม. ใช้ทางยกระดับที่น้ำไม่ท่วม</div></div>
+          <div class="src-cap"><div class="src-s">0.8 ล้านลิตร/วัน</div><div class="cap-bar"><div class="cap-fill" style="width:100%"></div></div></div>
+          <div class="src-eta">6 ชม.</div>
+          <div class="src-st"><span class="st go">กำลังส่ง</span></div>
+        </div>
+        <div class="src">
+          <div class="src-n">3</div>
+          <div class="src-main"><div class="src-t">ขนส่งทางเรือตามแม่น้ำเจ้าพระยา</div><div class="src-why">เหตุผล: ขนได้ปริมาณมาก และไม่ขึ้นกับสภาพถนน</div></div>
+          <div class="src-cap"><div class="src-s">0.6 ล้านลิตร/วัน</div><div class="cap-bar"><div class="cap-fill" style="width:75%"></div></div></div>
+          <div class="src-eta">12 ชม.</div>
+          <div class="src-st"><span class="st go">กำลังส่ง</span></div>
+        </div>
+        <div class="src">
+          <div class="src-n">4</div>
+          <div class="src-main"><div class="src-t">รถบรรทุกจากคลัง จ.สระบุรี</div><div class="src-why">เหตุผล: เป็นแหล่งสำรอง ช่วยถ้าวิกฤตยาวเกิน 3 วัน</div></div>
+          <div class="src-cap"><div class="src-s">0.4 ล้านลิตร/วัน</div><div class="cap-bar"><div class="cap-fill" style="width:50%"></div></div></div>
+          <div class="src-eta">24 ชม.</div>
+          <div class="src-st"><span class="st wait">รออนุมัติ</span></div>
+        </div>
+        <div class="sum"><span>จัดหาได้ 2.4 จากที่ต้องการเพิ่ม 2.0 ล้านลิตร/วัน</span><b>เพียงพอ (+0.4)</b></div>
+      </div>
+
+      <div class="card alloc" id="alloc">
+        <div class="card-h"><div><div class="card-t">การจัดสรรที่ AI เสนอ</div><div class="card-s">จาก 8.8 ล้านลิตร/วัน</div></div></div>
+        <div class="al-bar">
+          <div class="al-seg" style="width:30%;background:#E5484D">30%</div>
+          <div class="al-seg" style="width:25%;background:#F08C3A">25%</div>
+          <div class="al-seg" style="width:25%;background:#2563EB">25%</div>
+          <div class="al-seg" style="width:20%;background:#9CA3AF">20%</div>
+        </div>
+        <div class="al-item"><div class="al-name"><div class="sw" style="background:#E5484D"></div>โรงพยาบาลและกู้ภัย</div><div class="al-v">2.64</div></div>
+        <div class="al-item"><div class="al-name"><div class="sw" style="background:#F08C3A"></div>เครื่องปั่นไฟชุมชน</div><div class="al-v">2.20</div></div>
+        <div class="al-item"><div class="al-name"><div class="sw" style="background:#2563EB"></div>ขนส่งสินค้าจำเป็น</div><div class="al-v">2.20</div></div>
+        <div class="al-item"><div class="al-name"><div class="sw" style="background:#9CA3AF"></div>ประชาชนทั่วไป</div><div class="al-v">1.76</div></div>
+        <div class="al-ai">AI เพิ่มสัดส่วนโรงพยาบาลจาก 20% เป็น 30% เพราะมีโรงพยาบาล 4 แห่งในพื้นที่น้ำท่วมที่ต้องใช้ไฟสำรอง</div>
+        <div class="btn-row"><div class="btn sec">ปรับเอง</div><div class="btn pri">อนุมัติแผน</div></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card steps" id="steps">
+        <div class="card-h"><div><div class="card-t">ขั้นตอนที่ AI แนะนำ</div><div class="card-s">เรียงตามลำดับเวลา</div></div><div class="pill">เสร็จแล้ว 2 / 5</div></div>
+        <div class="step"><div class="rail"><div class="dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5 12l5 5 9-10"/></svg></div><div class="line"></div></div><div class="step-b"><div class="step-top"><div class="step-t">ประกาศระดับวิกฤต ตั้งศูนย์บัญชาการ</div><div class="step-time">ชม. 0</div></div><div class="step-d">แจ้งพลังงานจังหวัดและผู้ค้าน้ำมันทุกราย</div></div></div>
+        <div class="step"><div class="rail"><div class="dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M5 12l5 5 9-10"/></svg></div><div class="line"></div></div><div class="step-b"><div class="step-top"><div class="step-t">ปล่อยน้ำมันสำรองในจังหวัด</div><div class="step-time">0–6 ชม.</div></div><div class="step-d">จำกัดการซื้อต่อคันที่ปั๊ม เพื่อลดการกักตุน</div></div></div>
+        <div class="step"><div class="rail"><div class="dot todo">3</div><div class="line"></div></div><div class="step-b"><div class="step-top"><div class="step-t">โยกน้ำมันจากกรุงเทพฯ นนทบุรี และทางเรือ</div><div class="step-time">6–24 ชม.</div></div><div class="step-d">ใช้ทางยกระดับและแม่น้ำเจ้าพระยา</div></div></div>
+        <div class="step"><div class="rail"><div class="dot todo">4</div><div class="line"></div></div><div class="step-b"><div class="step-top"><div class="step-t">จัดสรรตามลำดับความสำคัญ</div><div class="step-time">ต่อเนื่อง</div></div><div class="step-d">โรงพยาบาลและกู้ภัยได้ก่อน</div></div></div>
+        <div class="step"><div class="rail"><div class="dot todo">5</div></div><div class="step-b"><div class="step-top"><div class="step-t">ใช้พลังงานสะอาดช่วยเสริม</div><div class="step-time">24 ชม.+</div></div><div class="step-d">ส่งโซลาร์และแบตเตอรี่เคลื่อนที่ไปศูนย์พักพิง</div></div></div>
+      </div>
+
+      <div class="card chat" id="chat">
+        <div class="card-h"><div class="ai-title"><div class="ai-ic">AI</div><div><div class="card-t">ถาม AI เพิ่มเติม</div><div class="card-s">ถามเกี่ยวกับแผนของจังหวัดนี้ได้</div></div></div></div>
+        <div class="msgs">
+          <div class="msg-u"><div class="bub-u">ถ้าน้ำท่วมนานกว่า 7 วัน ต้องทำอะไรเพิ่ม?</div></div>
+          <div class="msg-a"><div class="av">AI</div><div class="bub-a">ถ้าเกิน 7 วัน สต็อกในจังหวัดจะหมดราววันที่ 3 แนะนำให้<b>อนุมัติรถบรรทุกจากคลังสระบุรีทันที</b> (แหล่งที่ 4) และขอให้ส่วนกลางส่งน้ำมันเพิ่มอีก <b>0.6 ล้านลิตร/วัน</b> ต่อเนื่อง 10 วัน</div></div>
+        </div>
+        <div class="sugs"><div class="sug">เทียบกับน้ำท่วมปี 2554</div><div class="sug">ถ้าขนส่งทางเรือไม่ได้?</div><div class="sug">ค่าใช้จ่ายรวมเท่าไร</div></div>
+        <form class="input" id="chatForm"><input class="input-t in" id="chatIn" placeholder="พิมพ์คำถามถึง AI..." aria-label="คำถามถึง AI"><button class="send" type="submit" aria-label="ส่งคำถาม" style="border:none;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button></form>
+        <div class="disc">AI ช่วยเสนอแผนเท่านั้น ผู้มีอำนาจต้องตรวจสอบก่อนอนุมัติทุกครั้ง</div>
+      </div>
+    </div>
+
+    </div><!-- /crisisZone -->
+    <div class="foot">ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ · อัปเดตล่าสุด 30 ต.ค. 2569 10:30</div>
+  </div>
+</div>
+<script src="assets/app.js?v=3"></script>
+<script src="assets/sidebar.js?v=3"></script>
+<script src="assets/pages/dashboard.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EnergyWatch - หน้าแรก ปทุมธานี</title>
+<link rel="stylesheet" href="assets/base.css?v=3">
+<style>
+.hero { background: linear-gradient(160deg, #0F172A 0%, #1E293B 70%, #14532D 100%); color: #FFFFFF; padding-bottom: 150px; }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 96px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; }
+.brand-mark { width: 36px; height: 36px; border-radius: 10px; background: #22A06B; display: flex; align-items: center; justify-content: center; }
+.links { display: flex; gap: 36px; font-size: 15px; color: #CBD5E1; }
+.links .on { color: #FFFFFF; font-weight: 600; }
+.login { padding: 10px 20px; border-radius: 10px; border: 1px solid #334155; font-size: 14px; font-weight: 600; }
+.hero-body { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 56px 96px 0; }
+.tag { background: #1E3A5F; color: #CBD8E6; padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; margin-bottom: 22px; }
+h1 { font-size: 48px; line-height: 1.25; font-weight: 800; letter-spacing: -1px; margin-bottom: 18px; }
+h1 span { color: #4ADE80; }
+.lead { font-size: 18px; line-height: 1.7; color: #CBD5E1; width: 760px; margin-bottom: 28px; }
+.prov { display: flex; align-items: center; gap: 12px; background: #FFFFFF; color: #111827; border-radius: 12px; padding: 10px 10px 10px 18px; font-size: 15px; }
+.prov .l { color: #6B7280; }
+.prov .v { font-weight: 700; }
+.prov .chg { background: #F3F4F6; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; color: #374151; }
+.pillars { display: flex; gap: 24px; padding: 0 96px; margin-top: -110px; }
+.pillar { width: 400px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 20px; padding: 28px; border-top: 5px solid #E5E7EB; }
+.p-ic { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+.p-t { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.p-d { font-size: 15px; line-height: 1.6; color: #4B5563; height: 72px; }
+.p-stats { display: flex; gap: 12px; margin: 20px 0; }
+.p-s { flex: 1; background: #F9FAFB; border-radius: 12px; padding: 12px; }
+.p-sv { font-size: 20px; font-weight: 800; }
+.p-sl { font-size: 12px; color: #6B7280; margin-top: 2px; }
+.p-list { font-size: 14px; color: #374151; line-height: 1.9; margin-bottom: 22px; }
+.p-btn { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 13px; border-radius: 12px; color: #FFFFFF; font-size: 15px; font-weight: 700; }
+.section { padding: 64px 96px 0; }
+.sec-t { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+.sec-s { font-size: 15px; color: #6B7280; margin-bottom: 24px; }
+.cols { display: flex; gap: 24px; }
+.col { width: 400px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 18px; padding: 22px; }
+.c-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.c-t { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
+.c-dot { width: 10px; height: 10px; border-radius: 5px; }
+.c-more { font-size: 13px; font-weight: 700; }
+.row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-top: 1px solid #F3F4F6; }
+.r-t { font-size: 14px; font-weight: 600; }
+.r-s { font-size: 12px; color: #6B7280; margin-top: 2px; }
+.r-v { font-size: 14px; font-weight: 800; text-align: right; }
+.st { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.st.crit { background: #FEE2E2; color: #B91C1C; }
+.st.watch { background: #FEF3C7; color: #92400E; }
+.pros { margin: 40px 96px 0; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 20px; padding: 28px; }
+.pros-h { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+.pros-t { font-size: 22px; font-weight: 800; }
+.pros-s { font-size: 14px; color: #6B7280; margin-top: 4px; }
+.pros-tag { font-size: 12px; font-weight: 700; color: #166534; background: #DCFCE7; padding: 6px 12px; border-radius: 999px; }
+.pros-stats { display: flex; gap: 16px; margin-bottom: 22px; }
+.pst { width: 286px; background: #F9FAFB; border-radius: 14px; padding: 16px; }
+.pst-v { font-size: 26px; font-weight: 800; }
+.pst-u { font-size: 14px; color: #6B7280; font-weight: 600; }
+.pst-l { font-size: 13px; color: #6B7280; margin-top: 4px; }
+.goal-top { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; }
+.goal-bar { height: 14px; border-radius: 7px; background: #E5E7EB; overflow: hidden; }
+.goal-fill { height: 14px; border-radius: 7px; background: #22A06B; }
+.goal-n { font-size: 13px; color: #4B5563; margin-top: 10px; }
+.parts { display: flex; flex-wrap: wrap; gap: 24px; }
+.part { width: 400px; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 20px; display: flex; gap: 14px; }
+.pt-ic { width: 44px; height: 44px; border-radius: 12px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pt-n { font-size: 16px; font-weight: 700; }
+.pt-d { font-size: 13px; color: #4B5563; line-height: 1.6; margin-top: 4px; }
+.pt-tags { display: flex; gap: 6px; margin-top: 10px; }
+.pt-tag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+.footer { margin-top: 72px; background: #0F172A; color: #94A3B8; padding: 36px 96px; display: flex; justify-content: space-between; font-size: 13px; }
+.links a:hover, .login:hover, .chg:hover { color: #FFFFFF; }
+.login, .chg { cursor: pointer; }
+.chg:hover { background: #E5E7EB; color: #111827; }
+.pillar { transition: box-shadow .15s, transform .15s; }
+.pillar:hover { box-shadow: 0 12px 28px rgba(15, 23, 42, .08); transform: translateY(-2px); }
+a.row { color: inherit; }
+a.row:hover .r-t { text-decoration: underline; }
+a.pt-tag:hover { filter: brightness(0.95); }
+.foot-links span { cursor: pointer; }
+.foot-links span:hover { color: #FFFFFF; }
+</style>
+<link rel="stylesheet" href="assets/responsive.css?v=3">
+</head>
+<body>
+<div class="hero">
+  <div class="nav">
+    <a class="brand" href="index.html"><div class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>EnergyWatch</a>
+    <nav class="links"><a class="on" href="index.html" aria-current="page">หน้าแรก</a><a href="energy-dashboard.html">แดชบอร์ดพลังงาน</a><a href="energy-p2p.html">ตลาดไฟฟ้า P2P</a><a href="energy-used-market.html">ตลาดอุปกรณ์มือสอง</a></nav>
+    <button class="nav-toggle" type="button" aria-label="เปิดเมนู" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="login" data-toast="ยังไม่มีระบบเข้าสู่ระบบ ทุกหน้าเปิดดูได้โดยไม่ต้องล็อกอิน">เข้าสู่ระบบ</div>
+  </div>
+  <div class="hero-body">
+    <div class="tag">แพลตฟอร์มพลังงานระดับจังหวัด</div>
+    <h1>ดูข้อมูลพลังงาน ซื้อขายไฟ<br>และอุปกรณ์พลังงาน <span>ในที่เดียว</span></h1>
+    <div class="lead">ติดตามการใช้พลังงานของจังหวัด ขายไฟโซลาร์ส่วนเกินให้หน่วยงานในพื้นที่ และซื้อขายแผงโซลาร์หรือแบตเตอรี่มือสองที่ผ่านการตรวจรับรอง</div>
+    <div class="prov"><span class="l">จังหวัดของคุณ</span><span class="v">ปทุมธานี</span><span class="chg" data-toast="ต้นแบบนี้มีข้อมูลตัวอย่างของจังหวัดปทุมธานีเท่านั้น">เปลี่ยนจังหวัด ▼</span></div>
+  </div>
+</div>
+
+<div class="pillars">
+
+  <div class="pillar" style="border-top-color:#4F8BC9">
+    <div class="p-ic" style="background:#E2EAF3"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#4F8BC9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><path d="M8 17v-6M13 17V7M18 17v-4"/></svg></div>
+    <div class="p-t">แดชบอร์ดพลังงาน</div>
+    <div class="p-d">ดูการใช้พลังงานฟอสซิลและพลังงานสะอาดย้อนหลัง พยากรณ์ 3 ปี และให้ AI ช่วยรับมือวิกฤต</div>
+    <div class="p-stats"><div class="p-s"><div class="p-sv">4,350</div><div class="p-sl">ktoe/ปี ใช้รวม</div></div><div class="p-s"><div class="p-sv">11%</div><div class="p-sl">พลังงานสะอาด</div></div></div>
+    <div class="p-list"><div>· ข้อมูลย้อนหลัง 10 ปี และพยากรณ์ 3 ปี</div><div>· AI แนะนำพลังงานหมุนเวียนตามพื้นที่</div><div>· AI วิเคราะห์วิกฤตน้ำท่วมและราคา LNG</div></div>
+    <a class="p-btn" style="background:#4F8BC9" href="energy-dashboard.html">เปิดแดชบอร์ด →</a>
+  </div>
+
+  <div class="pillar" style="border-top-color:#22A06B">
+    <div class="p-ic" style="background:#DCFCE7"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22A06B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h14l-4-4M20 17H6l4 4"/></svg></div>
+    <div class="p-t">ตลาดไฟฟ้า P2P</div>
+    <div class="p-d">ประชาชนขายไฟโซลาร์ส่วนเกินให้หน่วยงานรัฐและองค์กรในพื้นที่ ได้ราคาดีกว่าขายคืนการไฟฟ้า</div>
+    <div class="p-stats"><div class="p-s"><div class="p-sv">18,400</div><div class="p-sl">kWh เสนอขายวันนี้</div></div><div class="p-s"><div class="p-sv">3.20</div><div class="p-sl">บาท/หน่วย เฉลี่ย</div></div></div>
+    <div class="p-list"><div>· จับคู่กับผู้ซื้อใกล้บ้านตามช่วงเวลา</div><div>· สัญญารายวัน รายเดือน หรือรายปี</div><div>· ดูประวัติการขายและรายได้</div></div>
+    <a class="p-btn" style="background:#22A06B" href="energy-p2p.html">เข้าตลาดไฟฟ้า →</a>
+  </div>
+
+  <div class="pillar" style="border-top-color:#F08C3A">
+    <div class="p-ic" style="background:#FFEDD5"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F08C3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg></div>
+    <div class="p-t">ตลาดอุปกรณ์มือสอง</div>
+    <div class="p-d">ซื้อขายแผงโซลาร์และแบตเตอรี่มือสองที่ผ่านการตรวจรับรองจากมหาวิทยาลัยในพื้นที่</div>
+    <div class="p-stats"><div class="p-s"><div class="p-sv">48</div><div class="p-sl">รายการขายในจังหวัด</div></div><div class="p-s"><div class="p-sv">50–70%</div><div class="p-sl">ถูกกว่าของใหม่</div></div></div>
+    <div class="p-list"><div>· ลงขายและค้นหาแผงหรือแบตเตอรี่</div><div>· เทียบกับราคากลางอ้างอิง</div><div>· ติดต่อผู้ขายได้โดยตรง</div></div>
+    <a class="p-btn" style="background:#F08C3A" href="energy-used-market.html">เข้าตลาดมือสอง →</a>
+  </div>
+</div>
+
+<div class="pros">
+  <div class="pros-h">
+    <div><div class="pros-t">ประชาชนผู้ผลิตไฟในปทุมธานี</div><div class="pros-s">จากผู้ซื้อไฟ สู่ผู้ผลิตและผู้ใช้ไฟเอง (Prosumer)</div></div>
+    <span class="pros-tag">ร่วมรองรับความต้องการไฟฟ้า 50,900 MW ตามร่างแผน PDP2026</span>
+  </div>
+  <div class="pros-stats">
+    <div class="pst"><div class="pst-v">3,420 <span class="pst-u">ครัวเรือน</span></div><div class="pst-l">เป็นผู้ผลิตไฟ (Prosumer)</div></div>
+    <div class="pst"><div class="pst-v">18.6 <span class="pst-u">MW</span></div><div class="pst-l">กำลังผลิตโซลาร์ภาคประชาชน</div></div>
+    <div class="pst"><div class="pst-v">326 <span class="pst-u">ครัวเรือน</span></div><div class="pst-l">ขายไฟผ่านตลาด P2P วันนี้</div></div>
+    <div class="pst"><div class="pst-v">+1.00 <span class="pst-u">บาท/หน่วย</span></div><div class="pst-l">รายได้มากกว่าขายคืนการไฟฟ้า</div></div>
+  </div>
+  <div class="goal-top"><span>เป้าหมายจังหวัด: โซลาร์ภาคประชาชน 60 MW ภายในปี 2572</span><b>ทำได้แล้ว 31%</b></div>
+  <div class="goal-bar"><div class="goal-fill" style="width:31%"></div></div>
+  <div class="goal-n">ไฟที่ประชาชนผลิตได้ ช่วยลดการพึ่งพาโรงไฟฟ้าส่วนกลาง และเพิ่มความมั่นคงทางพลังงานของจังหวัด</div>
+</div>
+
+<div class="section">
+  <div class="sec-t">ภาคีในพื้นที่ (Area-Based)</div>
+  <div class="sec-s">เชื่อมนโยบายรัฐลงสู่ท้องถิ่น ให้ทุกฝ่ายในจังหวัดทำงานร่วมกันบนแพลตฟอร์มเดียว</div>
+  <div class="parts">
+    <div class="part"><div class="pt-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg></div><div><div class="pt-n">สำนักงานพลังงานจังหวัด</div><div class="pt-d">วางนโยบายพลังงานของจังหวัดจากผลวิเคราะห์ของ AI</div><div class="pt-tags"><a class="pt-tag" style="background:#E2EAF3;color:#4F8BC9" href="energy-dashboard.html">แดชบอร์ด</a></div></div></div>
+    <div class="part"><div class="pt-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg></div><div><div class="pt-n">อบจ. และเทศบาล</div><div class="pt-d">ลงทุนโครงสร้างพื้นฐาน และเป็นผู้ซื้อไฟรายใหญ่ในพื้นที่</div><div class="pt-tags"><a class="pt-tag" style="background:#E2EAF3;color:#4F8BC9" href="energy-dashboard.html">แดชบอร์ด</a><a class="pt-tag" style="background:#DCFCE7;color:#22A06B" href="energy-p2p.html">ตลาด P2P</a></div></div></div>
+    <div class="part"><div class="pt-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/></svg></div><div><div class="pt-n">มหาวิทยาลัยในพื้นที่</div><div class="pt-d">ดูแลระบบ AI และตรวจรับรองอุปกรณ์มือสอง</div><div class="pt-tags"><a class="pt-tag" style="background:#E2EAF3;color:#4F8BC9" href="energy-dashboard.html">แดชบอร์ด</a><a class="pt-tag" style="background:#FFEDD5;color:#F08C3A" href="energy-used-market.html">ตลาดมือสอง</a></div></div></div>
+    <div class="part"><div class="pt-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c1-3.5 3.8-5.5 7-5.5s6 2 7 5.5"/><path d="M16 4.5a3.5 3.5 0 010 7M18 14.5c2 .8 3.4 2.6 4 5.5"/></svg></div><div><div class="pt-n">ชุมชนและวิสาหกิจชุมชน</div><div class="pt-d">ผลิตไฟใช้เอง บริหารไมโครกริดและแบตเตอรี่ร่วมกัน</div><div class="pt-tags"><a class="pt-tag" style="background:#DCFCE7;color:#22A06B" href="energy-p2p.html">ตลาด P2P</a></div></div></div>
+    <div class="part"><div class="pt-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M3 21V10l6 4V10l6 4V6h6v15z"/><path d="M7 17h2M12 17h2M17 17h2"/></svg></div><div><div class="pt-n">ภาคเอกชน</div><div class="pt-d">ซื้อไฟสะอาดผ่าน Direct PPA และติดโซลาร์บนหลังคาโรงงาน</div><div class="pt-tags"><a class="pt-tag" style="background:#DCFCE7;color:#22A06B" href="energy-p2p.html">ตลาด P2P</a></div></div></div>
+    <div class="part"><div class="pt-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F5D8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M12 20s-7-4.4-9-9a4.8 4.8 0 019-3 4.8 4.8 0 019 3c-2 4.6-9 9-9 9z"/></svg></div><div><div class="pt-n">องค์กรภาคประชาสังคม (NGOs)</div><div class="pt-d">สร้างความรู้ด้านพลังงาน และช่วยกลุ่มเปราะบางเข้าถึงอุปกรณ์ราคาถูก</div><div class="pt-tags"><a class="pt-tag" style="background:#E2EAF3;color:#4F8BC9" href="energy-dashboard.html">แดชบอร์ด</a><a class="pt-tag" style="background:#FFEDD5;color:#F08C3A" href="energy-used-market.html">ตลาดมือสอง</a></div></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-t">อัปเดตล่าสุดในปทุมธานี</div>
+  <div class="sec-s">ความเคลื่อนไหวล่าสุดจากทั้ง 3 ส่วน</div>
+  <div class="cols">
+
+  <div class="col">
+    <div class="c-h"><div class="c-t"><div class="c-dot" style="background:#4F8BC9"></div>จังหวัดที่ต้องจับตา</div><a class="c-more" style="color:#4F8BC9" href="energy-dashboard.html">ดูแดชบอร์ด →</a></div>
+    <a class="row" href="energy-dashboard.html#crisis"><div><div class="r-t">ปทุมธานี</div><div class="r-s">เสี่ยงน้ำท่วม · ราคา LNG เกินเกณฑ์</div></div><div class="r-v"><span class="st watch">เฝ้าระวัง</span></div></a><a class="row" href="energy-crisis.html#songkhla"><div><div class="r-t">สงขลา</div><div class="r-s">น้ำท่วม 6 อำเภอ · สต็อก 2.1 วัน</div></div><div class="r-v"><span class="st crit">วิกฤต</span></div></a><a class="row" href="energy-crisis.html#phuket"><div><div class="r-t">ภูเก็ต</div><div class="r-s">เรือขนส่งน้ำมันล่าช้า 2 วัน</div></div><div class="r-v"><span class="st watch">เฝ้าระวัง</span></div></a>
+  </div>
+
+  <div class="col">
+    <div class="c-h"><div class="c-t"><div class="c-dot" style="background:#22A06B"></div>ผู้ซื้อที่เปิดรับซื้อไฟ</div><a class="c-more" style="color:#22A06B" href="energy-p2p.html">ดูตลาดไฟฟ้า →</a></div>
+    <a class="row" href="energy-p2p.html#buyer-1"><div><div class="r-t">อบจ.ปทุมธานี</div><div class="r-s">3.2 กม. · 400 kWh/วัน</div></div><div class="r-v">3.20 บาท</div></a><a class="row" href="energy-p2p.html#buyer-2"><div><div class="r-t">เทศบาลนครรังสิต</div><div class="r-s">5.8 กม. · 150 kWh/วัน</div></div><div class="r-v">3.25 บาท</div></a><a class="row" href="energy-p2p.html#buyer-3"><div><div class="r-t">โรงงานแปรรูปอาหาร</div><div class="r-s">7.5 กม. · 2,000 kWh/วัน</div></div><div class="r-v">3.10 บาท</div></a>
+  </div>
+
+  <div class="col">
+    <div class="c-h"><div class="c-t"><div class="c-dot" style="background:#F08C3A"></div>ลงขายล่าสุด</div><a class="c-more" style="color:#F08C3A" href="energy-used-market.html">ดูตลาดมือสอง →</a></div>
+    <a class="row" href="energy-used-market.html#item-1"><div><div class="r-t">แผงโซลาร์ 550W × 20 แผ่น</div><div class="r-s">เหลือ 88% · อ.คลองหลวง</div></div><div class="r-v">1,200 บาท/แผ่น</div></a><a class="row" href="energy-used-market.html#item-2"><div><div class="r-t">แบตเตอรี่ EV (LFP) 40 kWh</div><div class="r-s">เหลือ 76% · อ.ลำลูกกา</div></div><div class="r-v">72,000 บาท</div></a><a class="row" href="energy-used-market.html#item-4"><div><div class="r-t">แบตเตอรี่บ้าน (BESS) 10 kWh</div><div class="r-s">เหลือ 84% · อ.เมืองปทุมธานี</div></div><div class="r-v">30,000 บาท</div></a>
+  </div>
+  </div>
+</div>
+
+<div class="footer"><div>© 2569 EnergyWatch · ข้อมูลในหน้านี้เป็นข้อมูลตัวอย่างสำหรับการออกแบบ</div><div class="foot-links"><span data-toast="หน้าแหล่งข้อมูลยังไม่ได้ทำในต้นแบบนี้">แหล่งข้อมูล</span> · <span data-toast="หน้านโยบายความเป็นส่วนตัวยังไม่ได้ทำในต้นแบบนี้">นโยบายความเป็นส่วนตัว</span> · <span data-toast="หน้าติดต่อเรายังไม่ได้ทำในต้นแบบนี้">ติดต่อเรา</span></div></div>
+<script src="assets/app.js?v=3"></script>
+</body></html>
